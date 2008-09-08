@@ -1,7 +1,28 @@
 from debug_toolbar.panels import DebugPanel
 from django.db import connection
-from django.template import Context, Template
+from django.db.backends import util
+from django.template.loader import render_to_string
+from time import time
 
+class DatabaseStatTracker(util.CursorDebugWrapper):
+    """Replacement for CursorDebugWrapper which stores additional information
+    in `connection.queries`."""
+    def execute(self, sql, params=()):
+        start = time()
+        try:
+            return self.cursor.execute(sql, params)
+        finally:
+            stop = time()
+            # We keep `sql` to maintain backwards compatibility
+            self.db.queries.append({
+                'sql': self.db.ops.last_executed_query(self.cursor, sql, params),
+                'time': stop - start,
+                'raw_sql': sql,
+                'params': params,
+            })
+
+util.CursorDebugWrapper = DatabaseStatTracker
+    
 class SQLDebugPanel(DebugPanel):
     """
     Panel that displays information about the SQL queries run while processing the request.
@@ -9,19 +30,12 @@ class SQLDebugPanel(DebugPanel):
     name = 'SQL'
     
     def title(self):
-        return '%d SQL Queries' % (len(connection.queries))
+        total_time = sum(map(lambda q: float(q['time'])*1000, connection.queries))
+        return '%d SQL Queries (%.2fms)' % (len(connection.queries), total_time)
 
     def url(self):
         return ''
 
     def content(self):
-        t = Template('''
-            <dl>
-                {% for q in queries %}
-                    <dt><strong>{{ q.time }}</strong></dt>
-                    <dd>{{ q.sql }}</dd>
-                {% endfor %}
-            </dl>
-        ''')
-        c = Context({'queries': connection.queries})
-        return t.render(c)
+        context = {'queries': sorted(connection.queries, key=lambda x: x['time'])[::-1]}
+        return render_to_string('debug_toolbar/panels/sql.html', context)

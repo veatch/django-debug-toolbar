@@ -1,5 +1,5 @@
-from django.template import Context, Template
 from debug_toolbar.panels import DebugPanel
+from django.template.loader import render_to_string
 
 class HeaderDebugPanel(DebugPanel):
     """
@@ -36,17 +36,7 @@ class HeaderDebugPanel(DebugPanel):
         return ''
 
     def content(self):
-        t = Template('''
-            <dl>
-                {% for h in headers %}
-                    <dt><strong>{{ h.key }}</strong></dt>
-                    <dd>{{ h.value }}</dd>
-                {% endfor %}
-            </dl>
-        ''')
-        headers = []
-        for k, v in self.request.META.iteritems():
-            if k in self.header_filter:
-                headers.append({'key': k, 'value': v})
-        c = Context({'headers': headers})
-        return t.render(c)
+        context = {
+            'headers': dict([(k, self.request.META[k]) for k in self.header_filter if k in self.request.META]),
+        }
+        return render_to_string('debug_toolbar/panels/headers.html', context)
