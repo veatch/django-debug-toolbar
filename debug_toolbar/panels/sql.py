@@ -40,7 +40,7 @@ class SQLDebugPanel(DebugPanel):
         sql = sql.replace(' ORDER BY ', ' \n  ORDER BY ')
         return sql
     
-    def process_ajax(self):
+    def process_ajax(self, request):
         action = request.GET.get('op')
         if action == 'explain':
             # XXX: loop through each sql statement to output explain?
