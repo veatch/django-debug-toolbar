@@ -1,7 +1,7 @@
 <div class="title">SQL Explain</div>
 <dl>
     <dt>Query:</dt>
-    <dd>{{ sql|escape }}</dd>
+    <dd style="white-space:pre-wrap;">{{ sql|escape|linebreaksbr }}</dd>
     <dt>Parameters:</dt>
     <dd>{{ params|join:", "|escape }}</dd>
 </dl>

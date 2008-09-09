@@ -33,6 +33,7 @@ class ProfilerDebugPanel(DebugPanel):
         return response
 
     def process_view(self, request, callback, callback_args, callback_kwargs):
+        self.callback = callback
         self.profiler = profile.Profile()
         return self.profiler.runcall(callback, request, *callback_args, **callback_kwargs)
         
@@ -44,6 +45,8 @@ class ProfilerDebugPanel(DebugPanel):
 
     def content(self):
         context = {
+            'callback': self.callback.__name__,
+            'module': self.callback.__module__,
             'stats': self.stats,
             'function_calls': self.function_calls,
         }

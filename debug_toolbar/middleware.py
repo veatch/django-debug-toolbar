@@ -30,13 +30,15 @@ class DebugToolbarMiddleware(object):
             self.debug_toolbar = DebugToolbar(request)
             self.debug_toolbar.load_panels()
             debug = request.GET.get('djDebug')
-            if debug:
-                # kinda ugly, needs changes to the loader to optimize
-                for panel in self.debug_toolbar.panels:
-                    if panel.name == debug:
-                        response = panel.process_request(request)
-                        response.skip_debug_response = True
-                        return response
+            # kinda ugly, needs changes to the loader to optimize
+            for panel in self.debug_toolbar.panels:
+                response = panel.process_request(request)
+                if not response:
+                    if debug == panel.name:
+                        response = panel.process_ajax(request)
+                if response:
+                    response.skip_debug_response = True
+                    return response
 
     def process_view(self, request, callback, callback_args, callback_kwargs):
         if self.show_toolbar(request):
@@ -52,6 +54,8 @@ class DebugToolbarMiddleware(object):
                 # Saving this here in case we ever need to inject into <head>
                 #response.content = _END_HEAD_RE.sub(smart_str(self.debug_toolbar.render_styles() + "%s" % match.group()), response.content)
                 for panel in self.debug_toolbar.panels:
-                    response = panel.process_response(request, response)
+                    nr = panel.process_response(request, response)
+                    # Incase someone forgets `return response`
+                    if nr: response = nr
                 response.content = _END_BODY_RE.sub(smart_str('<body>' + self.debug_toolbar.render_toolbar()), response.content)
         return response
