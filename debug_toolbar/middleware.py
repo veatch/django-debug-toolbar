@@ -29,12 +29,29 @@ class DebugToolbarMiddleware(object):
         if self.show_toolbar(request):
             self.debug_toolbar = DebugToolbar(request)
             self.debug_toolbar.load_panels()
-        return None
+            debug = request.GET.get('djDebug')
+            if debug:
+                # kinda ugly, needs changes to the loader to optimize
+                for panel in self.debug_toolbar.panels:
+                    if panel.name == debug:
+                        response = panel.process_request(request)
+                        response.skip_debug_response = True
+                        return response
+
+    def process_view(self, request, callback, callback_args, callback_kwargs):
+        if self.show_toolbar(request):
+            for panel in self.debug_toolbar.panels:
+                cb = panel.process_view(request, callback, callback_args, callback_kwargs)
+                if cb:
+                    callback = cb
+            return callback
 
     def process_response(self, request, response):
-        if self.show_toolbar(request):
+        if self.show_toolbar(request) and not getattr(response, 'skip_debug_response', False):
             if response['Content-Type'].split(';')[0] in _HTML_TYPES and not request.is_ajax():
                 # Saving this here in case we ever need to inject into <head>
                 #response.content = _END_HEAD_RE.sub(smart_str(self.debug_toolbar.render_styles() + "%s" % match.group()), response.content)
+                for panel in self.debug_toolbar.panels:
+                    response = panel.process_response(request, response)
                 response.content = _END_BODY_RE.sub(smart_str('<body>' + self.debug_toolbar.render_toolbar()), response.content)
         return response

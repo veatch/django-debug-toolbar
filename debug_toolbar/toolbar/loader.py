@@ -2,6 +2,7 @@
 The main DebugToolbar class that loads and renders the Toolbar.
 """
 from django.template.loader import render_to_string
+from debug_toolbar.settings import DEBUG_TOOLBAR_PANELS
 
 class DebugToolbar(object):
 
@@ -18,7 +19,7 @@ class DebugToolbar(object):
         from django.conf import settings
         from django.core import exceptions
 
-        for panel_path in settings.DEBUG_TOOLBAR_PANELS:
+        for panel_path in DEBUG_TOOLBAR_PANELS:
             try:
                 dot = panel_path.rindex('.')
             except ValueError:

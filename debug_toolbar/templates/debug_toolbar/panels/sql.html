@@ -1,3 +1,6 @@
+<div class="title">
+    SQL Queries
+</div>
 <table>
     <thead>
         <tr>
@@ -8,8 +11,8 @@
     <tbody>
         {% for query in queries %}
             <tr class="{% cycle 'row1' 'row2' %}">
-                <td>{{ query.time|floatformat:"4" }}</td>
-                <td>{{ query.sql|escape }}</td>
+                <td>{{ query.0|floatformat:"4" }}</td>
+                <td><a href="javascript:djDebugWindow('?djDebug=SQL&amp;op=explain&amp;sql={{ query.2|urlencode }}&amp;params={{ query.3|urlencode }}');">{{ query.1|escape }}</td>
             </tr>
         {% endfor %}
     </tbody>

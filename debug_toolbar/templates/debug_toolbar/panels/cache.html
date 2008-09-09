@@ -33,6 +33,7 @@
         <td>{{ cache.get_many }}</td>
     </tr>
 </table>
+{% if cache.calls %}
 <div class="title">
     Breakdown
 </div>
@@ -56,3 +57,4 @@
         {% endfor %}
     </tbody>
 </table>
+{% endif %}
