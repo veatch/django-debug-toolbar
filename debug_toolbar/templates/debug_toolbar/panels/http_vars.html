@@ -1,4 +1,4 @@
-<div class="title">GET Variables</div>
+<div class="title">request.GET</div>
 {% if get %}
 <table>
     <colgroup>
@@ -23,7 +23,7 @@
 {% else %}
 <p>No GET variables.</p>
 {% endif %}
-<div class="title">POST Variables</div>
+<div class="title">request.POST</div>
 {% if post %}
 <table>
     <colgroup>
@@ -48,7 +48,7 @@
 {% else %}
 <p>No POST variables.</p>
 {% endif %}
-<div class="title">SESSION Variables</div>
+<div class="title">request.session</div>
 {% if session %}
 <table>
     <colgroup>
@@ -73,7 +73,7 @@
 {% else %}
 <p>No SESSION variables.</p>
 {% endif %}
-<div class="title">COOKIES Variables</div>
+<div class="title">request.COOKIES</div>
 {% if cookies %}
 <table>
     <colgroup>
