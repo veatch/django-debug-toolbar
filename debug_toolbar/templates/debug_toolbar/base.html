@@ -101,16 +101,16 @@ function djDebugHide() {
 	text-transform:lowercase;
 	margin: 5px 0;
 	z-index:100000000;
-	border-top:1px solid #022016;
-	border-bottom:1px solid #03281c;
+	border-top:1px solid #2d8d6e;
+	border-bottom:1px solid #03261a;
 }
 #djDebugToolbar a { color: #9dcc49; text-decoration: none; }
 #djDebugToolbar ul { margin: 0; padding: 0 10px; }
 #djDebugToolbar li { display: inline; height: 22px; float: left; }
 #djDebugToolbar li span,
-#djDebugToolbar li a { display: inline; width: auto; position: relative; float: none; margin: 0; height: 12px; line-height: 22px; padding: 5px 10px; border-right: 1px solid #17644b; padding-right: 10px; }
-#djDebugToolbar li a:hover, #djDebugToolbar li.active a { color: #000; background-color: #9dcc49; }
-#djDebugToolbar #djDebugButton span { color: #fff; font-weight: bold; }
+#djDebugToolbar li a { display: inline; width: auto; position: relative; float: none; margin: 0; height: 12px; line-height: 22px; padding: 4px 10px; border-left: 1px solid #12523d; border-right: 1px solid #03261a; padding-right: 10px; }
+#djDebugToolbar li a:hover, #djDebugToolbar li.active a { color: #fff; background-color: #0d4734; }
+#djDebugToolbar #djDebugButton span { border-left: 0; color: #fff; font-weight: bold; }
 #djDebugToolbar #djDebugHide { float: right; }
 #djDebugToolbar #djDebugHide a { border: 0; font-size: 93%; }
 #djDebug .panelContent {
@@ -125,12 +125,12 @@ function djDebugHide() {
 	bottom:10px;
 	background:#073828;
 	color:#fff;
-	border:1px solid #022016;
 	z-index:1000000;
 	overflow:auto;
+	border:1px solid #2d8d6e;
 }
 #djDebug .panelContent * { color: #fff; }
-#djDebug .panelContent a { color: #9dcc49; }
+#djDebug .panelContent a:hover { color: #9dcc49; }
 #djDebug .panelContent table { width: 100%; }
 #djDebug .panelContent p { padding: 0 5px; }
 #djDebug .panelContent p, #djDebug .panelContent table,
@@ -141,7 +141,7 @@ function djDebugHide() {
 #djDebug .panelContent th, #djDebug td { padding: 5px; }
 #djDebug .panelContent td { background:transparent; }
 #djDebug .panelContent th { font-weight: bold; text-align: left; background: transparent; color: #fff; }
-#djDebug .panelContent thead th { background: #9dcc49; color: #000; }
+#djDebug .panelContent thead th { background: #0d4734; color: #9dcc49; }
 #djDebug .panelContent .row2 td { background:#0e4835; }
 #djDebugWindow { z-index: 20000000; }
 #djDebug .panelContent .title { font-weight: bold; font-size: 15px; color: #9dcc49; margin-bottom: 5px; }
@@ -186,6 +186,6 @@ function djDebugHide() {
 	        <a href="javascript:djDebugWindowClose();" class="close">Back</a>
 	    </div>
 	    <div class="content">
-	    </div>
+    	</div>
     </div>
 </div>
