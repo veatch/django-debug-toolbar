@@ -52,7 +52,7 @@
                 <td>{{ query.0|floatformat:"4" }}</td>
                 <td>{{ query.1|escape }}</td>
                 <td>{{ query.2|escape }}</td>
-                <td><acronym title="{{ query.3.0 }}:{{ query.3.1 }}">{{ query.3.2|escape }}</acronym>: {{ query.3.3.0|escape }}</td>
+                <td>{{ query.3.0 }}:{{ query.3.1 }}({{ query.3.2|escape }}); {{ query.3.3.0|escape }}</td>
             </tr>
         {% endfor %}
     </tbody>

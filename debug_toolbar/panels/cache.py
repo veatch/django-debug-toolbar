@@ -5,6 +5,7 @@ from django.core import cache
 from django.core.cache.backends.base import BaseCache
 import time
 import inspect
+import os.path
 from django.template.loader import render_to_string
 
 class CacheStatTracker(BaseCache):
@@ -25,7 +26,7 @@ class CacheStatTracker(BaseCache):
 
     def _get_func_info(self):
         stack = inspect.stack()[2]
-        return (stack[1], stack[2], stack[3], stack[4])
+        return (os.path.basename(stack[1]), stack[2], stack[3], stack[4])
     
     def get(self, key, default=None):
         t = time.time()
