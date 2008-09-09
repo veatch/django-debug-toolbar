@@ -73,3 +73,28 @@
 {% else %}
 <p>No SESSION variables.</p>
 {% endif %}
+<div class="title">COOKIES Variables</div>
+{% if cookies %}
+<table>
+    <colgroup>
+        <col style="width:20%"/>
+        <col/>
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key, value in cookies %}
+            <tr class="{% cycle 'row1' 'row2' %}">
+                <td>{{ key|escape }}</td>
+                <td>{{ value|escape }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No COOKIES variables.</p>
+{% endif %}
