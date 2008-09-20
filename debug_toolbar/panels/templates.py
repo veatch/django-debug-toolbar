@@ -5,27 +5,39 @@ from django.core.signals import request_started
 from django.test.signals import template_rendered
 from django.template.loader import render_to_string
 
-# Based on http://www.djangosnippets.org/snippets/766/
-from django.test.utils import instrumented_test_render
-from django.template import Template, Context
-if Template.render != instrumented_test_render:
-    Template.original_render = Template.render
-    Template.render = instrumented_test_render
-# MONSTER monkey-patch
-old_template_init = Template.__init__
-def new_template_init(self, template_string, origin=None, name='<Unknown Template>'):
-    old_template_init(self, template_string, origin, name)
-    self.origin = origin
-Template.__init__ = new_template_init
+from django import template
 
-class TemplatesDebugPanel(DebugPanel):
+import time
+
+
+class TemplateStatTracker(template.Template):
+    def __init__(self, *args, **kwargs):
+        self.templates = []
+        super(TemplateStatTracker, self).__init__(*args, **kwargs)
+
+    def render(self, *args, **kwargs):
+        start = time.time()
+        try:
+            return super(TemplateStatTracker, self).render(*args, **kwargs)
+        finally:
+            stop = time.time()
+            # We keep `sql` to maintain backwards compatibility
+            self.templates.append({
+                'name': self.name,
+                'time': stop - start,
+            })
+
+stats = TemplateStatTracker()
+template.Template.render = stats.render
+
+class DjangoTemplatesDebugPanel(DebugPanel):
     """
     Panel that displays information about the SQL queries run while processing the request.
     """
     name = 'Templates'
     
     def __init__(self, *args, **kwargs):
-        super(TemplatesDebugPanel, self).__init__(*args, **kwargs)
+        super(DjangoTemplatesDebugPanel, self).__init__(*args, **kwargs)
         self.templates_used = []
         self.contexts_used = []
         template_rendered.connect(self._storeRenderedTemplates)
