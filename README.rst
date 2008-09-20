@@ -31,7 +31,7 @@ Installation
    Tying into middleware allows each panel to be instantiated on request and
    rendering to happen on response.
 
-#. Add a tuple called `DEBUG_TOOLBAR_PANELS` to your ``settings.py`` file that
+#. (Optional) Add a tuple called `DEBUG_TOOLBAR_PANELS` to your ``settings.py`` file that
    specifies the full Python path to the panel that you want included in the 
    Toolbar.  This setting looks very much like the `MIDDLEWARE_CLASSES` setting.
    For example::
@@ -53,12 +53,3 @@ Installation
    included in your templates.  So currently to test out the toolbar jQuery
    already needs to be loaded on the page.  We'll need a solution for this at
    some point.
-
-TODO
-====
-- Add more panels
-- Panel idea: Show some commonly used settings from settings.py
-- Panel idea: Show GET and POST variables
-- Panel idea: AJAX call to show cprofile data similar to the ?prof idea
-- CSS Stylings
-- Remove dependency on jQuery and come up with a general workable solution.
