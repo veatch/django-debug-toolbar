@@ -1,48 +1,53 @@
 <div class="title">
-    Query Groups
+    SQL Usage
 </div>
-<table>
-    <colgroup>
-        <col style="width:50px;"/>
-        <col/>
-    </colgroup>
-    <thead>
-        <tr>
-            <th>Time&nbsp;(ms)</th>
-            <th>Executions</th>
-            <th>Query</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for query, time, number in query_groups %}
-            <tr class="{% cycle 'row1' 'row2' %}">
-                <td>{{ time|floatformat:"4" }}</td>
-                <td>{{ number }}</td>
-                <td>{{ query|escape }}</td>
+<ul class="tabSet">
+    <li class="active" rel="tab:all"><a href="#">All Queries</a></li>
+    <li rel="tab:unique"><a href="#">Unique Queries</a></li>
+</ul>
+<div id="tab_all">
+    <table>
+        <colgroup>
+            <col style="width:50px;"/>
+            <col/>
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Time&nbsp;(ms)</th>
+                <th>Query</th>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<div class="title">
-    Individual Queries
+        </thead>
+        <tbody>
+            {% for time, query, raw_query, ajax_params in queries %}
+                <tr class="{% cycle 'row1' 'row2' %}">
+                    <td>{{ time|floatformat:"4" }}</td>
+                    <td><a href="javascript:djDebugWindow('?djDebug=SQL&amp;op=explain&amp;params={{ ajax_params|urlencode }}');">{{ query|escape }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
-<table>
-    <colgroup>
-        <col style="width:50px;"/>
-        <col/>
-    </colgroup>
-    <thead>
-        <tr>
-            <th>Time&nbsp;(ms)</th>
-            <th>Query</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for time, query, raw_query, ajax_params in queries %}
-            <tr class="{% if forloop.counter|divisibleby:"2" %}row1{% else %}row2{% endif %}">
-                <td>{{ time|floatformat:"4" }}</td>
-                <td><a href="javascript:djDebugWindow('?djDebug=SQL&amp;op=explain&amp;params={{ ajax_params|urlencode }}');">{{ query|escape }}</td>
+<div id="tab_unique" style="display:none;">
+    <table>
+        <colgroup>
+            <col style="width:50px;"/>
+            <col/>
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Time&nbsp;(ms)</th>
+                <th>Executions</th>
+                <th>Query</th>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            {% for query, time, number in query_groups %}
+                <tr class="{% cycle 'row1' 'row2' %}">
+                    <td>{{ time|floatformat:"4" }}</td>
+                    <td>{{ number }}</td>
+                    <td>{{ query|escape }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -48,13 +48,13 @@ class DebugToolbarMiddleware(object):
                     return response
 
     def process_view(self, request, callback, callback_args, callback_kwargs):
+        # TODO: this doesn't handle multiples yet
         if self.show_toolbar(request):
             new_callback = None
             for panel in self.debug_toolbar.panels:
                 response = panel.process_view(request, callback, callback_args, callback_kwargs)
                 if response:
-                    callback = response
-            return callback
+                    return response
 
     def process_response(self, request, response):
         if self.show_toolbar(request, response):

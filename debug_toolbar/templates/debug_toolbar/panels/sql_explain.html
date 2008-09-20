@@ -1,10 +1,12 @@
 <div class="title">SQL Explain</div>
-<dl>
-    <dt>Query:</dt>
-    <dd style="white-space:pre-wrap;">{{ sql|escape|linebreaksbr }}</dd>
-    <dt>Parameters:</dt>
-    <dd>{{ params|join:", "|escape }}</dd>
-</dl>
+<div class="container">
+    <dl>
+        <dt>Query:</dt>
+        <dd style="white-space:pre-wrap;">{{ sql|escape|linebreaksbr }}</dd>
+        <dt>Parameters:</dt>
+        <dd>{{ params|join:", "|escape }}</dd>
+    </dl>
+</div>
 <table>
     <thead>
         <tr>
@@ -24,10 +26,12 @@
     </tbody>
 </table>
 <div class="title">Traceback</div>
-<ul>
+<div class="container">
+<ul class="traceback">
     {% for frame in stack %}
-        <li>
+        <li class="{% cycle 'row1' 'row2' %}">
             {{ frame.0 }}:{{ frame.1 }} ({{ frame.2 }})
         </li>
     {% endfor %}
 </ul>
+</div>
