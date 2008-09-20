@@ -48,8 +48,3 @@ Installation
 
 #. Add `debug_toolbar` to your `INSTALLED_APPS` setting so Django can find the
    the template files associated with the Debug Toolbar.
-
-#. The UI effects of the Toolbar currently depend on jQuery to be already
-   included in your templates.  So currently to test out the toolbar jQuery
-   already needs to be loaded on the page.  We'll need a solution for this at
-   some point.
