@@ -8,32 +8,26 @@
 <table>
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Select Type</th>
-            <th>Table</th>
-            <th>Type</th>
-            <th>Possible Keys</th>
-            <th>Key</th>
-            <th>Ken Length</th>
-            <th>Ref</th>
-            <th>Rows</th>
-            <th>Extra</th>
+            {% for header in headers %}
+            <th>{{ header|title|escape }}</th>
+            {% endfor %}
         </tr>
     </thead>
     <tbody>
         {% for row in explain %}
             <tr class="{% cycle 'row1' 'row2' %}">
-                <td>{{ row.0|escape }}</td>
-                <td>{{ row.1|escape }}</td>
-                <td>{{ row.2|escape }}</td>
-                <td>{{ row.3|escape }}</td>
-                <td>{{ row.4|escape }}</td>
-                <td>{{ row.5|escape }}</td>
-                <td>{{ row.6|escape }}</td>
-                <td>{{ row.7|escape }}</td>
-                <td>{{ row.8|escape }}</td>
-                <td>{{ row.9|escape }}</td>
+                {% for value in row %}
+                <td>{{ value|escape }}</td>
+                {% endfor %}
             </tr>
         {% endfor %}
     </tbody>
 </table>
+<div class="title">Traceback</div>
+<ul>
+    {% for frame in stack %}
+        <li>
+            {{ frame.0 }}:{{ frame.1 }} ({{ frame.2 }})
+        </li>
+    {% endfor %}
+</ul>

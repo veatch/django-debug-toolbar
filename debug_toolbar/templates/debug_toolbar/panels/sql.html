@@ -1,7 +1,36 @@
 <div class="title">
-    SQL Queries
+    Query Groups
 </div>
 <table>
+    <colgroup>
+        <col style="width:50px;"/>
+        <col/>
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Time&nbsp;(ms)</th>
+            <th>Executions</th>
+            <th>Query</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for query, time, number in query_groups %}
+            <tr class="{% cycle 'row1' 'row2' %}">
+                <td>{{ time|floatformat:"4" }}</td>
+                <td>{{ number }}</td>
+                <td>{{ query|escape }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="title">
+    Individual Queries
+</div>
+<table>
+    <colgroup>
+        <col style="width:50px;"/>
+        <col/>
+    </colgroup>
     <thead>
         <tr>
             <th>Time&nbsp;(ms)</th>
@@ -9,10 +38,10 @@
         </tr>
     </thead>
     <tbody>
-        {% for query in queries %}
-            <tr class="{% cycle 'row1' 'row2' %}">
-                <td>{{ query.0|floatformat:"4" }}</td>
-                <td><a href="javascript:djDebugWindow('?djDebug=SQL&amp;op=explain&amp;sql={{ query.2|urlencode }}&amp;params={{ query.3|urlencode }}');">{{ query.1|escape }}</td>
+        {% for time, query, raw_query, ajax_params in queries %}
+            <tr class="{% if forloop.counter|divisibleby:"2" %}row1{% else %}row2{% endif %}">
+                <td>{{ time|floatformat:"4" }}</td>
+                <td><a href="javascript:djDebugWindow('?djDebug=SQL&amp;op=explain&amp;params={{ ajax_params|urlencode }}');">{{ query|escape }}</td>
             </tr>
         {% endfor %}
     </tbody>

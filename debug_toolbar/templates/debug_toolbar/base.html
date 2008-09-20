@@ -95,6 +95,10 @@ function djDebugHide() {
 <style type="text/css">
 #djDebug * { font: normal 12px Arial, sans-serif; margin: 0; padding: 0; float: none; position: static; border: 0;  }
 #djDebugToolbar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
 	height:22px;
 	background:#244035;
 	color:#90EF45;
@@ -133,14 +137,15 @@ function djDebugHide() {
 #djDebug .panelContent table { width: 100%; }
 #djDebug .panelContent p { padding: 5px; }
 #djDebug .panelContent p, #djDebug .panelContent table,
-#djDebug .panelContent ul, #djDebug .panelContent dl,
-#djDebug .panelContent .title { margin: 5px 0; }
+#djDebug .panelContent dl, #djDebug .panelContent .title { margin: 5px 0; }
+#djDebug .panelContent ul { margin: 5px 0 5px 15px; }
+#djDebug .panelContent li { line-height: 125%; }
 #djDebug .panelContent dt, #djDebug .panelContent dd { display: block; }
 #djDebug .panelContent dt { font-weight: bold; width: 100px; clear: left; float: left; }
 #djDebug .panelContent dd { margin-left: 20px; margin-bottom: 5px; margin-left: 100px; }
 #djDebug .panelContent th, #djDebug td { padding: 5px; }
 #djDebug .panelContent td { background:#244035; }
-#djDebug .panelContent th { font-weight: bold; text-align: left; background: transparent; color: #fff; }
+#djDebug .panelContent th { background: transparent; font-weight: bold; text-align: left; background: transparent; color: #fff; }
 #djDebug .panelContent thead th { border-bottom: 1px solid #2e4d41; color: #FFE761; }
 #djDebug .panelContent .row2 td { background:#2e4d41; }
 #djDebugWindow { z-index: 20000000; }
