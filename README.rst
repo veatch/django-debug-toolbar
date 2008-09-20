@@ -2,6 +2,8 @@
 Django Debug Toolbar
 ====================
 
+(This branch is very unstable)
+
 The Django Debug Toolbar is a configurable set of panels that display various
 debug information about the current request/response.  It is a small toolbar
 that, when activated, situates itself in the top-right location of the browser
