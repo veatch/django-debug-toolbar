@@ -27,11 +27,15 @@
 </table>
 <div class="title">Traceback</div>
 <div class="container">
-<ul class="traceback">
-    {% for frame in stack %}
-        <li class="{% cycle 'row1' 'row2' %}">
-            {{ frame.0 }}:{{ frame.1 }} ({{ frame.2 }})
-        </li>
-    {% endfor %}
+<ul class="traceback" id="sql_explain_traceback">
 </ul>
+<script type="text/javascript">
+    var frame;
+    var el = document.getElementById('sql_explain_traceback');
+    for (var i=0; (frame = locals.stack[i]); i++) {
+        var li = document.createElement('li');
+        li.innerHTML = frame[0] + ':' + frame[1] + ' (' + frame[2] + ')';
+        el.appendChild(li);
+    }
+</script>
 </div>

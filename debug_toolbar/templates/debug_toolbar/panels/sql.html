@@ -18,10 +18,10 @@
             </tr>
         </thead>
         <tbody>
-            {% for time, query, raw_query, ajax_params in queries %}
+            {% for time, query, raw_query, params, stack in queries %}
                 <tr class="{% cycle 'row1' 'row2' %}">
                     <td>{{ time|floatformat:"4" }}</td>
-                    <td><a href="javascript:djDebugWindow('?djDebug=SQL&amp;op=explain&amp;params={{ ajax_params|urlencode }}');">{{ query|escape }}</td>
+                    <td><a href="javascript:djDebugWindow('?djDebug=SQL&amp;op=explain&amp;sql={{ raw_query|urlencode }}&amp;params={{ params|urlencode }}', {stack: {{ stack }}});">{{ query|escape }}</td>
                 </tr>
             {% endfor %}
         </tbody>

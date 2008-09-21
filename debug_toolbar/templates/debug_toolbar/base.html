@@ -344,26 +344,36 @@ function djDebugClose() {
     document.getElementById(djDebugLastObj.getAttribute('rel')).style.display = 'none';
     djDebugLastObj = null;
 }
-function djDebugWindowHtml(text) {
+function djDebugWindowHtml(text, locals) {
     var obj = document.getElementById('djDebugWindow');
     var frame = obj.getElementsByTagName('div')[1];
     frame.innerHTML = text;
+    // Evaluate script tags
+    var els = frame.getElementsByTagName('script');
+    var el;
+    for (var i=0; (el = els[i]); i++) {
+        eval(el.text);
+    }
 }
-function djDebugWindow(url) {
+djDebugLocals = {};
+function djDebugWindow(url, locals) {
+    // this will properly use bind when we switch to jQuery
+    djDebugLocals = locals;
     var obj = document.getElementById('djDebugWindow');
     djDebugWindowHtml('Loading request...');
     djDebugHttp.open('get', url, true);
 
     djDebugHttp.onreadystatechange = function() {
-      if (djDebugHttp.readyState == 4) {
-        // XXX: why does status return 0?
-        if (djDebugHttp.status == 200 || djDebugHttp.status == 0) {
-          djDebugWindowHtml(djDebugHttp.responseText);
+        if (djDebugHttp.readyState == 4) {
+            // XXX: why does status return 0?
+            if (djDebugHttp.status == 200 || djDebugHttp.status == 0) {
+                locals = djDebugLocals;
+                djDebugWindowHtml(djDebugHttp.responseText, locals);
+            }
+            else {
+                djDebugWindowHtml('There was an error loading the document.');
+            }
         }
-        else {
-          djDebugWindowHtml('There was an error loading the document.');
-        }
-      }
     }
     djDebugHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
     try {

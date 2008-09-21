@@ -9,18 +9,6 @@ import time
 import inspect
 import os.path
 
-try: import cPickle as pickle
-except ImportError: import pickle
-import base64
-
-# XXX: This is exploitable, what do we do?
-def ajax_encode(data):
-    return base64.b64encode(pickle.dumps(data))
-
-def ajax_decode(data):
-    if not data: return data
-    return pickle.loads(base64.b64decode(data))
-    
 class DatabaseStatTracker(util.CursorDebugWrapper):
     """Replacement for CursorDebugWrapper which stores additional information
     in `connection.queries`."""
@@ -37,11 +25,7 @@ class DatabaseStatTracker(util.CursorDebugWrapper):
                 'time': (stop - start)*1000,
                 'raw_sql': sql,
                 'params': params,
-                'ajax_params': ajax_encode({
-                    'sql': sql,
-                    'params': params,
-                    'stack': [s[1:] for s in inspect.stack()],
-                }),
+                'stack': [s[1:] for s in inspect.stack()],
             })
 
 util.CursorDebugWrapper = DatabaseStatTracker
@@ -63,17 +47,19 @@ class SQLDebugPanel(DebugPanel):
     def process_ajax(self, request):
         action = request.GET.get('op')
         if action == 'explain':
-            # XXX: loop through each sql statement to output explain?
-            params = ajax_decode(request.GET.get('params'))
-            if not params:
-                return
-            if params['sql'].lower().startswith('select'):
+            # make sure its only the first query that we're executing
+            # TODO: loop through each sql statement to output explain?
+            # TODO: this breaks if ; is inside an enclosure
+            sql = request.GET.get('sql', '').split(';')[0]
+            if sql.lower().startswith('select'):
+                params = request.GET.get('params', '')
+                if params: params = simplejson.loads(params)
                 cursor = connection.cursor()
-                cursor.execute("EXPLAIN %s" % (params['sql'],), params['params'])
+                cursor.execute("EXPLAIN %s" % (sql,), params)
                 response = cursor.fetchall()
                 headers = [h[0].replace('_', ' ') for h in cursor.description]
                 cursor.close()
-                context = {'headers': headers, 'explain': response, 'sql': self.reformat_sql(params['sql']), 'params': params['params'], 'stack': params['stack']}
+                context = {'headers': headers, 'explain': response, 'sql': self.reformat_sql(sql), 'params': params}
                 return render_to_response('debug_toolbar/panels/sql_explain.html', context)
             else:
                 return HttpResponse('Invalid SQL', mimetype="text/plain")
@@ -93,10 +79,11 @@ class SQLDebugPanel(DebugPanel):
         return ''
 
     def content(self):
-        queries = [(q['time'], q['sql'], q['raw_sql'], q['ajax_params']) for q in sorted(self.queries, key=lambda x: x['time'])[::-1]]
+        queries = [(q['time'], q['sql'], q['raw_sql'], simplejson.dumps(q['params']), simplejson.dumps(q['stack'])) for q in sorted(self.queries, key=lambda x: x['time'])[::-1]]
 
         query_groups = {}
-        for time, sql, raw_sql, ajax_params in queries:
+        for item in queries:
+            time, raw_sql = item[0], item[2]
             group = query_groups.get(raw_sql, (0, 0))
             query_groups[raw_sql] = (group[0]+time, group[1]+1)
         query_groups = sorted([(k, v[0], v[1]) for k, v in query_groups.iteritems()], key=lambda x: x[1])[::-1]
