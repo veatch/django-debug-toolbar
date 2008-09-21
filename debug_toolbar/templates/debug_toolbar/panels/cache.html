@@ -33,7 +33,7 @@
         <td>{{ cache.get_many }}</td>
     </tr>
 </table>
-{% if cache.calls %}
+{% if cache_stats %}
 <div class="title">
     Breakdown
 </div>
@@ -43,16 +43,16 @@
             <th>Time&nbsp;(ms)</th>
             <th>Type</th>
             <th>Parameters</th>
-            <th>Function</th>
+            <th>Traceback</th>
         </tr>
     </thead>
     <tbody>
-        {% for query in cache.calls %}
+        {% for time, type, params, frame, stack in cache_stats %}
             <tr class="{% cycle 'row1' 'row2' %}">
-                <td>{{ query.0|floatformat:"4" }}</td>
-                <td>{{ query.1|escape }}</td>
-                <td>{{ query.2|escape }}</td>
-                <td>{{ query.3.0 }}:{{ query.3.1 }}({{ query.3.2|escape }}); {{ query.3.3.0|escape }}</td>
+                <td>{{ time|floatformat:"4" }}</td>
+                <td>{{ type|escape }}</td>
+                <td>{{ params|escape }}</td>
+                <td><a href="javascript:djDebugWindow('?djDebug=Cache&amp;op=explain', {stack: {{ stack }}});">{{ frame.3.0 }}</a></td>
             </tr>
         {% endfor %}
     </tbody>
