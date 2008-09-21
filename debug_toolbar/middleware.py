@@ -66,5 +66,5 @@ class DebugToolbarMiddleware(object):
                     # Incase someone forgets `return response`
                     if nr: response = nr
                 # TODO: This is super slow a BIG TODO
-                response.content = _END_BODY_RE.sub(smart_unicode(self.debug_toolbar.render_toolbar()) + u'</body>', response.content)
+                response.content = response.content.replace(u'</body>', smart_unicode(self.debug_toolbar.render_toolbar()) + u'</body>')
         return response
