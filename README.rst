@@ -12,7 +12,6 @@ content are displayed.
 
 Currently, the following panels have been written and are working:
 
-- Django version
 - SQL queries including time to execute
 - Request timer
 - Common HTTP headers
@@ -44,7 +43,6 @@ Installation
 
 	# This example is all working panels, not all are active with default settings
 	DEBUG_TOOLBAR_PANELS = (
-	    'debug_toolbar.panels.version.VersionDebugPanel',
 	    'debug_toolbar.panels.sql.SQLDebugPanel',
 	    'debug_toolbar.panels.headers.HeaderDebugPanel',
 	    'debug_toolbar.panels.cache.CacheDebugPanel',

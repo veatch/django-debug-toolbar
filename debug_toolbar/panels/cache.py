@@ -106,5 +106,6 @@ class CacheDebugPanel(DebugPanel):
             cache_calls = len(self.cache.calls),
             cache_time = self.cache.total_time,
             cache_stats = [(c[0], c[1], c[2], c[3][0], simplejson.dumps(c[3])) for c in self.cache.calls],
+            cache = self.cache,
         )
         return render_to_string('debug_toolbar/panels/cache.html', context)
