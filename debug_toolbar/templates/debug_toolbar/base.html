@@ -361,11 +361,14 @@ google.setOnLoadCallback(function() {
 	{
 		$(this).click(function(event)
 		{
-			if (this.hasClass('current')) djDebugHidePanel();
+			if ($(this).hasClass('current'))
+			{
+				djDebugHidePanel();
+			}
 			else
 			{
 				djDebugHidePanel();
-				this.addClass('current');
+				$(this).addClass('current');
 				djDebugShowPanel($('#'+$(this).attr('rel')));
 			}
 			return false;
@@ -397,7 +400,6 @@ function djDebugShowPanel(obj)
 	$('.close', obj).click(function(event)
 	{
 		djDebugHidePanel();
-		return false;
 	});
 	// Show the panel
 	obj.show();
