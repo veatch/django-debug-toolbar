@@ -1,7 +1,7 @@
 <style type="text/css">
 #djDebug *
 {
-	z-index: 10000000;
+	z-index: 10;
 	outline:0;
 }
 #djDebug a
@@ -58,6 +58,7 @@
 	-webkit-border-bottom-right-radius: 10px;
 	-moz-border-radius: 0 0 10px 10px;
 	border-radius: 0 0 10px 10px;
+	z-index: 20;
 }
 #djDebug #djDebugPanelList 
 {
@@ -74,6 +75,7 @@
 	margin: 0;
 	font-family: arial;
 	color: #fff;
+	z-index: 15;
 }
 #djDebug #djDebugPanelList a
 {
@@ -381,6 +383,7 @@
 google.load("jquery", "1.2.6");
 google.setOnLoadCallback(function()
 {
+	var globalLocals;
 	$('#djDebug .djDebugButton').each(function(index)
 	{
 		$(this).click(function(event)
@@ -447,6 +450,7 @@ function djDebugShowPanel(obj)
 }
 function djDebugWindow(url, locals)
 {
+	globalLocals = locals;
 	$.ajax(
 	{
 		type:"GET",
