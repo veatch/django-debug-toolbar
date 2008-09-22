@@ -475,9 +475,9 @@ function initiateDjDebugFilter()
 				.bind('keyup',function()
 				{
 					var filterParent = $(this).parents('.panelContent');
-					$('#error-message', filterParent).remove();
+					$('.error-message', filterParent).remove();
 					var values = $(this).val().split(' ');
-					var rows = $('table.data tbody tr',$(this).parents('.panelContent'));
+					var rows = $('table.data tbody tr', filterParent);
 					rows.hide();
 					var length = values.length-1;
 					for(var i=0; i<=length; i++)
@@ -487,7 +487,7 @@ function initiateDjDebugFilter()
 					rows.show();
 					if (rows.length == 0)
 					{
-						$('table.data tbody', filterParent).append('<tr id="error-message"><td colspan="100"><strong>Could not find any matching entries</strong></td></tr>');
+						$('table.data tbody', filterParent).append('<tr class="error-message"><td colspan="100"><strong>Could not find any matching entries</strong></td></tr>');
 					}
 				})
 				.after('<div class="djDebugFilterReset"></div>')
