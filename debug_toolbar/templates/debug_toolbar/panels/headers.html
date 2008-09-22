@@ -1,7 +1,8 @@
-<div class="title">
-    Request Headers
-</div>
-<table>
+<ul id="navigation">
+	<li class="close">Close Panel</li>
+</ul>
+<h1>Request Headers</h1>
+<table class="data" border="0" cellspacing="0" cellpadding="0"> 
     <thead>
         <tr>
             <th>Key</th>
@@ -10,7 +11,7 @@
     </thead>
     <tbody>
         {% for key, value in headers.iteritems %}
-            <tr class="{% cycle 'row1' 'row2' %}">
+            <tr class="{% cycle 'odd' 'even' %}">
                 <td>{{ key|escape }}</td>
                 <td>{{ value|escape }}</td>
             </tr>

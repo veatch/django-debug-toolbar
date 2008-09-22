@@ -1,53 +1,65 @@
-<div class="title">
-    SQL Usage
-</div>
-<ul class="tabSet">
-    <li class="active" rel="tab:all"><a href="#">All Queries</a></li>
-    <li rel="tab:unique"><a href="#">Unique Queries</a></li>
+<h1>SQL Usage</h1>
+<ul id="navigation">
+	<li class="close">Close Panel</li>
 </ul>
-<div id="tab_all">
-    <table>
-        <colgroup>
-            <col style="width:50px;"/>
-            <col/>
-        </colgroup>
-        <thead>
-            <tr>
-                <th>Time&nbsp;(ms)</th>
-                <th>Query</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for time, query, raw_query, params, stack in queries %}
-                <tr class="{% cycle 'row1' 'row2' %}">
-                    <td>{{ time|floatformat:"4" }}</td>
-                    <td><a href="javascript:djDebugWindow('?djDebug=SQL&amp;op=explain&amp;sql={{ raw_query|urlencode }}&amp;params={{ params|urlencode }}', {stack: {{ stack }}});">{{ query|escape }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<ul class="tabSet">
+	<li rel="tab_all" class="current" >All Queries</li>
+	<li rel="tab_unique">Unique Queries</li>
+</ul>
+<div id="tab_all" class="queries">
+	<table class="data" border="0" cellspacing="0" cellpadding="0"> 
+		<colgroup>
+			<col style="width:50px;"/>
+			<col/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>Time&nbsp;(ms)</th>
+				<th>Query</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for time, query, raw_query, params, stack in queries %}
+			<tr class="{% cycle 'odd' 'even' %}">
+				<td>{{ time|floatformat:"4" }}</td>
+				<td><a href="javascript:djDebugWindow('djDebug=SQL&amp;op=explain&amp;sql={{ raw_query|urlencode }}&amp;params={{ params|urlencode }}', {stack: {{ stack }}});">{{ query|escape }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 </div>
-<div id="tab_unique" style="display:none;">
-    <table>
-        <colgroup>
-            <col style="width:50px;"/>
-            <col/>
-        </colgroup>
-        <thead>
-            <tr>
-                <th>Time&nbsp;(ms)</th>
-                <th>Executions</th>
-                <th>Query</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for query, time, number in query_groups %}
-                <tr class="{% cycle 'row1' 'row2' %}">
-                    <td>{{ time|floatformat:"4" }}</td>
-                    <td>{{ number }}</td>
-                    <td>{{ query|escape }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div id="tab_unique" class="queries" style="display:none;">
+	<table class="data" border="0" cellspacing="0" cellpadding="0"> 
+		<colgroup>
+			<col style="width:50px;"/>
+			<col/>
+		</colgroup>
+		<thead>
+			<tr>
+			<th>Time&nbsp;(ms)</th>
+			<th>Executions</th>
+			<th>Query</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for query, time, number in query_groups %}
+		<tr class="{% cycle 'odd' 'even' %}">
+			<td>{{ time|floatformat:"4" }}</td>
+			<td>{{ number }}</td>
+			<td>{{ query|escape }}</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
 </div>
+<script type="text/javascript">
+	$(document).ready(function()
+	{
+		$('.tabSet li').click(function(event)
+		{
+			$('.tabSet li').removeClass('current');
+			$(this).addClass('current');
+			$('.queries').hide().filter('#'+$(this).attr('rel')).show();
+		});
+	});
+</script>
