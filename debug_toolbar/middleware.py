@@ -1,7 +1,6 @@
 """
 Debug Toolbar middleware
 """
-import re
 from django.conf import settings
 from django.utils.encoding import smart_unicode
 from debug_toolbar.toolbar.loader import DebugToolbar
@@ -9,8 +8,6 @@ try: import cStringIO as StringIO
 except ImportError: import StringIO
 
 _HTML_TYPES = ('text/html', 'application/xhtml+xml')
-_END_HEAD_RE = re.compile(r'</head>', re.IGNORECASE)
-_END_BODY_RE = re.compile(r'</body>', re.IGNORECASE)
 
 class DebugToolbarMiddleware(object):
     """
@@ -23,7 +20,8 @@ class DebugToolbarMiddleware(object):
     def show_toolbar(self, request, response=None):
         if not settings.DEBUG:
             return False
-        if not request.META.get('REMOTE_ADDR') in settings.INTERNAL_IPS:
+        if (not request.META.get('REMOTE_ADDR') in settings.INTERNAL_IPS) or \
+                (request.user.is_authenticated() and request.user.is_superuser):
             return False
         if request.is_ajax():
             return False
