@@ -356,20 +356,22 @@
 <script>
 // Load jQuery
 google.load("jquery", "1.2.6");
-google.setOnLoadCallback(function() {
+google.setOnLoadCallback(function()
+{
 	$('#djDebug .djDebugButton').each(function(index)
 	{
 		$(this).click(function(event)
 		{
-			if ($(this).hasClass('current'))
+			jqThis = $(this);
+			if (jqThis.hasClass('current'))
 			{
 				djDebugHidePanel();
 			}
 			else
 			{
 				djDebugHidePanel();
-				$(this).addClass('current');
-				djDebugShowPanel($('#'+$(this).attr('rel')));
+				jqThis.addClass('current');
+				djDebugShowPanel($('#'+jqThis.attr('rel')));
 			}
 			return false;
 		});
@@ -379,34 +381,48 @@ google.setOnLoadCallback(function() {
 		$('#djDebug').remove();
 	});
 });
-function djDebugHidePanel()
+function djDebugHidePanel(action)
 {
-	var current = $('#djDebug .djDebugButton.current');
-	$('#' + current.attr('rel')).hide();
-	current.removeClass('current');
+	var tempPanel = $('#djDebug #djDebugTempPanel');
+	if ( tempPanel.length > 0 ) {
+		tempPanel.remove();
+	}
+	if (action != 'back')
+	{
+		var current = $('#djDebug .djDebugButton.current');
+		$('#'+current.attr('rel')).hide();
+		current.removeClass('current');
+	}
 }
 function djDebugShowPanel(obj)
 {
 	// Handle tabset controls
 	$('.tabSet li', obj).click(function(event)
 	{
-		var current = $('li.current', this.parentNode);
+		jqThis = $(this);
+		var current = $('li.current', jqThis.parent());
 		current.removeClass('current');
 		$('#' + current.attr('rel')).hide();
-		$(this).addClass('current');
-		$('#' + $(this).attr('rel')).show();
+		jqThis.addClass('current');
+		$('#' + jqThis.attr('rel')).show();
 	});
 	// Close links
-	$('.close', obj).click(function(event)
+	$('li.close', obj).click(function(event)
 	{
 		djDebugHidePanel();
+	});
+	// Back links
+	$('li.back', obj).click(function(event)
+	{
+		djDebugHidePanel('back');
+		var previousPanel = $('#'+$('#djDebug .djDebugButton.current').attr('rel'));
+		djDebugShowPanel(previousPanel);
 	});
 	// Show the panel
 	obj.show();
 }
 function djDebugWindow(url, locals)
 {
-	// Broken yet
 	$.ajax(
 	{
 		type:"GET",
