@@ -30,7 +30,7 @@ class DebugToolbarMiddleware(object):
         if not settings.DEBUG:
             return False
         if (not request.META.get('REMOTE_ADDR') in settings.INTERNAL_IPS) or \
-                (request.user.is_authenticated() and request.user.is_superuser):
+                (request.user.is_authenticated() and not request.user.is_superuser):
             return False
         if response:
             if getattr(response, 'skip_debug_response', False):
