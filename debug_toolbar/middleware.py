@@ -9,6 +9,15 @@ except ImportError: import StringIO
 
 _HTML_TYPES = ('text/html', 'application/xhtml+xml')
 
+def replace_insensitive(string, target, replacement):
+    no_case = string.lower()
+    index = no_case.find(target.lower())
+    if index >= 0:
+        result = string[:index] + replacement + string[index + len(target):]
+        return result
+    # no results so return the original string
+    return string
+
 class DebugToolbarMiddleware(object):
     """
     Middleware to set up Debug Toolbar on incoming request and render toolbar
@@ -63,6 +72,5 @@ class DebugToolbarMiddleware(object):
                     nr = panel.process_response(request, response)
                     # Incase someone forgets `return response`
                     if nr: response = nr
-                # TODO: This is super slow a BIG TODO
-                response.content = response.content.replace(u'</body>', smart_unicode(self.debug_toolbar.render_toolbar()) + u'</body>')
+                response.content = replace_insensitive(response.content, u'</body>', smart_unicode(self.debug_toolbar.render_toolbar()) + u'</body>')
         return response
