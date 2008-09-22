@@ -1,7 +1,8 @@
-<div class="title">
-    Templates
-</div>
-<table>
+<ul id="navigation">
+	<li id="close">Close Panel</li>
+</ul>
+<h1>Templates</h1>
+<table class="data" border="0" cellspacing="0" cellpadding="0"> 
     <thead>
         <tr>
             <th>Time&nbsp;(ms)</th>
@@ -10,7 +11,7 @@
     </thead>
     <tbody>
         {% for template in templates %}
-            <tr class="{% cycle 'row1' 'row2' %}">
+            <tr class="{% cycle 'odd' 'even' %}">
                 <td>{{ template }}</td>
             </tr>
         {% endfor %}

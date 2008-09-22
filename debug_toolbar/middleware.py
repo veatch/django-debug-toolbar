@@ -32,8 +32,6 @@ class DebugToolbarMiddleware(object):
         if (not request.META.get('REMOTE_ADDR') in settings.INTERNAL_IPS) or \
                 (request.user.is_authenticated() and request.user.is_superuser):
             return False
-        if request.is_ajax():
-            return False
         if response:
             if getattr(response, 'skip_debug_response', False):
                 return False

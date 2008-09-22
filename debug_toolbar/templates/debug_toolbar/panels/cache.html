@@ -1,60 +1,61 @@
-<div class="title">
-    Cache Usage
+<ul id="navigation">
+	<li class="close">Close Panel</li>
+</ul>
+<h1>Cache Usage</h1>
+<div class="container">
+	<table  border="0" cellspacing="0" cellpadding="0"> 
+		<colgroup>
+			<col width="12%"/>
+			<col width="12%"/>
+			<col width="12%"/>
+			<col width="12%"/>
+			<col width="12%"/>
+			<col width="12%"/>
+			<col width="12%"/>
+			<col width="12%"/>
+		</colgroup>
+		<tr>
+			<th class="description">Total Calls</th>
+			<td>{{ cache_calls }}</td>
+			<th class="description">Total Time</th>
+			<td>{{ cache_time|floatformat:"4" }}ms</td>
+			<th class="description">Hits</th>
+			<td>{{ cache.hits }}</td>
+			<th class="description">Misses</th>
+			<td>{{ cache.misses }}</td>
+		</tr>
+		<tr>
+			<th class="description">gets</th>
+			<td>{{ cache.gets }}</td>
+			<th class="description">sets</th>
+			<td>{{ cache.sets }}</td>
+			<th class="description">deletes</th>
+			<td>{{ cache.deletes }}</td>
+			<th class="description">get_many</th>
+			<td>{{ cache.get_many }}</td>
+		</tr>
+	</table>
 </div>
-<table>
-    <colgroup>
-        <col width="12%"/>
-        <col width="12%"/>
-        <col width="12%"/>
-        <col width="12%"/>
-        <col width="12%"/>
-        <col width="12%"/>
-        <col width="12%"/>
-        <col width="12%"/>
-    </colgroup>
-    <tr>
-        <th>Total Calls</th>
-        <td>{{ cache_calls }}</td>
-        <th>Total Time</th>
-        <td>{{ cache_time|floatformat:"4" }}ms</td>
-        <th>Hits</th>
-        <td>{{ cache.hits }}</td>
-        <th>Misses</th>
-        <td>{{ cache.misses }}</td>
-    </tr>
-    <tr>
-        <th>gets</th>
-        <td>{{ cache.gets }}</td>
-        <th>sets</th>
-        <td>{{ cache.sets }}</td>
-        <th>deletes</th>
-        <td>{{ cache.deletes }}</td>
-        <th>get_many</th>
-        <td>{{ cache.get_many }}</td>
-    </tr>
-</table>
 {% if cache_stats %}
-<div class="title">
-    Breakdown
-</div>
-<table>
-    <thead>
-        <tr>
-            <th>Time&nbsp;(ms)</th>
-            <th>Type</th>
-            <th>Parameters</th>
-            <th>Traceback</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for time, type, params, frame, stack in cache_stats %}
-            <tr class="{% cycle 'row1' 'row2' %}">
-                <td>{{ time|floatformat:"4" }}</td>
-                <td>{{ type|escape }}</td>
-                <td>{{ params|escape }}</td>
-                <td><a href="javascript:djDebugWindow('?djDebug=Cache&amp;op=explain', {stack: {{ stack }}});">{{ frame.3.0 }}</a></td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+	<h1>Breakdown</h1>
+	<table class="data" border="0" cellspacing="0" cellpadding="0"> 
+	        <thead>
+	        	<tr>
+	        		<th>Time&nbsp;(ms)</th>
+	        		<th>Type</th>
+	        		<th>Parameters</th>
+	        		<th>Function</th>
+	        	</tr>
+	        </thead>
+	        <tbody>
+	        	{% for time, type, params, frame, stack in cache_stats %}
+	        	<tr class="{% cycle 'odd' 'even' %}">
+	        		<td>{{ time|floatformat:"4" }}</td>
+	        		<td>{{ type|escape }}</td>
+	        		<td>{{ params|escape }}</td>
+	        		<td><a href="javascript:djDebugWindow('?djDebug=Cache&amp;op=explain', {stack: {{ stack }}});">{{ frame.3.0 }}</a></td>
+	        	</tr>
+	        	{% endfor %}
+	        </tbody>
+	</table>
 {% endif %}
