@@ -1,7 +1,6 @@
 """
 Debug Toolbar middleware
 """
-import re
 from django.conf import settings
 from django.utils.encoding import smart_unicode
 from debug_toolbar.toolbar.loader import DebugToolbar
@@ -9,8 +8,15 @@ try: import cStringIO as StringIO
 except ImportError: import StringIO
 
 _HTML_TYPES = ('text/html', 'application/xhtml+xml')
-_END_HEAD_RE = re.compile(r'</head>', re.IGNORECASE)
-_END_BODY_RE = re.compile(r'</body>', re.IGNORECASE)
+
+def replace_insensitive(string, target, replacement):
+    no_case = string.lower()
+    index = no_case.find(target.lower())
+    if index >= 0:
+        result = string[:index] + replacement + string[index + len(target):]
+        return result
+    # no results so return the original string
+    return string
 
 class DebugToolbarMiddleware(object):
     """
@@ -23,7 +29,8 @@ class DebugToolbarMiddleware(object):
     def show_toolbar(self, request, response=None):
         if not settings.DEBUG:
             return False
-        if not request.META.get('REMOTE_ADDR') in settings.INTERNAL_IPS:
+        if (not request.META.get('REMOTE_ADDR') in settings.INTERNAL_IPS) or \
+                (request.user.is_authenticated() and request.user.is_superuser):
             return False
         if response:
             if getattr(response, 'skip_debug_response', False):
@@ -63,6 +70,5 @@ class DebugToolbarMiddleware(object):
                     nr = panel.process_response(request, response)
                     # Incase someone forgets `return response`
                     if nr: response = nr
-                # TODO: This is super slow a BIG TODO
-                response.content = _END_BODY_RE.sub(smart_unicode(self.debug_toolbar.render_toolbar()) + u'</body>', response.content)
+                response.content = replace_insensitive(response.content, u'</body>', smart_unicode(self.debug_toolbar.render_toolbar()) + u'</body>')
         return response

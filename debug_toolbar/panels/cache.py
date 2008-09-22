@@ -1,12 +1,16 @@
 from debug_toolbar.panels import DebugPanel
-try: from cStringIO import StringIO
-except ImportError: import StringIO
 from django.core import cache
 from django.core.cache.backends.base import BaseCache
+from django.template.loader import render_to_string
+from django.shortcuts import render_to_response
+from django.utils import simplejson
+
+try: from cStringIO import StringIO
+except ImportError: import StringIO
 import time
 import inspect
 import os.path
-from django.template.loader import render_to_string
+
 
 class CacheStatTracker(BaseCache):
     """A small class used to track cache calls."""
@@ -25,8 +29,7 @@ class CacheStatTracker(BaseCache):
         self.total_time = 0
 
     def _get_func_info(self):
-        stack = inspect.stack()[2]
-        return (os.path.basename(stack[1]), stack[2], stack[3], stack[4])
+        return [s[1:] for s in inspect.stack()[2:]]
     
     def get(self, key, default=None):
         t = time.time()
@@ -87,6 +90,11 @@ class CacheDebugPanel(DebugPanel):
             cache.cache = self.cache
         super(CacheDebugPanel, self).__init__(request)
 
+    def process_ajax(self, request):
+        action = request.GET.get('op')
+        if action == 'explain':
+            return render_to_response('debug_toolbar/panels/cache_explain.html')
+
     def title(self):
         return 'Cache: %.2fms' % self.cache.total_time
 
@@ -97,6 +105,6 @@ class CacheDebugPanel(DebugPanel):
         context = dict(
             cache_calls = len(self.cache.calls),
             cache_time = self.cache.total_time,
-            cache = self.cache,
+            cache_stats = [(c[0], c[1], c[2], c[3][0], simplejson.dumps(c[3])) for c in self.cache.calls],
         )
         return render_to_string('debug_toolbar/panels/cache.html', context)

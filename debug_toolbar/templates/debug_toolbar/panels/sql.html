@@ -3,7 +3,7 @@
 	<li class="close">Close Panel</li>
 </ul>
 <ul class="tabSet">
-	<li rel="tab_all" class="current" >All Queries</li>
+	<li rel="tab_all" class="current">All Queries</li>
 	<li rel="tab_unique">Unique Queries</li>
 </ul>
 <div id="tab_all" class="queries">
@@ -52,14 +52,3 @@
 		</tbody>
 	</table>
 </div>
-<script type="text/javascript">
-	$(document).ready(function()
-	{
-		$('.tabSet li').click(function(event)
-		{
-			$('.tabSet li').removeClass('current');
-			$(this).addClass('current');
-			$('.queries').hide().filter('#'+$(this).attr('rel')).show();
-		});
-	});
-</script>
