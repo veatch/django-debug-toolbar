@@ -401,7 +401,12 @@ function djDebugWindow(url, locals) {
 			$('#sql-explain').show().find('.close').click(function(event)
 			{
 				$('.panelContent').hide();
-			});
+			}).next().click(function(event)
+			{
+				$('.panelContent').hide();
+				$('#djDebugSQLPanel').show();
+				return false;
+			});;
 		},
 		error: function()
 		{
