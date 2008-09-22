@@ -474,6 +474,8 @@ function initiateDjDebugFilter()
 				})
 				.bind('keyup',function()
 				{
+					var filterParent = $(this).parents('.panelContent');
+					$('#error-message', filterParent).remove();
 					var values = $(this).val().split(' ');
 					var rows = $('table.data tbody tr',$(this).parents('.panelContent'));
 					rows.hide();
@@ -483,6 +485,10 @@ function initiateDjDebugFilter()
 						rows = rows.filter(':icontains('+values[i]+')');
 					}
 					rows.show();
+					if (rows.length == 0)
+					{
+						$('table.data tbody', filterParent).append('<tr id="error-message"><td colspan="100"><strong>Could not find any matching entries</strong></td></tr>');
+					}
 				})
 				.after('<div class="djDebugFilterReset"></div>')
 				.next()
