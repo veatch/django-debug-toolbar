@@ -397,21 +397,22 @@ function djDebugWindow(url, locals) {
 		success: function(html)
 		{
 			$('.panelContent').hide();
+			
 			$('#djDebug').append('<div id="sql-explain" class="panelContent"><div class="roundLeft"></div><div class="roundRight"></div>'+html+'</div>');
-			$('#sql-explain').show().find('.close').click(function(event)
+			
+			$('#sql-explain')
+			.show()
+			.find('.close')
+			.click(function(event)
 			{
 				$('.panelContent').hide();
-			}).next().click(function(event)
+			})
+			.next().click(function(event)
 			{
 				$('.panelContent').hide();
 				$('#djDebugSQLPanel').show();
-				return false;
-			});;
-		},
-		error: function()
-		{
-			//called when there is an error
-		},
+			});
+		}
 	});
 }
 </script>
