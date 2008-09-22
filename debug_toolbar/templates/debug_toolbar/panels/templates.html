@@ -1,19 +1,20 @@
 <ul id="navigation">
 	<li id="close">Close Panel</li>
 </ul>
+
 <h1>Templates</h1>
 <table class="data" border="0" cellspacing="0" cellpadding="0"> 
-    <thead>
-        <tr>
-            <th>Time&nbsp;(ms)</th>
-            <th>Template</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for template in templates %}
-            <tr class="{% cycle 'odd' 'even' %}">
-                <td>{{ template }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
+	<thead>
+		<tr>
+			<th>Time&nbsp;(ms)</th>
+			<th>Template</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for template in templates %}
+		<tr class="{% cycle 'odd' 'even' %}">
+				<td>{{ template }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
 </table>
