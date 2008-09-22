@@ -2,36 +2,37 @@
 	<li class="close">Close Panel</li>
 	<li class="back">&laquo; Back</li>
 </ul>
+
 <h1>SQL Explain</h1>
 <div class="container">
-    <dl>
-        <dt>Query:</dt>
-        <dd style="white-space:pre-wrap;">{{ sql|escape|linebreaksbr }}</dd>
-        <dt>Parameters:</dt>
-        <dd>{{ params|join:", "|escape }}</dd>
-    </dl>
+	<dl>
+		<dt>Query:</dt>
+		<dd class="sql-query" style="white-space:pre-wrap;">{{ sql|escape|linebreaksbr }}</dd>
+		<dt>Parameters:</dt>
+		<dd>{{ params|join:", "|escape }}</dd>
+	</dl>
 </div>
 <table class="data" border="0" cellspacing="0" cellpadding="0"> 
-    <thead>
-        <tr>
-            {% for header in headers %}
-            <th>{{ header|title|escape }}</th>
-            {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-        {% for row in explain %}
-            <tr class="{% cycle 'odd' 'even' %}">
-                {% for value in row %}
-                <td>{{ value|escape }}</td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-    </tbody>
+	<thead>
+		<tr>
+		{% for header in headers %}
+			<th>{{ header|title|escape }}</th>
+		{% endfor %}
+		</tr>
+	</thead>
+	<tbody>
+	{% for row in explain %}
+		<tr class="{% cycle 'odd' 'even' %}">
+		{% for value in row %}
+			<td>{{ value|escape }}</td>
+		{% endfor %}
+		</tr>
+	{% endfor %}
+	</tbody>
 </table>
-<h1>Traceback</div>
-<div class="container">
-<ul class="traceback" id="sql_explain_traceback">
-</ul>
 
+<h1>Traceback</h1>
+<div class="container">
+	<ul class="traceback" id="sql_explain_traceback">
+	</ul>
 </div>
