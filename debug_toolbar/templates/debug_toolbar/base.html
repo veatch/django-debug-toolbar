@@ -474,9 +474,9 @@ function initiateDjDebugFilter()
 		return this.each(function(){
 			$(this).each(function()
 			{
-				$(this).focus(function()
+				$(this).one('focus', function()
 				{
-					$(this).val('').unbind('focus');
+					$(this).val('');
 				})
 				.bind('keyup',function()
 				{
@@ -484,13 +484,16 @@ function initiateDjDebugFilter()
 					var values = $(this).val().split(' ');
 					var rows = $('table.data tbody tr', filterParent);
 					var length = values.length-1;
+
 					var pos = new Array();
 					var posIndex = 0;
 					var posLength;
+
 					var neg = new Array();
 					var negIndex = 0;
 					var negLength;
-					
+
+					// Wait for 500ms after user input to remove unneeded runs.
 					clearTimeout(this.djFiltering);
 					this.djFiltering = setTimeout( function() { runDjDebugFiltering(this) }, 500 );
 
@@ -530,10 +533,11 @@ function initiateDjDebugFilter()
 						}
 						else
 						{
-							rows.show();
+							rows.removeClass('even odd').show().filter(':odd').addClass('odd');
 						}
 					}
 				})
+				// Adds the round X used for resetting.
 				.after('<div class="djDebugFilterReset"></div>')
 				.next()
 				.click(function(event)
