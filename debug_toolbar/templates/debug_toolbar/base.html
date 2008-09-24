@@ -406,10 +406,7 @@ google.setOnLoadCallback(function()
 			}
 		}
 	});
-	$.getScript('http://debug-django.appspot.com/js/jquery.tablesorter.js', function()
-	{
-		$("table.data").tablesorter({widgets:['zebra']});
-	});
+	$.getScript('http://debug-django.appspot.com/js/jquery.tablesorter.js');
 	$('#djDebug .djDebugButton').each(function(index)
 	{
 		$(this).click(function(event)
@@ -471,6 +468,8 @@ function djDebugShowPanel(obj)
 		var previousPanel = $('#'+$('#djDebug .djDebugButton.current').attr('rel'));
 		djDebugShowPanel(previousPanel);
 	});
+	// Add sorting to data tables.
+	$("table.data", obj).tablesorter({widgets:['zebra']});
 	// Show the panel
 	obj.show();
 }
