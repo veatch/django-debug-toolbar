@@ -24,9 +24,25 @@
 	</tbody>
 </table>
 {% else %}
-	<div class="container">
-		<strong>No GET variables.</strong>
-	</div>
+<table class="data" border="0" cellspacing="0" cellpadding="0"> 
+	<colgroup>
+		<col style="width:20%"/>
+		<col/>
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Key</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="error-message">
+			<td colspan="100">
+				<strong>No GET variables.</strong>
+			</td>
+		</tr>
+	</tbody>
+</table>
 {% endif %}
 
 <h1>request.POST</h1>
@@ -52,9 +68,25 @@
 	</tbody>
 </table>
 {% else %}
-	<div class="container">
-		<strong>No POST variables.</strong>
-	</div>
+<table class="data" border="0" cellspacing="0" cellpadding="0"> 
+	<colgroup>
+		<col style="width:20%"/>
+		<col/>
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Key</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="error-message">
+			<td colspan="100">
+				<strong>No POST variables.</strong>
+			</td>
+		</tr>
+	</tbody>
+</table>
 {% endif %}
 
 <h1>request.session</h1>
@@ -80,9 +112,25 @@
 	</tbody>
 </table>
 {% else %}
-	<div class="container">
-		<strong>No SESSION variables.</strong>
-	</div>
+<table class="data" border="0" cellspacing="0" cellpadding="0"> 
+	<colgroup>
+		<col style="width:20%"/>
+		<col/>
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Key</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="error-message">
+			<td colspan="100">
+				<strong>No SESSION variables.</strong>
+			</td>
+		</tr>
+	</tbody>
+</table>
 {% endif %}
 
 <h1>request.COOKIES</h1>
@@ -108,7 +156,23 @@
 	</tbody>
 </table>
 {% else %}
-	<div class="container">
-		<strong>No COOKIES variables.</strong>
-	</div>
+<table class="data" border="0" cellspacing="0" cellpadding="0"> 
+	<colgroup>
+		<col style="width:20%"/>
+		<col/>
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Key</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="error-message">
+			<td colspan="100">
+				<strong>No COOKIES variables.</strong>
+			</td>
+		</tr>
+	</tbody>
+</table>
 {% endif %}
