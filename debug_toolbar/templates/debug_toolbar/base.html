@@ -481,19 +481,57 @@ function initiateDjDebugFilter()
 				.bind('keyup',function()
 				{
 					var filterParent = $(this).parents('.panelContent');
-					$('.error-message', filterParent).remove();
 					var values = $(this).val().split(' ');
 					var rows = $('table.data tbody tr', filterParent);
-					rows.hide();
 					var length = values.length-1;
-					for(var i=0; i<=length; i++)
+					var pos = new Array();
+					var posIndex = 0;
+					var posLength;
+					var neg = new Array();
+					var negIndex = 0;
+					var negLength;
+					
+					clearTimeout(this.djFiltering);
+					this.djFiltering = setTimeout( function() { runDjDebugFiltering(this) }, 500 );
+
+					function runDjDebugFiltering()
 					{
-						rows = rows.filter(':icontains('+values[i]+')');
-					}
-					rows.show();
-					if (rows.length == 0)
-					{
-						$('table.data tbody', filterParent).append('<tr class="error-message"><td colspan="100"><strong>Could not find any matching entries</strong></td></tr>');
+						rows.hide();
+						$('.error-message', filterParent).remove();
+						for(var i=0; i<=length; i++)
+						{
+							firstChar = values[i].substr(0,1);
+							if (firstChar == '-' && values[i].length > 1)
+							{
+								neg[posIndex] = values[i].substr(1);
+								negIndex++;
+							}
+							else if(firstChar != '-')
+							{
+								pos[posIndex] = values[i];
+								posIndex++;
+							}
+						}
+
+						var posLength = pos.length-1;
+						for(var i=0; i<=posLength; i++)
+						{
+							rows = rows.filter(':icontains('+pos[i]+')');
+						}
+						var negLength = neg.length-1;
+						for(var i=0; i<=negLength; i++)
+						{
+							rows = rows.filter(':not(:icontains('+neg[i]+'))');
+						}
+
+						if (rows.length == 0)
+						{
+							$('table.data tbody', filterParent).append('<tr class="error-message"><td colspan="100"><strong>Could not find any matching entries</strong></td></tr>');
+						}
+						else
+						{
+							rows.show();
+						}
 					}
 				})
 				.after('<div class="djDebugFilterReset"></div>')
