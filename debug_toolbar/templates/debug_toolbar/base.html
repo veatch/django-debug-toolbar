@@ -160,16 +160,16 @@
 	background: #9dcc49;
 	color: #000;
 	font-size: 11px;
-	padding: 3px 7px;
+	padding: 3px 17px 3px 7px;
 	text-align: left;
 	cursor: pointer;
 	border-right: 1px solid #b9d977;
 }
-/*	#djDebug table.data th:hover
+	#djDebug table.data th:hover
 	{
 		background: #b6d977;
 	}
-*/	#djDebug table.data th.headerSortUp
+	#djDebug table.data th.headerSortUp
 	{ 
 		background: #b6d977 url(data:image/png;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7) center right no-repeat; 
 	}
@@ -379,11 +379,16 @@
 }
 </style>
 <script src="http://www.google.com/jsapi"></script>
+
 <script>
 // Load jQuery
 google.load("jquery", "1.2.6");
 google.setOnLoadCallback(function()
 {
+	$.getScript('http://sites.google.com/site/djangodebugtoolbar/Home/jquery.tablesorter.javascript', function()
+	{
+		$("table.data").tablesorter({widgets:['zebra']});
+	});
 	var globalLocals;
 	$('#djDebug .djDebugButton').each(function(index)
 	{
