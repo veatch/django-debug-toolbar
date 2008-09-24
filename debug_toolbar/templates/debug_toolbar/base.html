@@ -469,7 +469,7 @@ function djDebugShowPanel(obj)
 		djDebugShowPanel(previousPanel);
 	});
 	// Add sorting to data tables.
-	$("table.data", obj).tablesorter({widgets:['zebra']});
+	$("table.data:not(.sorted)", obj).addClass('sorted').tablesorter({widgets:['zebra']});
 	// Show the panel
 	obj.show();
 }
