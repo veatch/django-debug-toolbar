@@ -391,11 +391,25 @@ body
 google.load("jquery", "1.2.6");
 google.setOnLoadCallback(function()
 {
+	var globalLocals;
+	$(document).keypress(function(e)
+	{
+		if (e.keyCode == 27)
+		{
+			var tempPanel = $('#djDebug #djDebugTempPanel');
+			if ( tempPanel.length > 0 ) {
+				tempPanel.remove();
+			}
+			else
+			{
+				djDebugHidePanel();
+			}
+		}
+	});
 	$.getScript('http://debug-django.appspot.com/js/jquery.tablesorter.js', function()
 	{
 		$("table.data").tablesorter({widgets:['zebra']});
 	});
-	var globalLocals;
 	$('#djDebug .djDebugButton').each(function(index)
 	{
 		$(this).click(function(event)
@@ -489,7 +503,7 @@ function initiateDjDebugFilter()
 				{
 					$(this).val('');
 				})
-				.bind('keyup',function()
+				.keypress(function()
 				{
 					var filterParent = $(this).parents('.panelContent');
 					var values = $(this).val().split(' ');
