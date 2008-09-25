@@ -1,4 +1,29 @@
 <style type="text/css">
+#djDebug
+{
+	display: none;
+}
+#djDebugToggleView
+{
+	display: none;
+	position: absolute;
+	top: 4px;
+	right: 3px;
+	-icab-border-radius: 5px;
+	-khtml-border-radius: 5px;	
+	-o-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	background: #143e2b;
+	padding: 1px 4px 3px;
+	font-size: 12px;
+	font-family: verdana;
+	font-weight: bold !important;
+	border: 1px solid #173a28;
+	color: #fff;
+	cursor: pointer;
+}
 #djDebug *
 {
 	z-index: 1000;
@@ -150,7 +175,7 @@
 	float: right;
 	font-size: 10px;
 	font-weight: bold;
-	margin: -2px 10px 0 0;
+	margin: -2px 3px 0 0;
 	color: #fff;
 }
 #djDebug table
@@ -426,11 +451,43 @@
 google.load("jquery", "1.2.6");
 google.setOnLoadCallback(function()
 {
-	//Add debugbar height to body margin-top
-	var $body = jQuery('body');
-	var marginTop = $body.css('margin-top');
-	marginTop = parseInt(marginTop.substr(0,marginTop.indexOf('px')))+29;
-	$('body').css('margin-top',marginTop)
+	if (readCookie('djDebugShow') == 'false')
+	{
+		jQuery('#djDebug').hide();
+		jQuery('#djDebugToggleView').show();
+	}
+	else
+	{
+		jQuery('#djDebug').show();
+		var $body = jQuery('body');
+		var marginTop = $body.css('margin-top');
+		marginTop = parseInt(marginTop.substr(0,marginTop.indexOf('px')))+29;
+		jQuery('body').css('margin-top',marginTop)
+	}
+
+	jQuery('#djDebug .closeDebugToolbar').click(function(event)
+	{
+		//Remove debugbar height to body margin-top
+		var $body = jQuery('body');
+		var marginTop = $body.css('margin-top');
+		marginTop = parseInt(marginTop.substr(0,marginTop.indexOf('px')))-29;
+		jQuery('body').css('margin-top',marginTop)
+
+		jQuery('#djDebug').hide();
+		jQuery('#djDebugToggleView').show();
+		createCookie('djDebugShow','false');
+	});
+	jQuery('#djDebugToggleView').click(function(event)
+	{
+		var $body = jQuery('body');
+		var marginTop = $body.css('margin-top');
+		marginTop = parseInt(marginTop.substr(0,marginTop.indexOf('px')))+29;
+		jQuery('body').css('margin-top',marginTop)
+
+		jQuery('#djDebug').show();
+		jQuery('#djDebugToggleView').hide();
+		createCookie('djDebugShow','true');
+	});
 
 	var globalLocals;
 	jQuery.getScript('http://debug-django.appspot.com/js/jquery.tablesorter.js');
@@ -452,28 +509,18 @@ google.setOnLoadCallback(function()
 			return false;
 		});
 	});
-	jQuery('#djDebug .closeDebugToolbar').click(function(event)
-	{
-		//Remove debugbar height to body margin-top
-		var $body = jQuery('body');
-		var marginTop = $body.css('margin-top');
-		marginTop = parseInt(marginTop.substr(0,marginTop.indexOf('px')))-29;
-		$('body').css('margin-top',marginTop)
-
-		jQuery('#djDebug').remove();
-	});
 	initiateDjDebugFilter();
 });
 function djDebugHidePanel()
 {
-	$('#decoration').hide();
+	jQuery('#decoration').hide();
 	var current = jQuery('#djDebug .djDebugButton.current');
 	jQuery('#djDebug .panelContent').hide();
 	current.removeClass('current');
 }
 function djDebugShowPanel(obj)
 {
-	$('#decoration').show();
+	jQuery('#decoration').show();
 	// Handle tabset controls
 	jQuery('.tabSet li', obj).click(function(event)
 	{
@@ -504,7 +551,7 @@ function djDebugShowPanel(obj)
 }
 function djDebugWindow(url, locals)
 {
-	$('html, body').animate({scrollTop:0});
+	jQuery('html, body').animate({scrollTop:0});
 	jQuery.ajax(
 	{
 		type: "GET",
@@ -615,7 +662,23 @@ function initiateDjDebugFilter()
 	};
 	jQuery('#djDebug input.filter').djDebugFilter();
 }
+function createCookie(name,value)
+{
+	document.cookie = name+"="+value+"; path=/";
+}
+function readCookie(name)
+{
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return false;
+}
 </script>
+<div id="djDebugToggleView">+</div>
 <div id="djDebug">
 	<ul id="djDebugPanelList">
 		<li class="closeDebugToolbar">X</li>
