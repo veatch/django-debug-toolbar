@@ -426,6 +426,12 @@
 google.load("jquery", "1.2.6");
 google.setOnLoadCallback(function()
 {
+	//Add debugbar height to body margin-top
+	var $body = jQuery('body');
+	var marginTop = $body.css('margin-top');
+	marginTop = parseInt(marginTop.substr(0,marginTop.indexOf('px')))+29;
+	$('body').css('margin-top',marginTop)
+
 	var globalLocals;
 	jQuery.getScript('http://debug-django.appspot.com/js/jquery.tablesorter.js');
 	jQuery('#djDebug .djDebugButton').each(function(index)
@@ -448,6 +454,12 @@ google.setOnLoadCallback(function()
 	});
 	jQuery('#djDebug .closeDebugToolbar').click(function(event)
 	{
+		//Remove debugbar height to body margin-top
+		var $body = jQuery('body');
+		var marginTop = $body.css('margin-top');
+		marginTop = parseInt(marginTop.substr(0,marginTop.indexOf('px')))-29;
+		$('body').css('margin-top',marginTop)
+
 		jQuery('#djDebug').remove();
 	});
 	initiateDjDebugFilter();
