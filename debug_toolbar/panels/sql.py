@@ -25,7 +25,7 @@ class DatabaseStatTracker(util.CursorDebugWrapper):
                 'time': (stop - start)*1000,
                 'raw_sql': sql,
                 'params': params,
-                'stack': [s[1:] for s in inspect.stack()],
+                'stack': [s[2:] for s in inspect.stack()],
             })
 
 util.CursorDebugWrapper = DatabaseStatTracker
@@ -62,17 +62,24 @@ class SQLDebugPanel(DebugPanel):
                 if headers[2] == 'table':
                     cursor = connection.cursor()
                     indexes = {}
-                    index_headers = None
                     for row in response:
-                        if row[2] not in indexes and not row[2].startswith('<'):
+                        table_name = row[2]
+                        if table_name not in indexes and not table_name.startswith('<'):
                             cursor = connection.cursor()
                             cursor.execute("SHOW INDEX FROM `%s`" % (row[2],))
-                            if index_headers is None:
-                                index_headers = [h[0].replace('_', ' ') for h in cursor.description]
-                            indexes[row[2]] = cursor.fetchall()
+                            indexes[table_name] = {}
+                            for index in cursor.fetchall():
+                                name, column, non_unique, cardinality, itype = index[2], index[4], index[1], index[6], index[10]
+                                if non_unique:
+                                    typename = 'UNIQUE %s' % (itype,)
+                                else:
+                                    typename = itype
+                                if name not in indexes[table_name]:
+                                    indexes[table_name][name] = ([], typename, cardinality)
+                                indexes[table_name][name][0].append(column)
+                            print indexes
                     context.update({
                         'indexes': indexes,
-                        'index_headers': index_headers,
                     })
                     cursor.close()
                 return render_to_response('debug_toolbar/panels/sql_explain.html', context)

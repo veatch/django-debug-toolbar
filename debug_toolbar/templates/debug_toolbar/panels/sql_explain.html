@@ -35,18 +35,22 @@
 <table class="data" border="0" cellspacing="0" cellpadding="0"> 
 	<thead>
 		<tr>
-		{% for header in index_headers %}
-			<th>{{ header|title|escape }}</th>
-		{% endfor %}
+			<th>Table</th>
+			<th>Name</th>
+			<th>Columns</th>
+			<th>Type</th>
+			<th>Cardinality</th>
 		</tr>
 	</thead>
 	<tbody>
 	{% for table, rows in indexes.iteritems %}
-		{% for row in rows %}
+		{% for name, row in rows.iteritems %}
 			<tr class="{% cycle 'odd' 'even' %}">
-			{% for value in row %}
-				<td>{{ value|escape }}</td>
-			{% endfor %}
+				<td>{{ table|escape }}</td>
+				<td>{{ name|escape }}</td>
+				<td>{{ row.0|join:", "|escape }}</td>
+				<td>{{ row.1|escape }}</td>
+				<td>{{ row.2 }}</td>
 			</tr>
 		{% endfor %}
 	{% endfor %}
@@ -60,13 +64,13 @@
 	</ul>
 </div>
 <script type="text/javascript">
-var ref = $('.sql-query');
+var ref = jQuery('.sql-query');
 ref.html(ref.text().replace(/(ANALYZE|MATCH|AGAINST|ALL|ASC|AS|ALTER|AND|ADD|AUTO_INCREMENT|BETWEEN|BINARY|BOTH|BY|BOOLEAN|CHANGE|CHECK|COLUMNS|COLUMN|CROSS|CREATE|DATABASES|DATABASE|DATA|DELAYED|DESCRIBE|DESC|DISTINCT|DELETE|DROP|DEFAULT|ENCLOSED|ESCAPED|EXISTS|EXPLAIN|FIELDS|FIELD|FLUSH|FOR|FOREIGN|FUNCTION|FROM|GROUP|GRANT|HAVING|IGNORE|INDEX|INFILE|INSERT|INNER|INTO|IDENTIFIED|IN|IS|IF|JOIN|KEYS|KILL|KEY|LEADING|LIKE|LIMIT|LINES|LOAD|LOCAL|LOCK|LOW_PRIORITY|LEFT|LANGUAGE|MODIFY|NATURAL|NOT|NULL|NEXTVAL|OPTIMIZE|OPTION|OPTIONALLY|ORDER|OUTFILE|OR|OUTER|ON|PROCEEDURE|PROCEDURAL|PRIMARY|READ|REFERENCES|REGEXP|RENAME|REPLACE|RETURN|REVOKE|RLIKE|RIGHT|SHOW|SONAME|STATUS|STRAIGHT_JOIN|SELECT|SETVAL|SET|TABLES|TEMINATED|TO|TRAILING|TRUNCATE|TABLE|TEMPORARY|TRIGGER|TRUSTED|UNIQUE|UNLOCK|USE|USING|UPDATE|VALUES|VARIABLES|VIEW|WITH|WRITE|WHERE|ZEROFILL|TYPE|XOR)/g, '<br /><span class="hilight">$1</span>'));
 
-var traceback = $('#sql_explain_traceback');
-$(locals.stack).each(function(index)
+var traceback = jQuery('#sql_explain_traceback');
+jQuery(locals.stack).each(function(index)
 {
-	traceback.append('<li>'+this+'</li>');
+	traceback.append('<li>'+locals.stack[index]+'</li>');
 });
 
 traceback.find('li:odd').addClass('odd');
