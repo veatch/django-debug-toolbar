@@ -6,5 +6,5 @@ DEBUG_TOOLBAR_PANELS = getattr(settings, 'DEBUG_TOOLBAR_PANELS', (
     'debug_toolbar.panels.cache.CacheDebugPanel',
     #'debug_toolbar.panels.templates.DjangoTemplatesDebugPanel',
     'debug_toolbar.panels.headers.HeaderDebugPanel',
-    'debug_toolbar.panels.http_vars.HttpVarsDebugPanel',
+    'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
 ))

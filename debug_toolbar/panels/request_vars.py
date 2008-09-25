@@ -1,7 +1,7 @@
 from debug_toolbar.panels import DebugPanel
 from django.template.loader import render_to_string
 
-class HttpVarsDebugPanel(DebugPanel):
+class RequestVarsDebugPanel(DebugPanel):
     """
     A panel to display HTTP variables (POST/GET).
     """
@@ -9,7 +9,7 @@ class HttpVarsDebugPanel(DebugPanel):
     # List of headers we want to display
 
     def title(self):
-        return 'HTTP Globals'
+        return 'Request Variables'
 
     def url(self):
         return ''
@@ -21,4 +21,4 @@ class HttpVarsDebugPanel(DebugPanel):
             'session': [(k, self.request.session.get(k)) for k in self.request.session.iterkeys()],
             'cookies': [(k, self.request.COOKIES.get(k)) for k in self.request.COOKIES.iterkeys()],
         }
-        return render_to_string('debug_toolbar/panels/http_vars.html', context)
+        return render_to_string('debug_toolbar/panels/request_vars.html', context)

@@ -36,6 +36,8 @@ Installation
 #. Add `debug_toolbar` to your `INSTALLED_APPS` setting so Django can find the
    the template files associated with the Debug Toolbar.
 
+#. Add your IP address to ``INTERNAL_IPS`` or login with a user who is flagged as ``is_superuser``
+
 #. (Optional) Add a tuple called `DEBUG_TOOLBAR_PANELS` to your ``settings.py`` file that
    specifies the full Python path to the panel that you want included in the 
    Toolbar.  This setting looks very much like the `MIDDLEWARE_CLASSES` setting.
@@ -47,7 +49,7 @@ Installation
 	    'debug_toolbar.panels.headers.HeaderDebugPanel',
 	    'debug_toolbar.panels.cache.CacheDebugPanel',
 	    'debug_toolbar.panels.profiler.ProfilerDebugPanel',
-	    'debug_toolbar.panels.http_vars.HttpVarsDebugPanel',
+	    'debug_toolbar.panels.request_vars.RequestVarsDebugPanel'
 	    # If you are using the profiler panel you don't need the timer
 	    # 'debug_toolbar.panels.timer.TimerDebugPanel',
 	)
