@@ -37,7 +37,9 @@ class TemplatesDebugPanel(DebugPanel):
             return render_to_response('debug_toolbar/panels/templates_explain.html')
 
     def title(self):
-        return 'Templates: %d' % STATS.get_total_calls('templates')
+        return 'Templates: %d' % (STATS.get_total_calls('templates:django') + \
+                STATS.get_total_calls('templates:jinja') + \
+                STATS.get_total_calls('templates:jinja2'),)
 
     def url(self):
         return ''

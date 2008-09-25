@@ -4,7 +4,7 @@ Debug Toolbar middleware
 from django.conf import settings
 from django.utils.encoding import smart_unicode
 from debug_toolbar.toolbar.loader import DebugToolbar
-from debug_toolbar.stats import enable_tracking, reset_tracking
+from debug_toolbar.stats import enable_tracking, reset_tracking, freeze_tracking
 try: import cStringIO as StringIO
 except ImportError: import StringIO
 
@@ -69,6 +69,7 @@ class DebugToolbarMiddleware(object):
 
     def process_response(self, request, response):
         if self.show_toolbar(request, response) and not request.is_ajax():
+            freeze_tracking()
             if response['Content-Type'].split(';')[0] in _HTML_TYPES:
                 # Saving this here in case we ever need to inject into <head>
                 #response.content = _END_HEAD_RE.sub(smart_str(self.debug_toolbar.render_styles() + "%s" % match.group()), response.content)
