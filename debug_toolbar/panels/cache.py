@@ -46,6 +46,6 @@ class CacheDebugPanel(DebugPanel):
             cache_sets = STATS.get_total_calls_for_function('cache', cache.set),
             cache_get_many = STATS.get_total_calls_for_function('cache', cache.get_many),
             cache_delete = STATS.get_total_calls_for_function('cache', cache.delete),
-            cache_calls_list = [(c['time'], c['func'].__name__, c['args'], c['kwargs'], c['time'], simplejson.dumps(c['stack'])) for c in STATS.get_calls('cache')],
+            cache_calls_list = [(c['time'], c['func'].__name__, c['args'], c['kwargs'], simplejson.dumps(c['stack'])) for c in STATS.get_calls('cache')],
         )
         return render_to_string('debug_toolbar/panels/cache.html', context)
