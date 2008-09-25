@@ -3,6 +3,7 @@
 {
 	z-index: 10000000;
 	outline:0;
+	line-height: 1em;
 }
 #djDebug a
 {
@@ -94,8 +95,8 @@
 #djDebug #djDebugPanelList .version
 {
 	position: absolute;
-	top: 13px;
-	left: -25px;
+	top: 15px;
+	left: -8px;
 	font-size: 8px;
 	padding: 0 5px;
 	width: 150px;
@@ -226,17 +227,29 @@
 {
 	border-bottom: 0;
 }
-#djDebug .container #sql-query
+#djDebug .container dt {
+	line-height: 1.1em;
+	float: left;
+	width: 100px;
+	clear: left;
+	padding: 1px 0;
+}
+#djDebug .container dd {
+	line-height: 1.1em;
+	padding: 1px 0 1px 110px;
+}
+#djDebug .container .sql-query
 {
+	white-space:pre-wrap;
 	color: #333;
 }
-#djDebug .container #sql-query td
+#djDebug .container .sql-query td
 {
-	border-bottom:  1px solid #eee;
+	border-bottom: 1px solid #eee;
 	padding: 4px 0;
 	vertical-align: top;
 }
-#djDebug .container #sql-query .keyword
+#djDebug .container .sql-query .keyword
 {
 	color: #000;
 	font-weight: bold;
@@ -257,7 +270,7 @@
 	text-align: right;
 	padding: 5px 10px 0 0;
 }
-#djDebug .tabSet li, #djDebug #navigation li
+#djDebug .tabSet li
 {
 	float: left;
 	-icab-border-top-left-radius: 5px;
@@ -278,30 +291,27 @@
 	opacity: 0.5;
 	filter: alpha(opacity = 50);
 }
-#djDebug #navigation li:hover, #djDebug #navigation li.current, #djDebug .tabSet li:hover, #djDebug .tabSet li.current
+#djDebug .tabSet li:hover, #djDebug .tabSet li.current
 {
 	filter: alpha(opacity = 100);
 	opacity: 1;
 	background: #0e4835;
 	color: #fff;
 }
-#djDebug #navigation li
-{
-	float: right;
-}
-#djDebug #navigation li a
+#djDebug .tabSet li a
 {
 	color: #fff;
 	text-decoration: none;
 }
-#djDebug #navigation .close, #djDebug #navigation li#filter
+#djDebug .tabSet .close, #djDebug .tabSet .back, #djDebug .tabSet li#filter
 {
+	float: right;
 	background: #0e4835;
 	color: #aaa;
 	filter: alpha(opacity = 100);
 	opacity: 1;
 }
-#djDebug #navigation .close:hover
+#djDebug .tabSet .close:hover, #djDebug .tabSet .back:hover
 {
 	color: #fff;
 }
@@ -379,7 +389,7 @@ google.setOnLoadCallback(function() {
 function djDebugHidePanel()
 {
 	var current = $('#djDebug .djDebugButton.current');
-	$('#' + current.attr('rel')).hide();
+	$('#djDebug .panelContent').hide();
 	current.removeClass('current');
 }
 function djDebugShowPanel(obj)
@@ -404,16 +414,23 @@ function djDebugShowPanel(obj)
 }
 function djDebugWindow(url, locals)
 {
-	// Broken yet
+	// locals are broken yet
 	$.ajax(
 	{
 		type:"GET",
 		data: url,
 		success: function(html)
 		{
-			var temp = $('<div class="panelContent" id="djDebugTempPanel"><div class="roundLeft"></div><div class="roundRight"></div>'+html+'</div>');
-			$('#djDebug').append(temp);
-			djDebugShowPanel(temp);
+			$('#djDebug .panelContent').hide();
+			var obj = $('#djDebugTempPanel');
+			obj.html(html);
+			djDebugShowPanel(obj);
+			$('.back', obj).click(function(event)
+			{
+				$('#djDebugTempPanel').hide();
+				var current = $('#djDebug .djDebugButton.current');
+				$('#' + current.attr('rel')).show();
+			});
 		}
 	});
 }
@@ -442,4 +459,7 @@ function djDebugWindow(url, locals)
 			{% endif %}
 		{% endwith %}
 	{% endfor %}
+	<div class="panelContent" id="djDebugTempPanel" style="display: none;">
+		<div class="roundLeft"></div><div class="roundRight"></div>
+	</div>
 </div>

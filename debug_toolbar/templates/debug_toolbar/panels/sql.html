@@ -1,7 +1,8 @@
 <h1>SQL Usage</h1>
-<ul id="navigation">
+<ul class="tabSet">
 	<li class="close">Close Panel</li>
 </ul>
+{% if queries %}
 <ul class="tabSet">
 	<li rel="tab_all" class="current">All Queries</li>
 	<li rel="tab_unique">Unique Queries</li>
@@ -52,3 +53,6 @@
 		</tbody>
 	</table>
 </div>
+{% else %}
+<div class="container">There were no SQL queries executed on this page.</div>
+{% endif %}
