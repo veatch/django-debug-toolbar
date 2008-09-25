@@ -6,8 +6,8 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.utils import simplejson
 import time
-import inspect
 import os.path
+import inspect
 
 class DatabaseStatTracker(util.CursorDebugWrapper):
     """Replacement for CursorDebugWrapper which stores additional information
@@ -25,7 +25,7 @@ class DatabaseStatTracker(util.CursorDebugWrapper):
                 'time': (stop - start)*1000,
                 'raw_sql': sql,
                 'params': params,
-                'stack': [s[1:] for s in inspect.stack()],
+                'stack': [s[1:] for s in inspect.stack()[1:]],
             })
 
 util.CursorDebugWrapper = DatabaseStatTracker
@@ -35,15 +35,7 @@ class SQLDebugPanel(DebugPanel):
     Panel that displays information about the SQL queries run while processing the request.
     """
     name = 'SQL'
-    
-    def reformat_sql(self, sql):
-        sql = sql.replace('`,`', '`, `')
-        sql = sql.replace('` FROM `', '` \n  FROM `')
-        sql = sql.replace('` WHERE ', '` \n  WHERE ')
-        sql = sql.replace('`) WHERE ', '`) \n  WHERE ')
-        sql = sql.replace(' ORDER BY ', ' \n  ORDER BY ')
-        return sql
-    
+
     def process_ajax(self, request):
         action = request.GET.get('op')
         if action == 'explain':
@@ -58,8 +50,37 @@ class SQLDebugPanel(DebugPanel):
                 cursor.execute("EXPLAIN %s" % (sql,), params)
                 response = cursor.fetchall()
                 headers = [h[0].replace('_', ' ') for h in cursor.description]
+                context = {
+                    'headers': headers,
+                    'explain': response,
+                    'sql': sql,
+                    'params': params,
+                }
                 cursor.close()
-                context = {'headers': headers, 'explain': response, 'sql': self.reformat_sql(sql), 'params': params}
+                # Do an explain on indexes
+                # TODO: mySQL only at the moment
+                if headers[2] == 'table':
+                    cursor = connection.cursor()
+                    indexes = {}
+                    for row in response:
+                        table_name = row[2]
+                        if table_name not in indexes and not table_name.startswith('<'):
+                            cursor = connection.cursor()
+                            cursor.execute("SHOW INDEX FROM `%s`" % (row[2],))
+                            indexes[table_name] = {}
+                            for index in cursor.fetchall():
+                                name, column, non_unique, cardinality, itype = index[2], index[4], index[1], index[6], index[10]
+                                if non_unique:
+                                    typename = 'UNIQUE %s' % (itype,)
+                                else:
+                                    typename = itype
+                                if name not in indexes[table_name]:
+                                    indexes[table_name][name] = ([], typename, cardinality)
+                                indexes[table_name][name][0].append(column)
+                    context.update({
+                        'indexes': indexes,
+                    })
+                    cursor.close()
                 return render_to_response('debug_toolbar/panels/sql_explain.html', context)
             else:
                 return HttpResponse('Invalid SQL', mimetype="text/plain")

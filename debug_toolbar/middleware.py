@@ -29,7 +29,7 @@ class DebugToolbarMiddleware(object):
     def show_toolbar(self, request, response=None):
         if not settings.DEBUG:
             return False
-        if (not request.META.get('REMOTE_ADDR') in settings.INTERNAL_IPS) or \
+        if (not request.META.get('REMOTE_ADDR') in settings.INTERNAL_IPS) and \
                 (request.user.is_authenticated() and not request.user.is_superuser):
             return False
         if response:
@@ -70,5 +70,5 @@ class DebugToolbarMiddleware(object):
                     nr = panel.process_response(request, response)
                     # Incase someone forgets `return response`
                     if nr: response = nr
-                response.content = replace_insensitive(response.content, u'</body>', smart_unicode(self.debug_toolbar.render_toolbar()) + u'</body>')
+                response.content = replace_insensitive(smart_unicode(response.content), u'</body>', smart_unicode(self.debug_toolbar.render_toolbar()) + u'</body>')
         return response

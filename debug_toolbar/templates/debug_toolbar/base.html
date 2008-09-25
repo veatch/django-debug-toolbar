@@ -7,7 +7,9 @@ body
 {
 	z-index: 1000;
 	outline:0;
+	line-height: 1em;
 }
+#djDebug div, #djDebug { position: static; }
 #djDebug a
 {
 	text-decoration: none;
@@ -38,7 +40,7 @@ body
 {
 	list-style-position: inside;
 }
-.panelContent
+#djDebug .panelContent
 {
 	display: none;
 	position: absolute;
@@ -236,17 +238,29 @@ body
 {
 	border-bottom: 0;
 }
-#djDebug .container #sql-query
+#djDebug .container dt {
+	line-height: 1.1em;
+	float: left;
+	width: 100px;
+	clear: left;
+	padding: 1px 0;
+}
+#djDebug .container dd {
+	line-height: 1.1em;
+	padding: 1px 0 1px 110px;
+}
+#djDebug .container .sql-query
 {
+	white-space:pre-wrap;
 	color: #333;
 }
-#djDebug .container #sql-query td
+#djDebug .container .sql-query td
 {
-	border-bottom:  1px solid #eee;
+	border-bottom: 1px solid #eee;
 	padding: 4px 0;
 	vertical-align: top;
 }
-#djDebug .container #sql-query .keyword
+#djDebug .container .sql-query .keyword
 {
 	color: #000;
 	font-weight: bold;
@@ -255,7 +269,7 @@ body
 	text-align: right;
 	font-size: 9px;
 }
-#djDebug .container .hilight
+#djDebug .hilight
 {
 	color: #000;
 	font-weight: bold;
@@ -268,7 +282,7 @@ body
 	padding: 5px 10px 0 10px;
 	white-space:pre;
 }
-#djDebug .tabSet li, #djDebug #navigation li
+#djDebug .tabSet li
 {
 	float: left;
 	-icab-border-top-left-radius: 5px;
@@ -289,30 +303,27 @@ body
 	opacity: 0.5;
 	filter: alpha(opacity = 50);
 }
-#djDebug #navigation li:hover, #djDebug #navigation li.current, #djDebug .tabSet li:hover, #djDebug .tabSet li.current
+#djDebug .tabSet li:hover, #djDebug .tabSet li.current
 {
 	filter: alpha(opacity = 100);
 	opacity: 1;
 	background: #0e4835;
 	color: #fff;
 }
-#djDebug #navigation li
-{
-	float: right;
-}
-#djDebug #navigation li a
+#djDebug .tabSet li a
 {
 	color: #fff;
 	text-decoration: none;
 }
-#djDebug #navigation .close, #djDebug #navigation li.filter, #djDebug li.filterContainer
+#djDebug .tabSet .close, #djDebug .tabSet .back, #djDebug .tabSet li#filter
 {
+	float: right;
 	background: #0e4835;
 	color: #aaa;
 	filter: alpha(opacity = 100);
 	opacity: 1 !important;
 }
-#djDebug #navigation .close:hover
+#djDebug .tabSet .close:hover, #djDebug .tabSet .back:hover
 {
 	color: #fff;
 }
@@ -355,6 +366,7 @@ body
 #djDebug .traceback li
 {
 	padding: 3px 10px;
+	color: #555;
 }
 #djDebug .traceback li.odd
 {
@@ -387,193 +399,89 @@ body
 }
 </style>
 <script src="http://www.google.com/jsapi"></script>
-
 <script>
 // Load jQuery
 google.load("jquery", "1.2.6");
-google.setOnLoadCallback(function()
-{
-	var globalLocals;
-	$(document).keypress(function(e)
-	{
-		if (e.keyCode == 27)
-		{
-			var tempPanel = $('#djDebug #djDebugTempPanel');
-			if ( tempPanel.length > 0 ) {
-				tempPanel.remove();
-			}
-			else
-			{
-				djDebugHidePanel();
-			}
-		}
-	});
-	$.getScript('http://debug-django.appspot.com/js/jquery.tablesorter.js');
-	$('#djDebug .djDebugButton').each(function(index)
-	{
-		$(this).click(function(event)
-		{
-			jqThis = $(this);
-			if (jqThis.hasClass('current'))
-			{
-				djDebugHidePanel();
-			}
-			else
-			{
-				djDebugHidePanel();
-				jqThis.addClass('current');
-				djDebugShowPanel($('#'+jqThis.attr('rel')));
-			}
-			return false;
-		});
-	});
-	$('#djDebug .closeDebugToolbar').click(function(event)
-	{
-		$('#djDebug').remove();
-	});
-	initiateDjDebugFilter();
+google.setOnLoadCallback(function() {
+  jQuery('#djDebug .djDebugButton').each(function(index)
+  {
+    jQuery(this).click(function(event)
+    {
+      if (jQuery(this).hasClass('current')) djDebugHidePanel();
+      else
+      {
+        djDebugHidePanel();
+        jQuery(this).addClass('current');
+        djDebugShowPanel(jQuery('#'+jQuery(this).attr('rel')));
+      }
+      return false;
+    });
+  });
+  jQuery('#djDebug .closeDebugToolbar').click(function(event)
+  {
+    jQuery('#djDebug').remove();
+  });
+  jQuery.noConflict();
 });
-function djDebugHidePanel(action)
+function djDebugHidePanel()
 {
-	var tempPanel = $('#djDebug #djDebugTempPanel');
-	if ( tempPanel.length > 0 ) {
-		tempPanel.remove();
-	}
-	if (action != 'back')
-	{
-		var current = $('#djDebug .djDebugButton.current');
-		$('#'+current.attr('rel')).hide();
-		current.removeClass('current');
-	}
+  var current = jQuery('#djDebug .djDebugButton.current');
+  jQuery('#djDebug .panelContent').hide();
+  current.removeClass('current');
 }
 function djDebugShowPanel(obj)
 {
-	// Handle tabset controls
-	$('.tabSet li', obj).click(function(event)
-	{
-		jqThis = $(this);
-		var current = $('li.current', jqThis.parent());
-		current.removeClass('current');
-		$('#' + current.attr('rel')).hide();
-		jqThis.addClass('current');
-		$('#' + jqThis.attr('rel')).show();
-	});
-	// Close links
-	$('li.close', obj).click(function(event)
-	{
-		djDebugHidePanel();
-	});
-	// Back links
-	$('li.back', obj).click(function(event)
-	{
-		djDebugHidePanel('back');
-		var previousPanel = $('#'+$('#djDebug .djDebugButton.current').attr('rel'));
-		djDebugShowPanel(previousPanel);
-	});
-	// Add sorting to data tables.
-	$("table.data:not(.sorted)", obj).addClass('sorted').tablesorter({widgets:['zebra']});
-	// Show the panel
-	obj.show();
+  // Handle tabset controls
+  jQuery('.tabSet li', obj).click(function(event)
+  {
+    var current = jQuery('li.current', this.parentNode);
+    current.removeClass('current');
+    jQuery('#' + current.attr('rel')).hide();
+    jQuery(this).addClass('current');
+    jQuery('#' + jQuery(this).attr('rel')).show();
+  });
+  // Close links
+  jQuery('.close', obj).click(function(event)
+  {
+    djDebugHidePanel();
+    return false;
+  });
+  // Show the panel
+  obj.show();
 }
 function djDebugWindow(url, locals)
 {
-	globalLocals = locals;
-	$.ajax(
-	{
-		type:"GET",
-		data: url,
-		success: function(html)
-		{
-			var temp = $('<div class="panelContent" id="djDebugTempPanel"><div class="roundLeft"></div><div class="roundRight"></div>'+html+'</div>');
-			$('#djDebug').append(temp);
-			djDebugShowPanel(temp);
-		}
-	});
+  // locals are broken yet
+  jQuery.ajax(
+  {
+    type: "GET",
+    data: url,
+    url: window.location.href.split('#')[0],
+    success: djDebugBind(function(html, locals)
+    {
+      jQuery('#djDebug .panelContent').hide();
+      var obj = jQuery('#djDebugTempPanelContent');
+      obj.get(0).innerHTML = html;
+      // execute script tags
+      var el;
+      var els = jQuery('script', obj);
+      for (var i=0; (el = els[i]); i++) {
+        eval(el.text);
+      }
+      djDebugShowPanel(jQuery('#djDebugTempPanel'));
+      jQuery('.back', obj).click(function(event)
+      {
+        jQuery('#djDebugTempPanel').hide();
+        var current = jQuery('#djDebug .djDebugButton.current');
+        jQuery('#' + current.attr('rel')).show();
+      });
+    }, locals)
+  });
 }
-function initiateDjDebugFilter()
-{
-	jQuery.extend(jQuery.expr[':'], {
-		icontains: "(a.textContent||a.innerText||jQuery(a).text()||'').toLowerCase().indexOf((m[3]||'').toLowerCase())>=0"
-	});
-	jQuery.fn.djDebugFilter = function()
-	{
-		return this.each(function(){
-			$(this).each(function()
-			{
-				$(this).one('focus', function()
-				{
-					$(this).val('');
-				})
-				.keypress(function()
-				{
-					var filterParent = $(this).parents('.panelContent');
-					var values = $(this).val().split(' ');
-					var rows = $('table.data tbody tr', filterParent);
-					var length = values.length-1;
-
-					var pos = new Array();
-					var posIndex = 0;
-					var posLength;
-
-					var neg = new Array();
-					var negIndex = 0;
-					var negLength;
-
-					// Wait for 500ms after user input to remove unneeded runs.
-					clearTimeout(this.djFiltering);
-					this.djFiltering = setTimeout( function() { runDjDebugFiltering(this) }, 500 );
-
-					function runDjDebugFiltering()
-					{
-						rows.hide();
-						$('.error-message', filterParent).remove();
-						for(var i=0; i<=length; i++)
-						{
-							firstChar = values[i].substr(0,1);
-							if (firstChar == '-' && values[i].length > 1)
-							{
-								neg[posIndex] = values[i].substr(1);
-								negIndex++;
-							}
-							else if(firstChar != '-')
-							{
-								pos[posIndex] = values[i];
-								posIndex++;
-							}
-						}
-
-						var posLength = pos.length-1;
-						for(var i=0; i<=posLength; i++)
-						{
-							rows = rows.filter(':icontains('+pos[i]+')');
-						}
-						var negLength = neg.length-1;
-						for(var i=0; i<=negLength; i++)
-						{
-							rows = rows.filter(':not(:icontains('+neg[i]+'))');
-						}
-
-						if (rows.length == 0)
-						{
-							$('table.data tbody', filterParent).append('<tr class="error-message"><td colspan="100"><strong>Could not find any matching entries</strong></td></tr>');
-						}
-						else
-						{
-							rows.removeClass('even odd').show().filter(':odd').addClass('odd');
-						}
-					}
-				})
-				// Adds the round X used for resetting.
-				.after('<div class="djDebugFilterReset"></div>')
-				.next()
-				.click(function(event)
-				{
-					$(this).prev().val('').keyup();
-				});
-			});
-		});
-	};
-	$('#djDebug input.filter').djDebugFilter();
+function djDebugBind(fn) {
+  var args = [];
+  for (var n=1; n<arguments.length; n++) args.push(arguments[n]);
+  return function(e) { return fn.apply(this, [e].concat(args)); };
 }
 </script>
 <div id="djDebug">
@@ -600,4 +508,8 @@ function initiateDjDebugFilter()
 			{% endif %}
 		{% endwith %}
 	{% endfor %}
+	<div class="panelContent" id="djDebugTempPanel" style="display: none;">
+		<div class="roundLeft"></div><div class="roundRight"></div>
+		<div id="djDebugTempPanelContent"></div>
+	</div>
 </div>

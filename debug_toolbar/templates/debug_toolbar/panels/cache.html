@@ -1,4 +1,4 @@
-<ul id="navigation">
+<ul class="tabSet">
 	<li class="close">Close Panel</li>
 </ul>
 <h1>Cache Usage</h1>
@@ -53,7 +53,7 @@
 	        		<td>{{ time|floatformat:"4" }}</td>
 	        		<td>{{ type|escape }}</td>
 	        		<td>{{ params|escape }}</td>
-	        		<td><a href="javascript:djDebugWindow('?djDebug=Cache&amp;op=explain', {stack: {{ stack }}});">{{ frame.3.0 }}</a></td>
+	        		<td><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});">{{ frame.3.0 }}</a></td>
 	        	</tr>
 	        	{% endfor %}
 	        </tbody>

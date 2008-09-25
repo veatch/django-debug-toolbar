@@ -1,4 +1,4 @@
-<ul id="navigation">
+<ul class="tabSet">
 	<li class="close">Close Panel</li>
 	<li class="back">&laquo; Back</li>
 </ul>
@@ -7,7 +7,7 @@
 <div class="container">
 	<dl>
 		<dt>Query:</dt>
-		<dd class="sql-query" style="white-space:pre-wrap;">{{ sql|escape|linebreaksbr }}</dd>
+		<dd><pre class="sql-query">{{ sql|escape|linebreaksbr }}</pre></dd>
 		<dt>Parameters:</dt>
 		<dd>{{ params|join:", "|escape }}</dd>
 	</dl>
@@ -30,6 +30,33 @@
 	{% endfor %}
 	</tbody>
 </table>
+{% if indexes %}
+<h1>Indexes</h1>
+<table class="data" border="0" cellspacing="0" cellpadding="0"> 
+	<thead>
+		<tr>
+			<th>Table</th>
+			<th>Name</th>
+			<th>Columns</th>
+			<th>Type</th>
+			<th>Cardinality</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for table, rows in indexes.iteritems %}
+		{% for name, row in rows.iteritems %}
+			<tr class="{% cycle 'odd' 'even' %}">
+				<td>{{ table|escape }}</td>
+				<td>{{ name|escape }}</td>
+				<td>{{ row.0|join:", "|escape }}</td>
+				<td>{{ row.1|escape }}</td>
+				<td>{{ row.2 }}</td>
+			</tr>
+		{% endfor %}
+	{% endfor %}
+	</tbody>
+</table>
+{% endif %}
 
 <h1>Traceback</h1>
 <div class="container">
@@ -37,12 +64,21 @@
 	</ul>
 </div>
 <script type="text/javascript">
+<<<<<<< HEAD:debug_toolbar/templates/debug_toolbar/panels/sql_explain.html
 var traceback = $('#sql_explain_traceback');
 $(globalLocals.stack).each(function(index)
+=======
+var ref = jQuery('.sql-query');
+ref.html(ref.text().replace(/(UNION|ANALYZE|MATCH|AGAINST|ALL|ASC|AS|ALTER|AND|ADD|AUTO_INCREMENT|BETWEEN|BINARY|BOTH|BY|BOOLEAN|CHANGE|CHECK|COLUMNS|COLUMN|CROSS|CREATE|DATABASES|DATABASE|DATA|DELAYED|DESCRIBE|DESC|DISTINCT|DELETE|DROP|DEFAULT|ENCLOSED|ESCAPED|EXISTS|EXPLAIN|FIELDS|FIELD|FLUSH|FOR|FOREIGN|FUNCTION|FROM|GROUP|GRANT|HAVING|IGNORE|INDEX|INFILE|INSERT|INNER|INTO|IDENTIFIED|IN|IS|IF|JOIN|KEYS|KILL|KEY|LEADING|LIKE|LIMIT|LINES|LOAD|LOCAL|LOCK|LOW_PRIORITY|LEFT|LANGUAGE|MODIFY|NATURAL|NOT|NULL|NEXTVAL|OPTIMIZE|OPTION|OPTIONALLY|ORDER|OUTFILE|OR|OUTER|ON|PROCEEDURE|PROCEDURAL|PRIMARY|READ|REFERENCES|REGEXP|RENAME|REPLACE|RETURN|REVOKE|RLIKE|RIGHT|SHOW|SONAME|STATUS|STRAIGHT_JOIN|SELECT|SETVAL|SET|TABLES|TEMINATED|TO|TRAILING|TRUNCATE|TABLE|TEMPORARY|TRIGGER|TRUSTED|UNIQUE|UNLOCK|USE|USING|UPDATE|VALUES|VARIABLES|VIEW|WITH|WRITE|WHERE|ZEROFILL|TYPE|XOR)/g, '<br /><span class="hilight">$1</span>'));
+
+var traceback = jQuery('#sql_explain_traceback');
+jQuery(locals.stack).each(function(index)
+>>>>>>> 464efd5ed9e051781e1080e63ce46f77e62f3a77:debug_toolbar/templates/debug_toolbar/panels/sql_explain.html
 {
-	traceback.append('<li>'+this+'</li>');
+	traceback.append('<li>'+this[0]+':'+this[1]+' <span class="hilight">('+this[2]+')</span></li>');
 });
 traceback.find('li:odd').addClass('odd');
+<<<<<<< HEAD:debug_toolbar/templates/debug_toolbar/panels/sql_explain.html
 
 var ref = $('.sql-query');
 var sqlArray = ref.text().split(/(ANALYZE|MATCH|AGAINST|ALL|ASC|AS|ALTER|AND|ADD|AUTO_INCREMENT|BETWEEN|BINARY|BOTH|BY|BOOLEAN|CHANGE|CHECK|COLUMNS|COLUMN|CROSS|CREATE|DATABASES|DATABASE|DATA|DELAYED|DESCRIBE|DESC|DISTINCT|DELETE|DROP|DEFAULT|ENCLOSED|ESCAPED|EXISTS|EXPLAIN|FIELDS|FIELD|FLUSH|FOR|FOREIGN|FUNCTION|FROM|GROUP|GRANT|HAVING|IGNORE|INDEX|INFILE|INSERT|INNER JOIN|INTO|IDENTIFIED|IN|IS|IF|JOIN|KEYS|KILL|KEY|LEADING|LIKE|LIMIT|LINES|LOAD|LOCAL|LOCK|LOW_PRIORITY|LEFT JOIN|LANGUAGE|MODIFY|NATURAL|NOT|NULL|NEXTVAL|OPTIMIZE|OPTION|OPTIONALLY|ORDER BY|OUTFILE|OR|OUTER JOIN|ON|PROCEEDURE|PROCEDURAL|PRIMARY|READ|REFERENCES|REGEXP|RENAME|REPLACE|RETURN|REVOKE|RLIKE|RIGHT JOIN|SHOW|SONAME|STATUS|STRAIGHT_JOIN|SELECT|SETVAL|SET|TABLES|TEMINATED|TO|TRAILING|TRUNCATE|TABLE|TEMPORARY|TRIGGER|TRUSTED|UNIQUE|UNLOCK|USE|USING|UPDATE|VALUES|VARIABLES|VIEW|WITH|WRITE|WHERE|ZEROFILL|TYPE|XOR)/);
@@ -60,4 +96,6 @@ var html= '<table border="0" cellspacing="0" cellpadding="0">'
 	});
 html= html+'</table>'
 ref.html(html);
+=======
+>>>>>>> 464efd5ed9e051781e1080e63ce46f77e62f3a77:debug_toolbar/templates/debug_toolbar/panels/sql_explain.html
 </script>
