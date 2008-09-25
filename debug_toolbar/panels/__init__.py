@@ -6,6 +6,8 @@ class DebugPanel(object):
     """
     # name = Base
     
+    has_content = True
+    
     def __init__(self, request):
         self.request = request
 

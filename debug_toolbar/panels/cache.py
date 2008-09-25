@@ -1,9 +1,8 @@
 from debug_toolbar.panels import DebugPanel
-from django.core import cache
-from django.core.cache.backends.base import BaseCache
 from django.template.loader import render_to_string
 from django.shortcuts import render_to_response
 from django.utils import simplejson
+from django.core.cache import cache
 
 try: from cStringIO import StringIO
 except ImportError: import StringIO
@@ -11,67 +10,14 @@ import time
 import inspect
 import os.path
 
+from debug_toolbar.stats import track, STATS
 
-class CacheStatTracker(BaseCache):
-    """A small class used to track cache calls."""
-    def __init__(self, cache):
-        self.cache = cache
-        self.reset()
-
-    def reset(self):
-        self.calls = []
-        self.hits = 0
-        self.misses = 0
-        self.sets = 0
-        self.gets = 0
-        self.get_many = 0
-        self.deletes = 0
-        self.total_time = 0
-
-    def _get_func_info(self):
-        return [s[1:] for s in inspect.stack()[2:]]
-    
-    def get(self, key, default=None):
-        t = time.time()
-        value = self.cache.get(key, default)
-        this_time = time.time()-t
-        self.total_time += this_time*1000
-        if value is None:
-            self.misses += 1
-        else:
-            self.hits += 1
-        self.gets += 1
-        self.calls.append((this_time, 'get', (key,), self._get_func_info()))
-        return value
-
-    def set(self, key, value, timeout=None):
-        t = time.time()
-        self.cache.set(key, value, timeout)
-        this_time = time.time()-t
-        self.total_time += this_time*1000
-        self.sets += 1
-        self.calls.append((this_time, 'set', (key, value, timeout), self._get_func_info()))
-
-    def delete(self, key):
-        t = time.time()
-        self.instance.delete(key, value)
-        this_time = time.time()-t
-        self.total_time += this_time*1000
-        self.deletes += 1
-        self.calls.append((this_time, 'delete', (key,), self._get_func_info()))
-
-    def get_many(self, keys):
-        t = time.time()
-        results = self.cache.get_many(keys)
-        this_time = time.time()-t
-        self.total_time += this_time*1000
-        self.get_many += 1
-        for key, value in results.iteritems():
-            if value is None:
-                self.misses += 1
-            else:
-                self.hits += 1
-        self.calls.append((this_time, 'get_many', (keys,), self._get_func_info()))
+# Track stats on these function calls
+cache.set = track(cache.set, 'cache')
+cache.get = track(cache.get, 'cache')
+cache.delete = track(cache.delete, 'cache')
+cache.add = track(cache.add, 'cache')
+cache.get_many = track(cache.get_many, 'cache')
 
 class CacheDebugPanel(DebugPanel):
     """
@@ -79,33 +25,27 @@ class CacheDebugPanel(DebugPanel):
     """
     name = 'Cache'
 
-    def __init__(self, request):
-        # This is hackish but to prevent threading issues
-        # is somewhat needed
-        if isinstance(cache.cache, CacheStatTracker):
-            cache.cache.reset()
-            self.cache = cache.cache
-        else:
-            self.cache = CacheStatTracker(cache.cache)
-            cache.cache = self.cache
-        super(CacheDebugPanel, self).__init__(request)
-
     def process_ajax(self, request):
         action = request.GET.get('op')
         if action == 'explain':
             return render_to_response('debug_toolbar/panels/cache_explain.html')
 
     def title(self):
-        return 'Cache: %.2fms' % self.cache.total_time
+        return 'Cache: %.2fms' % STATS.get_total_time('cache')
 
     def url(self):
         return ''
 
     def content(self):
         context = dict(
-            cache_calls = len(self.cache.calls),
-            cache_time = self.cache.total_time,
-            cache_stats = [(c[0], c[1], c[2], c[3][0], simplejson.dumps(c[3])) for c in self.cache.calls],
-            cache = self.cache,
+            cache_calls = STATS.get_total_calls('cache'),
+            cache_time = STATS.get_total_time('cache'),
+            cache_hits = STATS.get_total_hits('cache'),
+            cache_misses = STATS.get_total_misses('cache'),
+            cache_gets = STATS.get_total_calls_for_function('cache', cache.get),
+            cache_sets = STATS.get_total_calls_for_function('cache', cache.set),
+            cache_get_many = STATS.get_total_calls_for_function('cache', cache.get_many),
+            cache_delete = STATS.get_total_calls_for_function('cache', cache.delete),
+            cache_calls_list = [(c['time'], c['func'].__name__, c['args'], c['kwargs'], c['time'], simplejson.dumps(c['stack'])) for c in STATS.get_calls('cache')],
         )
         return render_to_string('debug_toolbar/panels/cache.html', context)
