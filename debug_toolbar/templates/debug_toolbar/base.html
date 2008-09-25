@@ -520,48 +520,41 @@ function initiateDjDebugFilter()
 					var negIndex = 0;
 					var negLength;
 
-					// Wait for 500ms after user input to remove unneeded runs.
-					clearTimeout(this.djFiltering);
-					this.djFiltering = setTimeout( function() { runDjDebugFiltering(this) }, 500 );
-
-					function runDjDebugFiltering()
+					rows.hide();
+					jQuery('.error-message', filterParent).remove();
+					for(var i=0; i<=length; i++)
 					{
-						rows.hide();
-						jQuery('.error-message', filterParent).remove();
-						for(var i=0; i<=length; i++)
+						firstChar = values[i].substr(0,1);
+						if (firstChar == '-' && values[i].length > 1)
 						{
-							firstChar = values[i].substr(0,1);
-							if (firstChar == '-' && values[i].length > 1)
-							{
-								neg[posIndex] = values[i].substr(1);
-								negIndex++;
-							}
-							else if(firstChar != '-')
-							{
-								pos[posIndex] = values[i];
-								posIndex++;
-							}
+							neg[posIndex] = values[i].substr(1);
+							negIndex++;
 						}
+						else if(firstChar != '-')
+						{
+							pos[posIndex] = values[i];
+							posIndex++;
+						}
+					}
 
-						var posLength = pos.length-1;
-						for(var i=0; i<=posLength; i++)
-						{
-							rows = rows.filter(':icontains('+pos[i]+')');
-						}
-						var negLength = neg.length-1;
-						for(var i=0; i<=negLength; i++)
-						{
-							rows = rows.filter(':not(:icontains('+neg[i]+'))');
-						}
+					var posLength = pos.length-1;
+					for(var i=0; i<=posLength; i++)
+					{
+						rows = rows.filter(':icontains('+pos[i]+')');
+					}
+					var negLength = neg.length-1;
+					for(var i=0; i<=negLength; i++)
+					{
+						rows = rows.filter(':not(:icontains('+neg[i]+'))');
+					}
 
-						if (rows.length == 0)
-						{
-							jQuery('table.data tbody', filterParent).append('<tr class="error-message"><td colspan="100"><strong>Could not find any matching entries</strong></td></tr>');
-						}
-						else
-						{
-							rows.removeClass('even odd').show().filter(':odd').addClass('odd');
-						}
+					if (rows.length == 0)
+					{
+						jQuery('table.data tbody', filterParent).append('<tr class="error-message"><td colspan="100"><strong>Could not find any matching entries</strong></td></tr>');
+					}
+					else
+					{
+						rows.removeClass('even odd').show().filter(':odd').addClass('odd');
 					}
 				})
 				// Adds the round X used for resetting.
