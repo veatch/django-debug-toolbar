@@ -65,8 +65,14 @@ class StatCollection(object):
     def get_total_misses(self, key):
         return self.get_total_calls(key)-self.get_total_hits(key)
 
+    def get_total_hits_for_function(self, key, func):
+        return self.grouped.get(key, {}).get(func.__name__, {}).get('hits', 0)
+
     def get_total_calls_for_function(self, key, func):
         return self.grouped.get(key, {}).get(func.__name__, {}).get('count', 0)
+
+    def get_total_misses_for_function(self, key, func):
+        return self.get_total_calls_for_function(key, func) - self.get_total_hits_for_function(key, func)
 
     def get_total_time_for_function(self, key, func):
         return self.grouped.get(key, {}).get(func.__name__, {}).get('time', 0)

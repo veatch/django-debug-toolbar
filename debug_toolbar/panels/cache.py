@@ -35,7 +35,7 @@ class CacheDebugPanel(DebugPanel):
             cache_calls = STATS.get_total_calls('cache'),
             cache_time = STATS.get_total_time('cache'),
             cache_hits = STATS.get_total_hits('cache'),
-            cache_misses = STATS.get_total_misses('cache'),
+            cache_misses = STATS.get_total_misses_for_function('cache', cache.get) + STATS.get_total_misses_for_function('cache', cache.get_many),
             cache_gets = STATS.get_total_calls_for_function('cache', cache.get),
             cache_sets = STATS.get_total_calls_for_function('cache', cache.set),
             cache_get_many = STATS.get_total_calls_for_function('cache', cache.get_many),
