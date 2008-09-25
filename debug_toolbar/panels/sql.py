@@ -64,7 +64,7 @@ class SQLDebugPanel(DebugPanel):
                     indexes = {}
                     index_headers = None
                     for row in response:
-                        if row[2] not in indexes:
+                        if row[2] not in indexes and not row[2].startswith('<'):
                             cursor = connection.cursor()
                             cursor.execute("SHOW INDEX FROM `%s`" % (row[2],))
                             if index_headers is None:
