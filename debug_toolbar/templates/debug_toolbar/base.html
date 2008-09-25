@@ -474,11 +474,11 @@ function djDebugWindow(url, locals)
 		success: djDebugBind(function(html, locals)
 		{
 			jQuery('#djDebug .panelContent').hide();
-			var obj = jQuery('#djDebugTempPanelContent').html(html);
+			var obj = document.getElementById('djDebugTempPanelContent')
+			obj.innerHTML = html;
 			// execute script tags
 			var el;
 			var els = jQuery('script', obj);
-
 			for (var i=0; (el = els[i]); i++) {
 				eval(el.text);
 			}
