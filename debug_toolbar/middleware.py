@@ -70,5 +70,5 @@ class DebugToolbarMiddleware(object):
                     nr = panel.process_response(request, response)
                     # Incase someone forgets `return response`
                     if nr: response = nr
-                response.content = replace_insensitive(response.content, u'</body>', smart_unicode(self.debug_toolbar.render_toolbar()) + u'</body>')
+                response.content = replace_insensitive(smart_unicode(response.content), u'</body>', smart_unicode(self.debug_toolbar.render_toolbar()) + u'</body>'))
         return response
