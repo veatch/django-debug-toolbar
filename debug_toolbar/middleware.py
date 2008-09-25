@@ -30,8 +30,6 @@ class DebugToolbarMiddleware(object):
     def show_toolbar(self, request, response=None):
         if not settings.DEBUG:
             return False
-        if request.is_ajax():
-            return False
         if (not request.META.get('REMOTE_ADDR') in settings.INTERNAL_IPS) and \
                 (request.user.is_authenticated() and not request.user.is_superuser):
             return False
@@ -43,23 +41,25 @@ class DebugToolbarMiddleware(object):
     def process_request(self, request):
         if self.show_toolbar(request):
             # Enable statistics tracking
-            enable_tracking(True)
+            if not request.is_ajax():
+                enable_tracking(True)
             self.debug_toolbar = DebugToolbar(request)
             self.debug_toolbar.load_panels()
             debug = request.GET.get('djDebug')
             # kinda ugly, needs changes to the loader to optimize
+            response = None
             for panel in self.debug_toolbar.panels:
-                response = panel.process_request(request)
-                if not response:
-                    if debug == panel.name:
-                        response = panel.process_ajax(request)
+                if debug == panel.name:
+                    response = panel.process_ajax(request)
+                if not response and not request.is_ajax():
+                    response = panel.process_request(request)
                 if response:
                     response.skip_debug_response = True
                     return response
 
     def process_view(self, request, callback, callback_args, callback_kwargs):
         # TODO: this doesn't handle multiples yet
-        if self.show_toolbar(request):
+        if self.show_toolbar(request) and not request.is_ajax():
             new_callback = None
             for panel in self.debug_toolbar.panels:
                 response = panel.process_view(request, callback, callback_args, callback_kwargs)
@@ -67,7 +67,7 @@ class DebugToolbarMiddleware(object):
                     return response
 
     def process_response(self, request, response):
-        if self.show_toolbar(request, response):
+        if self.show_toolbar(request, response) and not request.is_ajax():
             if response['Content-Type'].split(';')[0] in _HTML_TYPES:
                 # Saving this here in case we ever need to inject into <head>
                 #response.content = _END_HEAD_RE.sub(smart_str(self.debug_toolbar.render_styles() + "%s" % match.group()), response.content)
