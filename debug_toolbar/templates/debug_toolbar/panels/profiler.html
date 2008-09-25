@@ -15,7 +15,7 @@
     </thead>
     <tbody>
         {% for row in function_calls %}
-            <tr class="{% cycle 'odd' 'even' %}">
+            <tr class="{% cycle 'even' 'odd' %}">
                 <td>{{ row.0 }}</td>
                 <td>{{ row.1|floatformat:"4" }}</td>
                 <td>{{ row.2|floatformat:"4" }}</td>

@@ -49,7 +49,7 @@
 	        </thead>
 	        <tbody>
 	        	{% for time, type, params, frame, stack in cache_stats %}
-	        	<tr class="{% cycle 'odd' 'even' %}">
+	        	<tr class="{% cycle 'even' 'odd' %}">
 	        		<td>{{ time|floatformat:"4" }}</td>
 	        		<td>{{ type|escape }}</td>
 	        		<td>{{ params|escape }}</td>

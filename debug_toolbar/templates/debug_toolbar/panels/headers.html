@@ -12,7 +12,7 @@
     </thead>
     <tbody>
         {% for key, value in headers.iteritems %}
-            <tr class="{% cycle 'odd' 'even' %}">
+            <tr class="{% cycle 'even' 'odd' %}">
                 <td>{{ key|escape }}</td>
                 <td>{{ value|escape }}</td>
             </tr>

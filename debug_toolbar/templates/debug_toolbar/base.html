@@ -1,13 +1,9 @@
 <style type="text/css">
-body
-{
-	margin-top: 29px !important;
-}
 #djDebug *
 {
 	z-index: 1000;
 	outline:0;
-	line-height: 1em;
+	line-height: 16px;
 }
 #djDebug a
 {
@@ -96,7 +92,7 @@ body
 	padding: 0 10px 0 10px;
 	font-weight: bold;
 	position: relative;
-	top: -3px;
+	top: -4px;
 }
 #djDebug #djDebugPanelList .version
 {
@@ -334,7 +330,7 @@ body
 	font-size: 9px;
 	background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAIAAAD9iXMrAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAXhJREFUeNpMUbuKwkAU3cnDV0AQBEEsNCJ2isQYhKRIG0HEPxEkH5BfEKz9AcHGws5aLGIVxMY0FkEQFNFIYvassxv2FDP3zj1z7osEQUAI2W63u93ucDhEUVSv1xuNhizLeP/6A3m/38vlcj6fwwjDEDye5xmGGQ6HvV4vprKGYcxmM0EQNE0bDAbdbjeTyXieZ9t2sVgslUr4CTbbarVc19V1vd/vFwqFfD5fq9Uej8d+v4ewJEnQhh7jOA6uTqcDyVQqlU6nYSiKAg0aouBQFq5EIsGyLK2G/wDpEMJJeUy1WoWDZqkffUBdGvrVazabGMp6veY4rt1u42mz2cCFgQHF/ZLr9bpYLFarFXjkA6R7vV4wKpWKaZrZbBaqrGVZ5XI5l8vh0+12Q5WQUVX1crmcTid0jZaTySQBF+O93+/QwG7onMEGbzKZnM9nURTH4/FPFporLplmfz6f0JtOp6CORiNCG/y/Suri9H0f1OPxiCV9CzAAsgTPr1J+Z1UAAAAASUVORK5CYII=) no-repeat 3px center;
 	border: 0px;
-	padding: 3px 20px 3px 20px;
+ 	padding: 3px 20px 3px 20px;
 	color: #333
 	-icab-border-radius: 5px;
 	-khtml-border-radius: 5px;	
@@ -380,6 +376,7 @@ body
 	float: right;
 	position: relative;
 	background: #0e4835 !important;
+	opacity: 1;
 }
 .djDebugFilterReset
 {
@@ -405,11 +402,11 @@ google.setOnLoadCallback(function()
 {
 	var globalLocals;
 	$.getScript('http://debug-django.appspot.com/js/jquery.tablesorter.js');
-	$('#djDebug .djDebugButton').each(function(index)
+	jQuery('#djDebug .djDebugButton').each(function(index)
 	{
-		$(this).click(function(event)
+		jQuery(this).click(function(event)
 		{
-			jqThis = $(this);
+			jqThis = jQuery(this);
 			if (jqThis.hasClass('current'))
 			{
 				djDebugHidePanel();
@@ -418,14 +415,14 @@ google.setOnLoadCallback(function()
 			{
 				djDebugHidePanel();
 				jqThis.addClass('current');
-				djDebugShowPanel($('#'+jqThis.attr('rel')));
+				djDebugShowPanel(jQuery('#'+jqThis.attr('rel')));
 			}
 			return false;
 		});
 	});
-	$('#djDebug .closeDebugToolbar').click(function(event)
+	jQuery('#djDebug .closeDebugToolbar').click(function(event)
 	{
-		$('#djDebug').remove();
+		jQuery('#djDebug').remove();
 	});
 	initiateDjDebugFilter();
 });
@@ -438,35 +435,37 @@ function djDebugHidePanel()
 function djDebugShowPanel(obj)
 {
 	// Handle tabset controls
-	$('.tabSet li', obj).click(function(event)
+	jQuery('.tabSet li', obj).click(function(event)
 	{
-		jqThis = $(this);
-		var current = $('li.current', jqThis.parent());
+		jqThis = jQuery(this);
+		var current = jQuery('li.current', jqThis.parent());
 		current.removeClass('current');
-		$('#' + current.attr('rel')).hide();
+		jQuery('#' + current.attr('rel')).hide();
 		jqThis.addClass('current');
-		$('#' + jqThis.attr('rel')).show();
+		jQuery('#' + jqThis.attr('rel')).show();
 	});
 	// Close links
-	$('li.close', obj).click(function(event)
+	jQuery('li.close', obj).click(function(event)
 	{
 		djDebugHidePanel();
 	});
 	// Back links
-	$('li.back', obj).click(function(event)
+	jQuery('li.back', obj).click(function(event)
 	{
 		djDebugHidePanel('back');
-		var previousPanel = $('#'+$('#djDebug .djDebugButton.current').attr('rel'));
+		var previousPanel = jQuery('#'+jQuery('#djDebug .djDebugButton.current').attr('rel'));
 		djDebugShowPanel(previousPanel);
 	});
 	// Add sorting to data tables.
-	$("table.data:not(.sorted)", obj).addClass('sorted').tablesorter({widgets:['zebra']});
+	jQuery('th').one('click',function()
+	{
+		jQuery("table.data:not(.sorted)", obj).addClass('sorted').tablesorter({widgets:['zebra']});
+	});
 	// Show the panel
 	obj.show();
 }
 function djDebugWindow(url, locals)
 {
-	// locals are broken yet
 	jQuery.ajax(
 	{
 		type: "GET",
@@ -475,11 +474,11 @@ function djDebugWindow(url, locals)
 		success: djDebugBind(function(html, locals)
 		{
 			jQuery('#djDebug .panelContent').hide();
-			var obj = jQuery('#djDebugTempPanelContent');
-			obj.get(0).innerHTML = html;
+			var obj = jQuery('#djDebugTempPanelContent').html(html);
 			// execute script tags
 			var el;
 			var els = jQuery('script', obj);
+
 			for (var i=0; (el = els[i]); i++) {
 				eval(el.text);
 			}
@@ -506,17 +505,17 @@ function initiateDjDebugFilter()
 	jQuery.fn.djDebugFilter = function()
 	{
 		return this.each(function(){
-			$(this).each(function()
+			jQuery(this).each(function()
 			{
-				$(this).one('focus', function()
+				jQuery(this).one('focus', function()
 				{
-					$(this).val('');
+					jQuery(this).val('');
 				})
 				.keyup(function()
 				{
-					var filterParent = $(this).parents('.panelContent');
-					var values = $(this).val().split(' ');
-					var rows = $('table.data tbody tr', filterParent);
+					var filterParent = jQuery(this).parents('.panelContent');
+					var values = jQuery(this).val().split(' ');
+					var rows = jQuery('table.data tbody tr', filterParent);
 					var length = values.length-1;
 
 					var pos = new Array();
@@ -534,7 +533,7 @@ function initiateDjDebugFilter()
 					function runDjDebugFiltering()
 					{
 						rows.hide();
-						$('.error-message', filterParent).remove();
+						jQuery('.error-message', filterParent).remove();
 						for(var i=0; i<=length; i++)
 						{
 							firstChar = values[i].substr(0,1);
@@ -563,7 +562,7 @@ function initiateDjDebugFilter()
 
 						if (rows.length == 0)
 						{
-							$('table.data tbody', filterParent).append('<tr class="error-message"><td colspan="100"><strong>Could not find any matching entries</strong></td></tr>');
+							jQuery('table.data tbody', filterParent).append('<tr class="error-message"><td colspan="100"><strong>Could not find any matching entries</strong></td></tr>');
 						}
 						else
 						{
@@ -576,12 +575,12 @@ function initiateDjDebugFilter()
 				.next()
 				.click(function(event)
 				{
-					$(this).prev().val('').keyup();
+					jQuery(this).prev().val('').keyup();
 				});
 			});
 		});
 	};
-	$('#djDebug input.filter').djDebugFilter();
+	jQuery('#djDebug input.filter').djDebugFilter();
 }
 </script>
 <div id="djDebug">
@@ -608,7 +607,7 @@ function initiateDjDebugFilter()
 			{% endif %}
 		{% endwith %}
 	{% endfor %}
-	<div class="panelContent" id="djDebugTempPanel" style="display: none;">
+	<div class="panelContent" id="djDebugTempPanel" style="">
 		<div class="roundLeft"></div><div class="roundRight"></div>
 		<div id="djDebugTempPanelContent"></div>
 	</div>
