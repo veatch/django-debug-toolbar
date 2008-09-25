@@ -9,7 +9,6 @@ body
 	outline:0;
 	line-height: 1em;
 }
-#djDebug div, #djDebug { position: static; }
 #djDebug a
 {
 	text-decoration: none;
@@ -64,7 +63,7 @@ body
 	-webkit-border-bottom-right-radius: 10px;
 	-moz-border-radius: 0 0 10px 10px;
 	border-radius: 0 0 10px 10px;
-	z-index: 1020;
+	z-index: 1001;
 }
 #djDebug #djDebugPanelList 
 {
@@ -81,7 +80,7 @@ body
 	margin: 0;
 	font-family: arial;
 	color: #fff;
-	z-index: 1015;
+	z-index: 1002;
 }
 #djDebug #djDebugPanelList a
 {
@@ -376,12 +375,18 @@ body
 {
 	color: #555;
 }
+#djDebug li.filterContainer
+{
+	float: right;
+	position: relative;
+	background: #0e4835 !important;
+}
 .djDebugFilterReset
 {
 	position: absolute;
 	cursor: pointer;
+	top: 6px;
 	right: 7px;
-	top: 5px;
 	width: 15px;
 	height: 15px;
 	opacity: 0.7;
@@ -391,12 +396,6 @@ body
 {
 	opacity: 1;
 }
-#djDebug li.filterContainer
-{
-	padding-right: 20px;
-	position: relative;
-	background: #0e4835 !important;
-}
 </style>
 <script src="http://www.google.com/jsapi"></script>
 <script>
@@ -405,20 +404,6 @@ google.load("jquery", "1.2.6");
 google.setOnLoadCallback(function()
 {
 	var globalLocals;
-	$(document).keypress(function(e)
-	{
-		if (e.keyCode == 27)
-		{
-			var tempPanel = $('#djDebug #djDebugTempPanel');
-			if ( tempPanel.length > 0 ) {
-				tempPanel.remove();
-			}
-			else
-			{
-				djDebugHidePanel();
-			}
-		}
-	});
 	$.getScript('http://debug-django.appspot.com/js/jquery.tablesorter.js');
 	$('#djDebug .djDebugButton').each(function(index)
 	{
@@ -527,7 +512,7 @@ function initiateDjDebugFilter()
 				{
 					$(this).val('');
 				})
-				.keypress(function()
+				.keyup(function()
 				{
 					var filterParent = $(this).parents('.panelContent');
 					var values = $(this).val().split(' ');
