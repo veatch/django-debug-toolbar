@@ -349,22 +349,28 @@
 	border-radius: 5px;
 	margin: -2px -5px -4px;
 }
+#decoration
+{
+	display: none;
+}
 #djDebug .roundLeft, #djDebug .roundRight
 {
-	position: absolute;
+	position: fixed;
 	width: 40px;
 	height: 50px;
 }
 	#djDebug .roundLeft
 	{
-		top: 0px;
-		left: -40px;
+		top: 28px;
+		left: 50%;
+		margin-left: -460px;
 		background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAyCAYAAAAus5mQAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABUBJREFUeNqUWM+rH0UMT9Ii34PQ6qtVUHp6eigqlFIptFAU/05PetCLXlRUpBTt5VkpWhS0RYpeKmJroYfX0m7M/prNZJKZeQvzndn9zmQzySefZBbh4hvPAcDb0s5JOy/tHSA8BwODexHC/J/0JN0wPvTm4vw8zbfrvXuzRnoUBa3knfxxWforMuld6S9BdI2CxstuxipRvTDY4Hwdg9f2lknpeirz/5B2VcYfSftBXvhQ7k/L+ES2mlfZmEtlNAqoflS+V/ek4LgI1cJNyDNpv8n4c3l2Vfp7MvEFefYKHPVaZbJVPLLqquCZU7M72FimEIx/y+81ad9KG8cvSXvZFexZiQOFbV9Y8NW9uukRrcL35f47+eO63D2Sfl+ePZ9egp34m+SOjUtYKF02DEZY5VDh0YrfSPtVhO+kP5u7sObG9X3sGEYpnVzM7CgXCC83cVva19L+k7Yv7WRmCcTNWunZSk8RJnGhMTQuRixd6ph9Hmd4O5TR9UXZF6W9nkW5jvTkVlQyA+xycrEW5mMhDCIurHkweQbgQjWiEeoEvtHMqRjIHFiwft1fIv1wyUw7N0AGa4BqkNjdOaHPHbyV86dEOjyU9pZL8LVsw+hkko3vtojmmkJaKVYWz5S9IaN/pb0p93sFNDSW66lOC+cgWNCPbg7+39b+PCnJU0Gy5+I6g0/ujdLF0LCetliygEei2UZuTTREeF7ceqKDupKFcwVtTi64MCfRzU3czsGjJRkei4zL8mzXFXBso5g7Itc+q3FntqEJ5zfk/pjMfa/YvMeJiGsmCV7O6Nd/FuzJzVi35By1BwuZX6jm/EXukkmwr8hEW/06uKwWB9PcZzK+LeP9KeMUZVg1iqHvJeHzSnHKmWVGMn8wVes85m5s1IPs5VpnAYPJobWED/U8S5MVJcvg++kcwmWtOLuYcKsuWtZUB5o4OKLyCiycflkKi7Mu9qWn7dDDMRnre41TD4+glEhjNZcyGVKi4QdLbVkeoigi6kYZ7lsZ4/+5WU/KgQwvlZBaLUjrjpe27tBaiEzkZkpxfCx1ClEj50NZf6uUxauLtZvZEW4O4N7h27sGK2uRX8CEx3z9secJCndvhbvYqx8Z3bVkvZHmfyLtJ2sg6rNC5Fp2FGZ/rZW/MsHqnRmLn1qYkWuVTAksX0qdBywPHp4n0rce/Ezm/6mtSG4OzWiH61STrIYBJrGECzknuBmb4mL4QkOD5h1Gkce5gGqUcoBfLhUtIJHJ/lJZdLHgoKjGtQ63STvCL2FHesoo6Kv5CJswyBu724AoMIkO/hrRXFANOhyKmoIeTx+qFmNRNQozmuBWWd+2ZlHWBBge4FoZxb2f0OzX0AiXFNCXCyMri7+Xn5uLmMoHnoEr90GhYAOhRvgu907PDuW/A4VBgw9yrENRpmi8sOszsbPxgX/cXqsnFsESKKQ/ptei2lPMy1DlnJsGg7bS4DxqB87xNzSOmmGK0/+zl5PX4nksIO5QwXfZzrjEoXZDsmiUicBZzypdVtxM+EQGvwdBwk5lDGbH1c+w7Sp3MBsteHK67hzPcm46m2hMGlDXyq4oB7uUFFQ9+p0Ad/N6cKhYwbrKs6SmFvvSVs2ovbPJ/ovcitcTGtZz2MGVEFNTjUMB7uXFghZCGGcCLxgIG3Ui+uccDybb+/857rtX3a+uckulCgSax7keOfDAj+Imx3V8N3MPXz3yMnw/oj6ccOWk5ggnPPpmyeFewkO/mhmOWEqVebRdKybagjj1zfUgBuU79x8lj2IhQmMl7VY2HxFg978AAwDdNYdHqP1bzQAAAABJRU5ErkJggg==);
 	}
 	#djDebug .roundRight
 	{
-		top: 0px;
-		left: 840px;
+		top: 28px;
+		left: 50%;
+		margin-left: 420px;
 		background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAyCAYAAAAus5mQAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABNxJREFUeNqcWT1rFkEQ3l2u8Jf4G/x5QhrBFBYSkyZFFCGCaJWQSgQlEAghplFjIdooFipYJBa7zn3vzjwzu/Fgubv39mP2ma9n5/Xuzu3khss7F+gWp1ftCn689/3659i/JNyvmMuv/ZZv01zr+DP67YTeT8dn964rBsRsIm3xeWK+iBCIX9mcS7/h/pbaK2qvqb2h367yUV2JRpoGNSwWXbn7CDYyz7kAsPT5Qu2A2iG1I2rXGvKdHOzdza8c9cTQLq5zai+ovZyeS9XnwExzdYUtVW3QY3uDKGb2FdMFPexTe0btEo4tzGAFrCsnypxAqF5xBi502f87ve/R+5Pe4NVN5o4Xy09dIVh0Uj0cFQ3lZZEFjefUf5f6HpRCJSnkDAT43gnPKlD0ihfn34TNfaa2TW2Hvv2SyM+btEyGe7Fji0YlpoXMtrigIwqHdH84eKgaB0EEECiumuhkiHHyHhF6POCmLer3YHACGBMb7BeYTlfajRH3VK/1v+n9Pj1s0v0am0Ft3nnDTEjaKFaxFVZCoeIvNOk92uAjjI6W/lDaY0BNvtHZ3gnCxxpIL+l5gyZ5XEc9s9MFKRyYubpDFkxtLccClV64u3R/PMwQKtknOBwJghYd9KFZKFAX7fPoBrWna3BN0gTq8zBGw5CfxgU5gZeIhiVEkEOQzblMrXy8CLoghAzPXjGFEsVQ2AD02EKA+9TvEQ7cym8oI/HNB6+qPKyB16JWAwJb1DaFQFylCI3gQV9rE4mHGeCx5U77DPFg5G2ax3vJTDh3RGOiEcDpW1goDlfR6lV9bn04hBVkM7FyNNDiYvAYlGWjnqnYaROm7SG3qh6XcFZQw5amcq6FxQZNgtpTpp1SIG8vrs0XXJnOFi3lhzCJZlh3K7LId2q7K2UC9FwgA1ARp8CkO0thl+N8Qah0hX8vHX840G1G8fZoHD2Ft3rDYYpU59cFx04XE02Xu6peSXA63XmSanvz+KBwtX1C751Ejp2+5oygpjOAlHawgptIc6or4D2fTl/gCAD4IIqJWv8qz5RsPQAHeUHoXQrb0mIaEi4CQZtIhKR7QTIV/1IsKDzToFi5A0TgLAGcewzGwwU8SMfvz3FW8cpvHiA1aSUA77QYtSrgusCh7XUeMJ9UktmoBWhft8nACEYoAvVQZTqySaXC73jKyx0v74s4IXSwxCj/OPAVOcd188kuaqmOpcXcJETlQiEq2bgcwde2cL7htMdOZwGkQnjWcZgPLrl4rGa+acsQPB8b7CVC4qtQLwfZ0kxYT0i9V2bZF1a4kiw6Oa8egHDcdLgUUhYw3WmTcKje0lLisI60ebgCBHbOJGf2BKA+baawWjXWGcS3rJn3AH9ai4uVCQM4kjpvLN6SzpxhBqMXfyT7+1utzvP414Riakpn8Cg6ba6bEHR1G/TMoF2FNtVLa+pxIevb063PzTvLmU/k7DqxykDjH0KuVtaJ6av73yt480Rm2nQeGYJXC5y9ir81CxIbOaHKUqyaN1Z5r5wfVQFh0k/2AR0Krdmu7u39kJ83U6X2FwVf2NtztNCvKRf/aUJQpfcJlNMSKJEkPeuoZZJRxVc39zZfZpZYi3epIKEm+sxhQh292iktgcq/VsYDwgRvngp7AW9VaVZsoOhNV1IKADpp/SfAAABI2bJeQqimAAAAAElFTkSuQmCC);
 	}
 #djDebug .traceback li
@@ -448,12 +454,14 @@ google.setOnLoadCallback(function()
 });
 function djDebugHidePanel()
 {
+	$('#decoration').hide();
 	var current = jQuery('#djDebug .djDebugButton.current');
 	jQuery('#djDebug .panelContent').hide();
 	current.removeClass('current');
 }
 function djDebugShowPanel(obj)
 {
+	$('#decoration').show();
 	// Handle tabset controls
 	jQuery('.tabSet li', obj).click(function(event)
 	{
@@ -609,16 +617,17 @@ function initiateDjDebugFilter()
 			</li>
 		{% endfor %}
 	</ul>
+	<div id="decoration">
+		<div class="roundLeft"></div><div class="roundRight"></div>
+	</div>
 	{% for panel in panels %}
 		{% if panel.has_content %}
 			<div id="{{ panel.dom_id }}" class="panelContent">
-				<div class="roundLeft"></div><div class="roundRight"></div>
 				{{ panel.content|safe }}
 			</div>
 		{% endif %}
 	{% endfor %}
 	<div class="panelContent" id="djDebugTempPanel" style="">
-		<div class="roundLeft"></div><div class="roundRight"></div>
 		<div id="djDebugTempPanelContent"></div>
 	</div>
 </div>
