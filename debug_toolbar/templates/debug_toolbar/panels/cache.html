@@ -44,7 +44,7 @@
 					<th>Time&nbsp;(ms)</th>
 					<th>Function</th>
 					<th colspan="2">Parameters</th>
-					<th></th>
+					<th>&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -54,7 +54,7 @@
 					<td>{{ func|escape }}</td>
 					<td>{% if args %}{{ args|escape }}{% endif %}</td>
 					<td>{% if kwargs %}{{ kwargs|escape }}{% endif %}</td>
-					<td><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});">Traceback</a></td>
+					<td><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});" class="infoIcon">Traceback</a></td>
 				</tr>
 				{% endfor %}
 			</tbody>

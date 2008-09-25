@@ -8,7 +8,7 @@
 		<tr>
 			<th>Time&nbsp;(ms)</th>
 			<th>Path</th>
-			<th></th>
+			<th>&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -16,7 +16,7 @@
 		<tr class="{% cycle 'even' 'odd' %}">
 			<td>{{ time|floatformat:"4" }}</td>
 			<td>{{ args.0.name|escape }}</td>
-			<td><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});">Traceback</a></td>
+			<td><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});" class="infoIcon">Traceback</a></td>
 		</tr>
 		{% endfor %}
 	</tbody>
