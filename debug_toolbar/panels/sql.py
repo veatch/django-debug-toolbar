@@ -77,7 +77,6 @@ class SQLDebugPanel(DebugPanel):
                                 if name not in indexes[table_name]:
                                     indexes[table_name][name] = ([], typename, cardinality)
                                 indexes[table_name][name][0].append(column)
-                            print indexes
                     context.update({
                         'indexes': indexes,
                     })
