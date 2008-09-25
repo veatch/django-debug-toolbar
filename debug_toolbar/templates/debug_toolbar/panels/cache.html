@@ -20,42 +20,41 @@
 			<th class="description">Total Time</th>
 			<td>{{ cache_time|floatformat:"4" }}ms</td>
 			<th class="description">Hits</th>
-			<td>{{ cache.hits }}</td>
+			<td>{{ cache_hits }}</td>
 			<th class="description">Misses</th>
-			<td>{{ cache.misses }}</td>
+			<td>{{ cache_misses }}</td>
 		</tr>
 		<tr>
 			<th class="description">gets</th>
-			<td>{{ cache.gets }}</td>
+			<td>{{ cache_gets }}</td>
 			<th class="description">sets</th>
-			<td>{{ cache.sets }}</td>
+			<td>{{ cache_sets }}</td>
 			<th class="description">deletes</th>
-			<td>{{ cache.deletes }}</td>
+			<td>{{ cache_deletes }}</td>
 			<th class="description">get_many</th>
-			<td>{{ cache.get_many }}</td>
+			<td>{{ cache_get_many }}</td>
 		</tr>
 	</table>
 </div>
-{% if cache_stats %}
+{% if cache_calls_list %}
 	<h1>Breakdown</h1>
 	<table class="data" border="0" cellspacing="0" cellpadding="0"> 
-	        <thead>
-	        	<tr>
-	        		<th>Time&nbsp;(ms)</th>
-	        		<th>Type</th>
-	        		<th>Parameters</th>
-	        		<th>Function</th>
-	        	</tr>
-	        </thead>
-	        <tbody>
-	        	{% for time, type, params, frame, stack in cache_stats %}
-	        	<tr class="{% cycle 'even' 'odd' %}">
-	        		<td>{{ time|floatformat:"4" }}</td>
-	        		<td>{{ type|escape }}</td>
-	        		<td>{{ params|escape }}</td>
-	        		<td><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});">{{ frame.3.0 }}</a></td>
-	        	</tr>
-	        	{% endfor %}
-	        </tbody>
+			<thead>
+				<tr>
+					<th>Time&nbsp;(ms)</th>
+					<th>Function</th>
+					<th colspan="2">Parameters</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for time, func, args, kwargs, stack in cache_calls_list %}
+				<tr class="{% cycle 'even' 'odd' %}">
+					<td>{{ time|floatformat:"4" }}</td>
+					<td><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});">{{ func|escape }}</a></td>
+					<td>{{ args|escape }}</td>
+					<td>{{ kwargs|escape }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
 	</table>
 {% endif %}

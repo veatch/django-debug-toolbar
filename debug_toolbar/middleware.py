@@ -4,6 +4,7 @@ Debug Toolbar middleware
 from django.conf import settings
 from django.utils.encoding import smart_unicode
 from debug_toolbar.toolbar.loader import DebugToolbar
+from debug_toolbar.stats import enable_tracking, reset_tracking
 try: import cStringIO as StringIO
 except ImportError: import StringIO
 
@@ -29,6 +30,8 @@ class DebugToolbarMiddleware(object):
     def show_toolbar(self, request, response=None):
         if not settings.DEBUG:
             return False
+        if request.is_ajax():
+            return False
         if (not request.META.get('REMOTE_ADDR') in settings.INTERNAL_IPS) and \
                 (request.user.is_authenticated() and not request.user.is_superuser):
             return False
@@ -39,6 +42,8 @@ class DebugToolbarMiddleware(object):
 
     def process_request(self, request):
         if self.show_toolbar(request):
+            # Enable statistics tracking
+            enable_tracking(True)
             self.debug_toolbar = DebugToolbar(request)
             self.debug_toolbar.load_panels()
             debug = request.GET.get('djDebug')
@@ -71,4 +76,5 @@ class DebugToolbarMiddleware(object):
                     # Incase someone forgets `return response`
                     if nr: response = nr
                 response.content = replace_insensitive(smart_unicode(response.content), u'</body>', smart_unicode(self.debug_toolbar.render_toolbar()) + u'</body>')
+            reset_tracking()
         return response

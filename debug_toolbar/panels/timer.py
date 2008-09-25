@@ -6,6 +6,7 @@ class TimerDebugPanel(DebugPanel):
     Panel that displays the time a response took.
     """
     name = 'Timer'
+    has_content = False
 
     def __init__(self, request):
         super(TimerDebugPanel, self).__init__(request)

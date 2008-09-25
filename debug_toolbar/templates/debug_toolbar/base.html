@@ -576,7 +576,7 @@ function initiateDjDebugFilter()
 		<li class="name">django debug toolbar<span class="version"> django version: {{ django_version }}</span></li>
 		{% for panel in panels %}
 			<li class="djDebugButton" rel="{{ panel.dom_id }}">
-			{% if panel.content %}
+			{% if panel.has_content %}
 					<a href="{{ panel.url|default:"#" }}" title="{{ panel.title }}" class="{{ panel.dom_id }}">{{ panel.title }}</a>
 				{% else %}
 					<span>{{ panel.title }}</span>
@@ -585,14 +585,12 @@ function initiateDjDebugFilter()
 		{% endfor %}
 	</ul>
 	{% for panel in panels %}
-		{% with panel.content as content %}
-			{% if content %}
-				<div id="{{ panel.dom_id }}" class="panelContent">
-					<div class="roundLeft"></div><div class="roundRight"></div>
-					{{ content|safe }}
-				</div>
-			{% endif %}
-		{% endwith %}
+		{% if panel.has_content %}
+			<div id="{{ panel.dom_id }}" class="panelContent">
+				<div class="roundLeft"></div><div class="roundRight"></div>
+				{{ panel.content|safe }}
+			</div>
+		{% endif %}
 	{% endfor %}
 	<div class="panelContent" id="djDebugTempPanel" style="">
 		<div class="roundLeft"></div><div class="roundRight"></div>

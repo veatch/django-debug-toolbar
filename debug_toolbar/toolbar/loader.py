@@ -6,7 +6,6 @@ from debug_toolbar.settings import DEBUG_TOOLBAR_PANELS
 import django
 
 class DebugToolbar(object):
-
     def __init__(self, request):
         self.request = request
         self.panels = []
@@ -35,11 +34,7 @@ class DebugToolbar(object):
             except AttributeError:
                 raise exceptions.ImproperlyConfigured, 'Toolbar Panel module "%s" does not define a "%s" class' % (panel_module, panel_classname)
 
-            try:
-                panel_instance = panel_class(self.request)
-            except:
-                raise
-                continue # Some problem loading panel
+            panel_instance = panel_class(self.request)
 
             self.panels.append(panel_instance)
 
