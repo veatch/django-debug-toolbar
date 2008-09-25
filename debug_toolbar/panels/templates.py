@@ -9,8 +9,22 @@ from django import template
 
 from debug_toolbar.stats import track, STATS
 
-template.Template.render = track(template.Template.render, 'templates')
-    
+template.Template.render = track(template.Template.render, 'templates:django')
+
+try:
+    import jinja2
+except ImportError:
+    pass
+else:
+    jinja2.Environment.get_template = track(jinja2.Environment.get_template, 'templates:jinja2')
+
+try:
+    import jinja
+except ImportError:
+    pass
+else:
+    jinja.Environment.get_template = track(jinja.Environment.get_template, 'templates:jinja')
+
 class TemplatesDebugPanel(DebugPanel):
     """
     Panel that displays information about the SQL queries run while processing the request.
@@ -30,8 +44,14 @@ class TemplatesDebugPanel(DebugPanel):
 
     def content(self):
         context = dict(
-            template_calls = STATS.get_total_calls('templates'),
-            template_time = STATS.get_total_time('templates'),
-            template_calls_list = [(c['time'], c['func'].__name__, c['args'], c['kwargs'], simplejson.dumps(c['stack'])) for c in STATS.get_calls('templates')],
+            template_calls = STATS.get_total_calls('templates:django') + \
+                    STATS.get_total_calls('templates:jinja') + \
+                    STATS.get_total_calls('templates:jinja2'),
+            template_time = STATS.get_total_time('templates:django') + \
+                    STATS.get_total_time('templates:jinja') + \
+                    STATS.get_total_time('templates:jinja2'),
+            template_calls_list = [(c['time'], c['args'][0].name, 'django', simplejson.dumps(c['stack'])) for c in STATS.get_calls('templates:django')] + \
+                    [(c['time'], c['args'][1], 'jinja', simplejson.dumps(c['stack'])) for c in STATS.get_calls('templates:jinja')] + \
+                    [(c['time'], c['args'][1], 'jinja2', simplejson.dumps(c['stack'])) for c in STATS.get_calls('templates:jinja2')],
         )
         return render_to_string('debug_toolbar/panels/templates.html', context)
