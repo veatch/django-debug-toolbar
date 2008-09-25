@@ -4,69 +4,34 @@ from django.dispatch import dispatcher
 from django.core.signals import request_started
 from django.test.signals import template_rendered
 from django.template.loader import render_to_string
-
+from django.utils import simplejson
 from django import template
 
-import time
+from debug_toolbar.stats import track, STATS
 
-
-class TemplateStatTracker(template.Template):
-    def __init__(self, *args, **kwargs):
-        self.templates = []
-        super(TemplateStatTracker, self).__init__(*args, **kwargs)
-
-    def render(self, *args, **kwargs):
-        start = time.time()
-        try:
-            return super(TemplateStatTracker, self).render(*args, **kwargs)
-        finally:
-            stop = time.time()
-            # We keep `sql` to maintain backwards compatibility
-            self.templates.append({
-                'name': self.name,
-                'time': stop - start,
-            })
-
-stats = TemplateStatTracker()
-template.Template.render = stats.render
-
-class DjangoTemplatesDebugPanel(DebugPanel):
+template.Template.render = track(template.Template.render, 'templates')
+    
+class TemplatesDebugPanel(DebugPanel):
     """
     Panel that displays information about the SQL queries run while processing the request.
     """
     name = 'Templates'
-    
-    def __init__(self, *args, **kwargs):
-        super(DjangoTemplatesDebugPanel, self).__init__(*args, **kwargs)
-        self.templates_used = []
-        self.contexts_used = []
-        template_rendered.connect(self._storeRenderedTemplates)
-        
-    def _storeRenderedTemplates(self, **kwargs):
-        template = kwargs.pop('template')
-        if template:
-            self.templates_used.append(template)
-        context = kwargs.pop('context')
-        if context:
-            self.contexts_used.append(context)
 
-    def process_response(self, request, response):
-        self.templates = [
-            (t.name, t.origin and t.origin.name or 'No origin')
-            for t in self.templates_used
-        ]
-        return response
+    def process_ajax(self, request):
+        action = request.GET.get('op')
+        if action == 'explain':
+            return render_to_response('debug_toolbar/panels/templates_explain.html')
 
     def title(self):
-        return 'Templates: %.2fms'
+        return 'Template: %.2fms' % STATS.get_total_time('templates')
 
     def url(self):
         return ''
 
     def content(self):
-        context = {
-            'templates': self.templates,
-            'template_dirs': settings.TEMPLATE_DIRS,
-        }
-        
+        context = dict(
+            template_calls = STATS.get_total_calls('templates'),
+            template_time = STATS.get_total_time('templates'),
+            template_calls_list = [(c['time'], c['func'].__name__, c['args'], c['kwargs'], simplejson.dumps(c['stack'])) for c in STATS.get_calls('templates')],
+        )
         return render_to_string('debug_toolbar/panels/templates.html', context)

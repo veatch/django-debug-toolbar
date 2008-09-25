@@ -4,12 +4,6 @@ from django.shortcuts import render_to_response
 from django.utils import simplejson
 from django.core.cache import cache
 
-try: from cStringIO import StringIO
-except ImportError: import StringIO
-import time
-import inspect
-import os.path
-
 from debug_toolbar.stats import track, STATS
 
 # Track stats on these function calls

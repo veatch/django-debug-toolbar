@@ -39,6 +39,7 @@ class DebugToolbarMiddleware(object):
         return True
 
     def process_request(self, request):
+        reset_tracking()
         if self.show_toolbar(request):
             # Enable statistics tracking
             if not request.is_ajax():
@@ -76,5 +77,4 @@ class DebugToolbarMiddleware(object):
                     # Incase someone forgets `return response`
                     if nr: response = nr
                 response.content = replace_insensitive(smart_unicode(response.content), u'</body>', smart_unicode(self.debug_toolbar.render_toolbar()) + u'</body>')
-            reset_tracking()
         return response

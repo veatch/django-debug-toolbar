@@ -1,5 +1,5 @@
 <ul class="tabSet">
-	<li id="close">Close Panel</li>
+	<li class="close">Close Panel</li>
 </ul>
 
 <h1>Templates</h1>
@@ -7,13 +7,16 @@
 	<thead>
 		<tr>
 			<th>Time&nbsp;(ms)</th>
-			<th>Template</th>
+			<th>Path</th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		{% for template in templates %}
+		{% for time, func, args, kwargs, stack in template_calls_list %}
 		<tr class="{% cycle 'even' 'odd' %}">
-				<td>{{ template }}</td>
+			<td>{{ time|floatformat:"4" }}</td>
+			<td>{{ args.0.name|escape }}</td>
+			<td><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});">Traceback</a></td>
 		</tr>
 		{% endfor %}
 	</tbody>
