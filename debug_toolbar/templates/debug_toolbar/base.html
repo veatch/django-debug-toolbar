@@ -451,6 +451,7 @@
 google.load("jquery", "1.2.6");
 google.setOnLoadCallback(function()
 {
+	jQuery.noConflict();
 	if (readCookie('djDebugShow') == 'false')
 	{
 		jQuery('#djDebug').hide();
