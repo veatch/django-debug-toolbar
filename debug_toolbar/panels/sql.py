@@ -5,8 +5,8 @@ from django.template.loader import render_to_string
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.utils import simplejson
+from django.db import backend
 import time
-import inspect
 import os.path
 
 class DatabaseStatTracker(util.CursorDebugWrapper):
@@ -35,15 +35,7 @@ class SQLDebugPanel(DebugPanel):
     Panel that displays information about the SQL queries run while processing the request.
     """
     name = 'SQL'
-    
-    def reformat_sql(self, sql):
-        sql = sql.replace('`,`', '`, `')
-        sql = sql.replace('` FROM `', '` \n  FROM `')
-        sql = sql.replace('` WHERE ', '` \n  WHERE ')
-        sql = sql.replace('`) WHERE ', '`) \n  WHERE ')
-        sql = sql.replace(' ORDER BY ', ' \n  ORDER BY ')
-        return sql
-    
+
     def process_ajax(self, request):
         action = request.GET.get('op')
         if action == 'explain':
@@ -58,8 +50,31 @@ class SQLDebugPanel(DebugPanel):
                 cursor.execute("EXPLAIN %s" % (sql,), params)
                 response = cursor.fetchall()
                 headers = [h[0].replace('_', ' ') for h in cursor.description]
+                context = {
+                    'headers': headers,
+                    'explain': response,
+                    'sql': sql,
+                    'params': params,
+                }
                 cursor.close()
-                context = {'headers': headers, 'explain': response, 'sql': self.reformat_sql(sql), 'params': params}
+                # Do an explain on indexes
+                # TODO: mySQL only at the moment
+                if headers[2] == 'table':
+                    cursor = connection.cursor()
+                    indexes = {}
+                    index_headers = None
+                    for row in response:
+                        if row[2] not in indexes:
+                            cursor = connection.cursor()
+                            cursor.execute("SHOW INDEX FROM `%s`" % (row[2],))
+                            if index_headers is None:
+                                index_headers = [h[0].replace('_', ' ') for h in cursor.description]
+                            indexes[row[2]] = cursor.fetchall()
+                    context.update({
+                        'indexes': indexes,
+                        'index_headers': index_headers,
+                    })
+                    cursor.close()
                 return render_to_response('debug_toolbar/panels/sql_explain.html', context)
             else:
                 return HttpResponse('Invalid SQL', mimetype="text/plain")

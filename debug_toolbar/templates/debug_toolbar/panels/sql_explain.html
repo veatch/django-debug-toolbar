@@ -30,6 +30,29 @@
 	{% endfor %}
 	</tbody>
 </table>
+{% if indexes %}
+<h1>Indexes</h1>
+<table class="data" border="0" cellspacing="0" cellpadding="0"> 
+	<thead>
+		<tr>
+		{% for header in index_headers %}
+			<th>{{ header|title|escape }}</th>
+		{% endfor %}
+		</tr>
+	</thead>
+	<tbody>
+	{% for table, rows in indexes.iteritems %}
+		{% for row in rows %}
+			<tr class="{% cycle 'odd' 'even' %}">
+			{% for value in row %}
+				<td>{{ value|escape }}</td>
+			{% endfor %}
+			</tr>
+		{% endfor %}
+	{% endfor %}
+	</tbody>
+</table>
+{% endif %}
 
 <h1>Traceback</h1>
 <div class="container">
