@@ -492,6 +492,7 @@ function djDebugShowPanel(obj)
 }
 function djDebugWindow(url, locals)
 {
+	$('html, body').animate({scrollTop:0});
 	jQuery.ajax(
 	{
 		type: "GET",
