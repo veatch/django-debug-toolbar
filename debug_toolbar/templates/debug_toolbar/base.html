@@ -259,7 +259,7 @@
 	text-align: right;
 	font-size: 9px;
 }
-#djDebug .container .hilight
+#djDebug .hilight
 {
 	color: #000;
 	font-weight: bold;
@@ -353,6 +353,7 @@
 #djDebug .traceback li
 {
 	padding: 3px 10px;
+	color: #555;
 }
 #djDebug .traceback li.odd
 {
@@ -419,14 +420,21 @@ function djDebugWindow(url, locals)
 	// locals are broken yet
 	jQuery.ajax(
 	{
-		type:"GET",
+		type: "GET",
 		data: url,
+		url: window.location.href.split('#')[0],
 		success: djDebugBind(function(html, locals)
 		{
 			jQuery('#djDebug .panelContent').hide();
-			var obj = jQuery('#djDebugTempPanel');
-			obj.html(html);
-			djDebugShowPanel(obj);
+			var obj = jQuery('#djDebugTempPanelContent');
+			obj.get(0).innerHTML = html;
+			// execute script tags
+			var el;
+			var els = jQuery('script', obj);
+			for (var i=0; (el = els[i]); i++) {
+				eval(el.text);
+			}
+			djDebugShowPanel(jQuery('#djDebugTempPanel'));
 			jQuery('.back', obj).click(function(event)
 			{
 				jQuery('#djDebugTempPanel').hide();
@@ -468,5 +476,6 @@ function djDebugBind(fn) {
 	{% endfor %}
 	<div class="panelContent" id="djDebugTempPanel" style="display: none;">
 		<div class="roundLeft"></div><div class="roundRight"></div>
+		<div id="djDebugTempPanelContent"></div>
 	</div>
 </div>

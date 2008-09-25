@@ -25,7 +25,7 @@ class DatabaseStatTracker(util.CursorDebugWrapper):
                 'time': (stop - start)*1000,
                 'raw_sql': sql,
                 'params': params,
-                'stack': [s[2:] for s in inspect.stack()],
+                'stack': [s[1:] for s in inspect.stack()[1:]],
             })
 
 util.CursorDebugWrapper = DatabaseStatTracker

@@ -70,7 +70,7 @@ ref.html(ref.text().replace(/(ANALYZE|MATCH|AGAINST|ALL|ASC|AS|ALTER|AND|ADD|AUT
 var traceback = jQuery('#sql_explain_traceback');
 jQuery(locals.stack).each(function(index)
 {
-	traceback.append('<li>'+locals.stack[index]+'</li>');
+	traceback.append('<li>'+this[0]+':'+this[1]+' <span class="hilight">('+this[2]+')</span></li>');
 });
 
 traceback.find('li:odd').addClass('odd');
