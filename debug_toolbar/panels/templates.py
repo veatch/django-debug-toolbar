@@ -37,7 +37,7 @@ class TemplatesDebugPanel(DebugPanel):
             return render_to_response('debug_toolbar/panels/templates_explain.html')
 
     def title(self):
-        return 'Template: %.2fms' % STATS.get_total_time('templates')
+        return 'Templates: %d' % STATS.get_total_calls('templates')
 
     def url(self):
         return ''
