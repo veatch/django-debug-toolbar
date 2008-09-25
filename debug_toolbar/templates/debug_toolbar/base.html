@@ -449,13 +449,6 @@ function djDebugShowPanel(obj)
 	{
 		djDebugHidePanel();
 	});
-	// Back links
-	jQuery('li.back', obj).click(function(event)
-	{
-		djDebugHidePanel('back');
-		var previousPanel = jQuery('#'+jQuery('#djDebug .djDebugButton.current').attr('rel'));
-		djDebugShowPanel(previousPanel);
-	});
 	// Add sorting to data tables.
 	jQuery('th').one('click',function()
 	{
@@ -487,6 +480,7 @@ function djDebugWindow(url, locals)
 			{
 				jQuery('#djDebugTempPanel').hide();
 				var current = jQuery('#djDebug .djDebugButton.current');
+				console.log(current);
 				jQuery('#' + current.attr('rel')).show();
 			});
 		}, locals)
