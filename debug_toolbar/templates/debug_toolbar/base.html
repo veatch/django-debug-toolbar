@@ -401,7 +401,7 @@ google.load("jquery", "1.2.6");
 google.setOnLoadCallback(function()
 {
 	var globalLocals;
-	$.getScript('http://debug-django.appspot.com/js/jquery.tablesorter.js');
+	jQuery.getScript('http://debug-django.appspot.com/js/jquery.tablesorter.js');
 	jQuery('#djDebug .djDebugButton').each(function(index)
 	{
 		jQuery(this).click(function(event)
