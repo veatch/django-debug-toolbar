@@ -4,6 +4,10 @@
 	z-index: 1000;
 	outline:0;
 	line-height: 16px;
+	background-color: transparent;
+	background-image: none;
+	margin: 0;
+	padding: 0;
 }
 #djDebug a
 {
@@ -180,6 +184,11 @@
 	#djDebug table.data th.headerSortDown
 	{ 
 		background: #b6d977 url(data:image/png;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7) center left no-repeat;
+		padding: 3px 7px 3px 23px;
+	}
+	#djDebug table.data th.headerSort
+	{ 
+		background: #b6d977 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAKCAYAAABblxXYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAFZJREFUeNpi+P//PwMxWFnXYCKxapkYiAAqeoYTkWlCgIlYA3HxSTYUlwGEDGYEhQG1ARMDDQALOd4HgTuXzueT5VJcGvEZSJT30Q0gZCAY0CLxAwQYALRfkuE9yjcXAAAAAElFTkSuQmCC) center left no-repeat;
 		padding: 3px 7px 3px 23px;
 	}
 #djDebug table.data td
@@ -450,9 +459,14 @@ function djDebugShowPanel(obj)
 		djDebugHidePanel();
 	});
 	// Add sorting to data tables.
-	jQuery('th').one('click',function()
+	jQuery('thead tr').one('click',function()
 	{
 		jQuery("table.data:not(.sorted)", obj).addClass('sorted').tablesorter({widgets:['zebra']});
+		jQuery('th',this).addClass('headerSort').one('mousedown', function()
+		{
+			console.log(this);
+			jQuery(this).parent().find('th').removeClass('headerSort');
+		});
 	});
 	// Show the panel
 	obj.show();
