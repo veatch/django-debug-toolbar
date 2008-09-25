@@ -9,7 +9,7 @@
 			<!-- <th>Time&nbsp;(ms)</th> -->
 			<th>Engine</th>
 			<th>Path</th>
-			<th style="width:16px;">&nbsp;</th>
+			<th>&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -18,7 +18,7 @@
 			<!-- <td>{{ time|floatformat:"4" }}</td> -->
 			<td>{{ engine }}</td>
 			<td>{{ template|escape }}</td>
-			<td><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});" class="infoIcon">Traceback</a></td>
+			<td><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});" class="infoIcon">Details</a></td>
 		</tr>
 		{% endfor %}
 	</tbody>
