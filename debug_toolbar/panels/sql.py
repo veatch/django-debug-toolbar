@@ -5,9 +5,9 @@ from django.template.loader import render_to_string
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.utils import simplejson
-from django.db import backend
 import time
 import os.path
+import inspect
 
 class DatabaseStatTracker(util.CursorDebugWrapper):
     """Replacement for CursorDebugWrapper which stores additional information
