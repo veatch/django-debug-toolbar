@@ -9,7 +9,7 @@
 		<dt>Query:</dt>
 		<dd><pre class="sql-query">{{ sql|escape|linebreaksbr }}</pre></dd>
 		<dt>Parameters:</dt>
-		<dd>{{ params|join:", "|escape }}</dd>
+		<dd>{% if params %}{{ params|join:", "|escape }}{% else %}&nbsp;{% endif %}</dd>
 	</dl>
 </div>
 <table class="data" border="0" cellspacing="0" cellpadding="0"> 
