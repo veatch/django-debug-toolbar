@@ -42,4 +42,4 @@ class DebugToolbar(object):
         """
         Renders the overall Toolbar with panels inside.
         """
-        return render_to_string('debug_toolbar/base.html', {'django_version': django.get_version(), 'panels': self.panels})
+        return render_to_string('debug_toolbar/base.html', {'debug_show_cookie':self.request.COOKIES.get('djDebugShow'), 'django_version': django.get_version(), 'panels': self.panels})

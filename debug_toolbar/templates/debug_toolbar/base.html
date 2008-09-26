@@ -1,11 +1,10 @@
 <style type="text/css">
-#djDebug
+#djDebug.hide, #djDebug .hide
 {
-	display: none;
+	display: none !important;
 }
 #djDebugToggleView
 {
-	display: none;
 	position: absolute;
 	top: 4px;
 	right: 3px;
@@ -452,19 +451,12 @@ google.load("jquery", "1.2.6");
 google.setOnLoadCallback(function()
 {
 	jQuery.noConflict();
-	if (readCookie('djDebugShow') == 'false')
-	{
-		jQuery('#djDebug').hide();
-		jQuery('#djDebugToggleView').show();
-	}
-	else
-	{
-		jQuery('#djDebug').show();
+	{% ifnotequal debug_show_cookie "false" %}
 		var $body = jQuery('body');
 		var marginTop = $body.css('margin-top');
 		marginTop = parseInt(marginTop.substr(0,marginTop.indexOf('px')))+29;
 		jQuery('body').css('margin-top',marginTop)
-	}
+	{% endifnotequal %}
 
 	jQuery('#djDebug .closeDebugToolbar').click(function(event)
 	{
@@ -474,8 +466,8 @@ google.setOnLoadCallback(function()
 		marginTop = parseInt(marginTop.substr(0,marginTop.indexOf('px')))-29;
 		jQuery('body').css('margin-top',marginTop)
 
-		jQuery('#djDebug').hide();
-		jQuery('#djDebugToggleView').show();
+		jQuery('#djDebug').addClass('hide');
+		jQuery('#djDebugToggleView').removeClass('hide');
 		createCookie('djDebugShow','false');
 	});
 	jQuery('#djDebugToggleView').click(function(event)
@@ -485,8 +477,8 @@ google.setOnLoadCallback(function()
 		marginTop = parseInt(marginTop.substr(0,marginTop.indexOf('px')))+29;
 		jQuery('body').css('margin-top',marginTop)
 
-		jQuery('#djDebug').show();
-		jQuery('#djDebugToggleView').hide();
+		jQuery('#djDebug').removeClass('hide');
+		jQuery('#djDebugToggleView').addClass('hide');
 		createCookie('djDebugShow','true');
 	});
 
@@ -679,8 +671,8 @@ function readCookie(name)
 	return false;
 }
 </script>
-<div id="djDebugToggleView">+</div>
-<div id="djDebug">
+<div {% ifnotequal debug_show_cookie "false" %}class="hide"{% endifnotequal %} id="djDebugToggleView">+</div>
+<div {% ifequal debug_show_cookie "false" %}class="hide"{% endifequal %} id="djDebug">
 	<ul id="djDebugPanelList">
 		<li class="closeDebugToolbar">X</li>
 		<li class="name">django debug toolbar<span class="version"> django version: {{ django_version }}</span></li>
