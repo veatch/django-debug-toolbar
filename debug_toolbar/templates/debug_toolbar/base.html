@@ -503,6 +503,27 @@ google.setOnLoadCallback(function()
 		});
 	});
 	initiateDjDebugFilter();
+	jQuery(window).bind('keydown',function(e)
+	{
+		if (e.keyCode == 83 & e.metaKey == true)
+		{
+			if (jQuery('#djDebug').hasClass('hide'))
+			{
+				jQuery('#djDebugToggleView').click();	
+			}
+			else
+			{
+				jQuery('#djDebug .closeDebugToolbar').click();
+			}
+		}
+		if (e.keyCode == 27)
+		{
+			if (!jQuery('#djDebug').hasClass('hide'))
+			{
+				jQuery('#djDebug .closeDebugToolbar').click();
+			}
+		}
+	});
 });
 function djDebugHidePanel()
 {
