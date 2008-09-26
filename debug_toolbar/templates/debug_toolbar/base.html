@@ -3,7 +3,7 @@
 {
 	display: none !important;
 }
-#djDebugToggleView
+#djDebugToggleToolbar
 {
 	position: absolute;
 	top: 4px;
@@ -137,7 +137,7 @@
 	overflow: hidden;
 	white-space: pre;
 }
-#djDebug #djDebugPanelList li.djDebugButton, #djDebug #djDebugPanelList li.closeDebugToolbar
+#djDebug #djDebugPanelList li.djDebugButton, #djDebug #djDebugPanelList li#djDebugCloseToolbar
 {
 	-icab-border-radius: 5px;
 	-khtml-border-radius: 5px;	
@@ -154,7 +154,7 @@
 	cursor: pointer;
 	*white-space: normal;
 }
-	#djDebug #djDebugPanelList li.djDebugButton:hover, #djDebug #djDebugPanelList li.closeDebugToolbar:hover, #djDebug #djDebugPanelList li.current, 
+	#djDebug #djDebugPanelList li.djDebugButton:hover, #djDebug #djDebugPanelList li#djDebugCloseToolbar:hover, #djDebug #djDebugPanelList li.current, 
 	{
 		background: #265436;
 		border: 1px solid #173a28;
@@ -168,7 +168,7 @@
 	{
 		color: #fff;
 	}
-#djDebug #djDebugPanelList li.closeDebugToolbar
+#djDebug #djDebugPanelList li#djDebugCloseToolbar
 {
 	font-family: verdana;
 	float: right;
@@ -458,7 +458,7 @@ google.setOnLoadCallback(function()
 		jQuery('body').css('margin-top',marginTop)
 	{% endifnotequal %}
 
-	jQuery('#djDebug .closeDebugToolbar').click(function(event)
+	jQuery('#djDebug #djDebugCloseToolbar').click(function(event)
 	{
 		//Remove debugbar height to body margin-top
 		var $body = jQuery('body');
@@ -467,10 +467,10 @@ google.setOnLoadCallback(function()
 		jQuery('body').css('margin-top',marginTop)
 
 		jQuery('#djDebug').addClass('hide');
-		jQuery('#djDebugToggleView').removeClass('hide');
+		jQuery('#djDebugToggleToolbar').removeClass('hide');
 		createCookie('djDebugShow','false');
 	});
-	jQuery('#djDebugToggleView').click(function(event)
+	jQuery('#djDebugToggleToolbar').click(function(event)
 	{
 		var $body = jQuery('body');
 		var marginTop = $body.css('margin-top');
@@ -478,7 +478,7 @@ google.setOnLoadCallback(function()
 		jQuery('body').css('margin-top',marginTop)
 
 		jQuery('#djDebug').removeClass('hide');
-		jQuery('#djDebugToggleView').addClass('hide');
+		jQuery('#djDebugToggleToolbar').addClass('hide');
 		createCookie('djDebugShow','true');
 	});
 
@@ -503,24 +503,25 @@ google.setOnLoadCallback(function()
 		});
 	});
 	initiateDjDebugFilter();
+
 	jQuery(window).bind('keydown',function(e)
 	{
 		if (e.keyCode == 83 & e.metaKey == true)
 		{
 			if (jQuery('#djDebug').hasClass('hide'))
 			{
-				jQuery('#djDebugToggleView').click();	
+				jQuery('#djDebugToggleToolbar').click();	
 			}
 			else
 			{
-				jQuery('#djDebug .closeDebugToolbar').click();
+				jQuery('#djDebug #djDebugCloseToolbar').click();
 			}
 		}
 		if (e.keyCode == 27)
 		{
 			if (!jQuery('#djDebug').hasClass('hide'))
 			{
-				jQuery('#djDebug .closeDebugToolbar').click();
+				jQuery('#djDebug #djDebugCloseToolbar').click();
 			}
 		}
 	});
@@ -692,10 +693,10 @@ function readCookie(name)
 	return false;
 }
 </script>
-<div {% ifnotequal debug_show_cookie "false" %}class="hide"{% endifnotequal %} id="djDebugToggleView">+</div>
+<div {% ifnotequal debug_show_cookie "false" %}class="hide"{% endifnotequal %} id="djDebugToggleToolbar">+</div>
 <div {% ifequal debug_show_cookie "false" %}class="hide"{% endifequal %} id="djDebug">
 	<ul id="djDebugPanelList">
-		<li class="closeDebugToolbar">X</li>
+		<li id="djDebugCloseToolbar">X</li>
 		<li class="name">django debug toolbar<span class="version"> django version: {{ django_version }}</span></li>
 		{% for panel in panels %}
 			<li class="djDebugButton" rel="{{ panel.dom_id }}">
