@@ -237,21 +237,21 @@
 	{
 		border-bottom: 0;
 	}
-	#djDebug table.data th:hover
+	#djDebug table.data.sortable th:hover
 	{
 		background: #b6d977;
 	}
-	#djDebug table.data th.headerSortUp
+	#djDebug table.data.sortable th.headerSortUp
 	{ 
 		background: #b6d977 url(data:image/png;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7) center left no-repeat;
 		padding: 3px 7px 3px 23px;
 	}
-	#djDebug table.data th.headerSortDown
+	#djDebug table.data.sortable th.headerSortDown
 	{ 
 		background: #b6d977 url(data:image/png;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7) center left no-repeat;
 		padding: 3px 7px 3px 23px;
 	}
-	#djDebug table.data th.headerSort
+	#djDebug table.data.sortable th.headerSort
 	{ 
 		background: #b6d977 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAKCAYAAABblxXYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAFZJREFUeNpi+P//PwMxWFnXYCKxapkYiAAqeoYTkWlCgIlYA3HxSTYUlwGEDGYEhQG1ARMDDQALOd4HgTuXzueT5VJcGvEZSJT30Q0gZCAY0CLxAwQYALRfkuE9yjcXAAAAAElFTkSuQmCC) center left no-repeat;
 		padding: 3px 7px 3px 23px;
@@ -593,10 +593,10 @@ function djDebugShowPanel(obj)
 		djDebugHidePanel();
 	});
 	// Add sorting to data tables.
-	jQuery('thead tr').one('click',function()
+	jQuery('table.data.sortable thead tr').one('click',function()
 	{
-		jQuery("table.data:not(.sorted)", obj).addClass('sorted').tablesorter({widgets:['zebra']});
-		jQuery('th',this).addClass('headerSort').one('mousedown', function()
+		jQuery("table.data.sortable:not(.sorted)", obj).addClass('sorted').tablesorter({widgets:['zebra']});
+		jQuery('th', this).addClass('headerSort').one('mousedown', function()
 		{
 			jQuery(this).parent().find('th').removeClass('headerSort');
 		});

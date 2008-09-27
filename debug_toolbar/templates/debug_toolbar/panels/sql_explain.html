@@ -12,15 +12,15 @@
 		<dd>{% if params %}{{ params|join:", "|escape }}{% else %}&nbsp;{% endif %}</dd>
 	</dl>
 </div>
-<table class="data" border="0" cellspacing="0" cellpadding="0"> 
+<table class="data sortable" border="0" cellspacing="0" cellpadding="0"> 
 	<thead>
 		<tr>
 		{% for header in headers %}
 			{% if forloop.first %}
-				<th class="first">{{ header|title|escape }}</th>
+				<th>{{ header|title|escape }}</th>
 			{% else %}
 				{% if forloop.last %}
-					<th class="last">{{ header|title|escape }}</th>
+					<th>{{ header|title|escape }}</th>
 				{% else %}
 					<th>{{ header|title|escape }}</th>
 				{% endif %}
@@ -40,14 +40,14 @@
 </table>
 {% if indexes %}
 <h1>Indexes</h1>
-<table class="data" border="0" cellspacing="0" cellpadding="0"> 
+<table class="data sortable" border="0" cellspacing="0" cellpadding="0"> 
 	<thead>
 		<tr>
-			<th class="first">Table</th>
+			<th>Table</th>
 			<th>Name</th>
 			<th>Columns</th>
 			<th>Type</th>
-			<th class="last">Cardinality</th>
+			<th>Cardinality</th>
 		</tr>
 	</thead>
 	<tbody>
