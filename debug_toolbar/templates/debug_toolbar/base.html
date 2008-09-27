@@ -5,14 +5,19 @@
 <script type="text/javascript">
 {% include "debug_toolbar/base.js" %}
 </script>
-<div {% ifnotequal debug_show_cookie "false" %}class="hide"{% endifnotequal %} id="djDebugToggleToolbar">+</div>
-<div {% ifequal debug_show_cookie "false" %}class="hide"{% endifequal %} id="djDebug">
+{% ifnotequal debug_show_cookie "false" %}
+	<div class="hide" id="djDebugToggleToolbar">+</div>
+	<div id="djDebug">
+{% else %}
+	<div id="djDebugToggleToolbar">+</div>
+	<div class="hide" id="djDebug">
+{% endifnotequal %}
 	<ul id="djDebugPanelList">
 		<li id="djDebugCloseToolbar">X</li>
-		<li class="name">django debug toolbar<span class="version"> django version: {{ django_version }}</span></li>
+		<li class="name">django debug toolbar<span class="version">django: {{ django_version }}</span></li>
 		{% for panel in panels %}
 			<li class="djDebugButton" rel="{{ panel.dom_id }}">
-			{% if panel.has_content %}
+				{% if panel.has_content %}
 					<a href="{{ panel.url|default:"#" }}" title="{{ panel.title }}" class="{{ panel.dom_id }}">{{ panel.title }}</a>
 				{% else %}
 					<span>{{ panel.title }}</span>

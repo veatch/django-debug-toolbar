@@ -3,13 +3,12 @@
 	<li class="close">Close Panel</li>
 	{% if queries %}<li class="filterContainer"><input class="filter" type="text" value="Filter results"></li>{% endif %}
 </ul>
-{% if queries %}
 <ul class="tabSet">
 	<li rel="tab_all" class="current">All Queries</li>
 	<li rel="tab_unique">Unique Queries</li>
 </ul>
 <div id="tab_all" class="queries">
-	<table class="data" border="0" cellspacing="0" cellpadding="0"> 
+	<table class="data sortable" border="0" cellspacing="0" cellpadding="0"> 
 		<thead>
 			<tr>
 				<th>Time&nbsp;(ms)</th>
@@ -37,7 +36,7 @@
 	</table>
 </div>
 <div id="tab_unique" class="queries" style="display:none;">
-	<table class="data" border="0" cellspacing="0" cellpadding="0"> 
+	<table class="data sortable" border="0" cellspacing="0" cellpadding="0"> 
 		<thead>
 			<tr>
 			<th>Time&nbsp;(ms)</th>
@@ -65,6 +64,3 @@
 		</tbody>
 	</table>
 </div>
-{% else %}
-<div class="container">There were no SQL queries executed on this page.</div>
-{% endif %}

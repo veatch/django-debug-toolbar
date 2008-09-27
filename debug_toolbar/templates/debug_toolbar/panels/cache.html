@@ -3,7 +3,7 @@
 </ul>
 <h1>Cache Usage</h1>
 <div class="container">
-	<table  border="0" cellspacing="0" cellpadding="0"> 
+	<table border="0" cellspacing="0" cellpadding="0"> 
 		<colgroup>
 			<col width="12%"/>
 			<col width="12%"/>
@@ -38,25 +38,25 @@
 </div>
 {% if cache_calls_list %}
 	<h1>Breakdown</h1>
-	<table class="data" border="0" cellspacing="0" cellpadding="0"> 
-			<thead>
-				<tr>
-					<th>Time&nbsp;(ms)</th>
-					<th>Function</th>
-					<th colspan="2">Parameters</th>
-					<th>&nbsp;</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for time, func, args, kwargs, stack in cache_calls_list %}
-				<tr class="{% cycle 'even' 'odd' %}">
-					<td>{{ time|floatformat:"4" }}</td>
-					<td>{{ func|escape }}</td>
-					<td>{% if args %}{{ args|escape }}{% endif %}</td>
-					<td>{% if kwargs %}{{ kwargs|escape }}{% endif %}</td>
-					<td><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});" class="infoIcon">Details</a></td>
-				</tr>
-				{% endfor %}
-			</tbody>
+	<table class="data sortable" border="0" cellspacing="0" cellpadding="0"> 
+		<thead>
+			<tr>
+				<th>Time&nbsp;(ms)</th>
+				<th>Function</th>
+				<th colspan="2">Parameters</th>
+				<th>&nbsp;</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for time, func, args, kwargs, stack in cache_calls_list %}
+			<tr class="{% cycle 'even' 'odd' %}">
+				<td>{{ time|floatformat:"4" }}</td>
+				<td>{{ func|escape }}</td>
+				<td>{% if args %}{{ args|escape }}{% endif %}</td>
+				<td>{% if kwargs %}{{ kwargs|escape }}{% endif %}</td>
+				<td><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});" class="infoIcon">Details</a></td>
+			</tr>
+			{% endfor %}
+		</tbody>
 	</table>
 {% endif %}
