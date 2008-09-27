@@ -16,9 +16,9 @@
 		{% for time, template, engine, stack in template_calls_list %}
 		<tr class="{% cycle 'even' 'odd' %}">
 			<!-- <td>{{ time|floatformat:"4" }}</td> -->
-			<td{% if forloop.last %} class="first"{% endif%}>{{ engine }}</td>
+			<td>{{ engine }}</td>
 			<td>{{ template|escape }}</td>
-			<td{% if forloop.last %} class="last"{% endif%}><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});" class="infoIcon">Details</a></td>
+			<td><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});" class="infoIcon">Details</a></td>
 		</tr>
 		{% endfor %}
 	</tbody>

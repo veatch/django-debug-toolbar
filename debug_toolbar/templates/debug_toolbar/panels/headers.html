@@ -13,8 +13,8 @@
     <tbody>
         {% for key, value in headers.iteritems %}
             <tr class="{% cycle 'even' 'odd' %}">
-                <td{% if forloop.last %} class="first"{% endif%}>{{ key|escape }}</td>
-                <td{% if forloop.last %} class="last"{% endif%}>{{ value|escape }}</td>
+                <td>{{ key|escape }}</td>
+                <td>{{ value|escape }}</td>
             </tr>
         {% endfor %}
     </tbody>

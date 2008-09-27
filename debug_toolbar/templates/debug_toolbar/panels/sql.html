@@ -20,10 +20,10 @@
 		<tbody>
 			{% if queries %}
 				{% for time, query, raw_query, params, stack in queries %}
-				<tr class="{% if forloop.last %}last {% endif%}{% cycle 'even' 'odd' %}">
-					<td{% if forloop.last %} class="first"{% endif%}>{{ time|floatformat:"4" }}</td>
+				<tr class="{% cycle 'even' 'odd' %}">
+					<td>{{ time|floatformat:"4" }}</td>
 					<td>{{ query|escape }}</td>
-					<td{% if forloop.last %} class="last"{% endif%}><a href="javascript:djDebugWindow('djDebug=SQL&amp;op=explain&amp;sql={{ raw_query|urlencode }}&amp;params={{ params|urlencode }}', {stack: {{ stack }}});" class="infoIcon">Details</a></td>
+					<td><a href="javascript:djDebugWindow('djDebug=SQL&amp;op=explain&amp;sql={{ raw_query|urlencode }}&amp;params={{ params|urlencode }}', {stack: {{ stack }}});" class="infoIcon">Details</a></td>
 				</tr>
 				{% endfor %}
 			{% else %}
@@ -49,10 +49,11 @@
 		{% if query_groups %}
 			{% for query, time, number in query_groups %}
 			<tr class="{% cycle 'even' 'odd' %}">
-				<td {% if forloop.last %} class="first"{% endif%}>{{ time|floatformat:"4" }}</td>
+				<td>{{ time|floatformat:"4" }}</td>
 				<td>{{ number }}</td>
-				<td{% if forloop.last %} class="last"{% endif%}>{{ query|escape }}</td>
+				<td>{{ query|escape }}</td>
 			</tr>
+		
 			{% endfor %}
 		{% else %}
 			<tr class="error-message">

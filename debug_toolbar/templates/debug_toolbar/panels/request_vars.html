@@ -17,8 +17,8 @@
 	<tbody>
 		{% for key, value in get %}
 		<tr class="{% cycle 'even' 'odd' %}">
-			<td{% if forloop.last %} class="first"{% endif%}>{{ key|escape }}</td>
-			<td{% if forloop.last %} class="last"{% endif%}>{{ value|join:", "|escape }}</td>
+			<td>{{ key|escape }}</td>
+			<td>{{ value|join:", "|escape }}</td>
 		</tr>
 		{% endfor %}
 	</tbody>
@@ -37,7 +37,7 @@
 	</thead>
 	<tbody>
 		<tr class="error-message">
-			<td class="firstlast" colspan="100">
+			<td colspan="100">
 				<strong>No GET variables.</strong>
 			</td>
 		</tr>
@@ -61,8 +61,8 @@
 	<tbody>
 		{% for key, value in post %}
 		<tr class="{% cycle 'even' 'odd' %}">
-			<td{% if forloop.last %} class="first"{% endif%}>{{ key|escape }}</td>
-			<td{% if forloop.last %} class="last"{% endif%}>{{ value|join:", "|escape }}</td>
+			<td>{{ key|escape }}</td>
+			<td>{{ value|join:", "|escape }}</td>
 		</tr>
 		{% endfor %}
 	</tbody>
@@ -81,7 +81,7 @@
 	</thead>
 	<tbody>
 		<tr class="error-message">
-			<td class="firstlast" colspan="100">
+			<td colspan="100">
 				<strong>No POST variables.</strong>
 			</td>
 		</tr>
@@ -105,8 +105,8 @@
 	<tbody>
 		{% for key, value in session %}
 		<tr class="{% cycle 'even' 'odd' %}">
-			<td{% if forloop.last %} class="first"{% endif%}>{{ key|escape }}</td>
-			<td{% if forloop.last %} class="last"{% endif%}>{{ value|escape }}</td>
+			<td>{{ key|escape }}</td>
+			<td>{{ value|escape }}</td>
 		</tr>
 		{% endfor %}
 	</tbody>
@@ -125,7 +125,7 @@
 	</thead>
 	<tbody>
 		<tr class="error-message">
-			<td class="firstlast" colspan="100">
+			<td colspan="100">
 				<strong>No SESSION variables.</strong>
 			</td>
 		</tr>
@@ -149,8 +149,8 @@
 	<tbody>
 		{% for key, value in cookies %}
 		<tr class="{% cycle 'even' 'odd' %}">
-			<td{% if forloop.last %} class="first"{% endif%}>{{ key|escape }}</td>
-			<td{% if forloop.last %} class="last"{% endif%}>{{ value|escape }}</td>
+			<td>{{ key|escape }}</td>
+			<td>{{ value|escape }}</td>
 		</tr>
 		{% endfor %}
 	</tbody>
@@ -169,7 +169,7 @@
 	</thead>
 	<tbody>
 		<tr class="error-message">
-			<td class="firstlast" colspan="100">
+			<td colspan="100">
 				<strong>No COOKIES variables.</strong>
 			</td>
 		</tr>

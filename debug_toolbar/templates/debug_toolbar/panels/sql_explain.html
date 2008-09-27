@@ -30,19 +30,11 @@
 	</thead>
 	<tbody>
 	{% for row in explain %}
-		{% if forloop.last %}
-			<tr class="last {% cycle 'even' 'odd' %}">
-			{% for value in row %}
-				<td{% if forloop.first %} class="first"{% endif %}{% if forloop.last %} class="last"{% endif %}>{{ value|escape }}</td>
-			{% endfor %}
-			</tr>
-		{% else %}
-			<tr class="{% cycle 'even' 'odd' %}">
-			{% for value in row %}
-				<td>{{ value|escape }}</td>
-			{% endfor %}
-			</tr>
-		{% endif %}
+		<tr class="{% cycle 'even' 'odd' %}">
+		{% for value in row %}
+			<td>{{ value|escape }}</td>
+		{% endfor %}
+		</tr>
 	{% endfor %}
 	</tbody>
 </table>

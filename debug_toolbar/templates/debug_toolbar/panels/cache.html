@@ -50,11 +50,11 @@
 			<tbody>
 				{% for time, func, args, kwargs, stack in cache_calls_list %}
 				<tr class="{% cycle 'even' 'odd' %}">
-					<td{% if forloop.last %} class="first"{% endif%}>{{ time|floatformat:"4" }}</td>
+					<td>{{ time|floatformat:"4" }}</td>
 					<td>{{ func|escape }}</td>
 					<td>{% if args %}{{ args|escape }}{% endif %}</td>
 					<td>{% if kwargs %}{{ kwargs|escape }}{% endif %}</td>
-					<td{% if forloop.last %} class="last"{% endif%}><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});" class="infoIcon">Details</a></td>
+					<td><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});" class="infoIcon">Details</a></td>
 				</tr>
 				{% endfor %}
 			</tbody>

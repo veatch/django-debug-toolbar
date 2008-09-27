@@ -196,7 +196,7 @@
 	cursor: pointer;
 	border-right: 1px solid #b9d977;
 }
-	#djDebug table.data th.first
+	#djDebug table.data th:first-child
 	{
 		-icab-border-top-left-radius: 5px;
 		-khtml-border-top-left-radius: 5px;
@@ -205,7 +205,7 @@
 		-moz-border-radius: 5px 0 0 0;
 		border-radius: 5px 0 0 0;
 	}
-	#djDebug table.data th.last
+	#djDebug table.data th:last-child
 	{
 		-icab-border-top-right-radius: 5px;
 		-khtml-border-top-right-radius: 5px;
@@ -215,40 +215,27 @@
 		border-radius: 0 5px 0 0;
 		border-right: 0;
 	}
-	#djDebug table.data td.first
+	#djDebug table.data tr:last-child td:first-child
 	{
 		-icab-border-bottom-left-radius: 5px;
 		-khtml-border-bottom-left-radius: 5px;
 		-o-border-bottom-left-radius: 5px;
 		-webkit-border-bottom-left-radius: 5px;
-		-moz-border-radius: 0 0 0 5px;
-		border-radius: 0 0 0 5px;
+		-moz-border-radius-bottomleft: 5px;
+		border-bottom-left-radius: 5px;
 	}
-	#djDebug table.data td.last
+	#djDebug table.data tr:last-child td:last-child
 	{
 		-icab-border-bottom-right-radius: 5px;
 		-khtml-border-bottom-right-radius: 5px;
 		-o-border-bottom-right-radius: 5px;
 		-webkit-border-bottom-right-radius: 5px;
-		-moz-border-radius: 0 0 5px 0;
-		border-radius: 0 5px 0 0;
+		-moz-border-radius-bottomright: 5px;
+		border-bottom-right-radius: 5px;
 	}
-	#djDebug table.data td.firstlast
+	#djDebug table.data tr:last-child td
 	{
-		-icab-border-bottom-right-radius: 5px;
-		-icab-border-bottom-left-radius: 5px;
-		-khtml-border-bottom-right-radius: 5px;
-		-khtml-border-bottom-left-radius: 5px;
-		-o-border-bottom-right-radius: 5px;
-		-o-border-bottom-left-radius: 5px;
-		-webkit-border-bottom-right-radius: 5px;
-		-webkit-border-bottom-left-radius: 5px;
-		-moz-border-radius: 0 0 5px 5px;
-		border-radius: 0 0 5px 5px;
-	}
-	#djDebug table.data tr.last, #djDebug table.data tr td
-	{
-		border: 0;
+		border-bottom: 0;
 	}
 	#djDebug table.data th:hover
 	{
@@ -537,36 +524,7 @@ google.setOnLoadCallback(function()
 	});
 
 	var globalLocals;
-	jQuery.getScript('http://debug-django.appspot.com/js/jquery.tablesorter.js', function()
-	{
-		jQuery.tablesorter.addWidget(
-		{
-			id: "debug-toolbar",
-			format: function(table)
-			{
-				var lastTr = jQuery("tr:visible",table.tBodies[0])
-				.removeClass('last')
-				.find('td')
-				.removeClass('first last')
-				.end()
-				.filter(':even')
-				.removeClass(table.config.widgetZebra.css[1])
-				.addClass(table.config.widgetZebra.css[0])
-				.end()
-				.filter(':odd')
-				.removeClass(table.config.widgetZebra.css[0])
-				.addClass(table.config.widgetZebra.css[1])
-				.end()
-				.filter(':last')
-				.addClass('last')
-				.find('td:first')
-				.addClass('first')
-				.end()
-				.find('td:last')
-				.addClass('last');
-			}
-		});
-	});
+	jQuery.getScript('http://debug-django.appspot.com/js/jquery.tablesorter.js');
 	jQuery('#djDebug .djDebugButton').each(function(index)
 	{
 		jQuery(this).click(function(event)
@@ -637,7 +595,7 @@ function djDebugShowPanel(obj)
 	// Add sorting to data tables.
 	jQuery('thead tr').one('click',function()
 	{
-		jQuery("table.data:not(.sorted)", obj).addClass('sorted').tablesorter({widgets:['debug-toolbar']});
+		jQuery("table.data:not(.sorted)", obj).addClass('sorted').tablesorter({widgets:['zebra']});
 		jQuery('th',this).addClass('headerSort').one('mousedown', function()
 		{
 			jQuery(this).parent().find('th').removeClass('headerSort');
