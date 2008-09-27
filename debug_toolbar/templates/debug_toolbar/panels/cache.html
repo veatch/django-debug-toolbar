@@ -41,20 +41,20 @@
 	<table class="data" border="0" cellspacing="0" cellpadding="0"> 
 			<thead>
 				<tr>
-					<th>Time&nbsp;(ms)</th>
+					<th class="first">Time&nbsp;(ms)</th>
 					<th>Function</th>
 					<th colspan="2">Parameters</th>
-					<th>&nbsp;</th>
+					<th class="last">&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for time, func, args, kwargs, stack in cache_calls_list %}
 				<tr class="{% cycle 'even' 'odd' %}">
-					<td>{{ time|floatformat:"4" }}</td>
+					<td{% if forloop.last %} class="first"{% endif%}>{{ time|floatformat:"4" }}</td>
 					<td>{{ func|escape }}</td>
 					<td>{% if args %}{{ args|escape }}{% endif %}</td>
 					<td>{% if kwargs %}{{ kwargs|escape }}{% endif %}</td>
-					<td><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});" class="infoIcon">Details</a></td>
+					<td{% if forloop.last %} class="last"{% endif%}><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});" class="infoIcon">Details</a></td>
 				</tr>
 				{% endfor %}
 			</tbody>

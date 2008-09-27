@@ -7,18 +7,18 @@
 	<thead>
 		<tr>
 			<!-- <th>Time&nbsp;(ms)</th> -->
-			<th>Engine</th>
+			<th class="first">Engine</th>
 			<th>Path</th>
-			<th>&nbsp;</th>
+			<th class="last">&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody>
 		{% for time, template, engine, stack in template_calls_list %}
 		<tr class="{% cycle 'even' 'odd' %}">
 			<!-- <td>{{ time|floatformat:"4" }}</td> -->
-			<td>{{ engine }}</td>
+			<td{% if forloop.last %} class="first"{% endif%}>{{ engine }}</td>
 			<td>{{ template|escape }}</td>
-			<td><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});" class="infoIcon">Details</a></td>
+			<td{% if forloop.last %} class="last"{% endif%}><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});" class="infoIcon">Details</a></td>
 		</tr>
 		{% endfor %}
 	</tbody>

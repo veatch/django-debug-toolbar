@@ -16,17 +16,33 @@
 	<thead>
 		<tr>
 		{% for header in headers %}
-			<th>{{ header|title|escape }}</th>
+			{% if forloop.first %}
+				<th class="first">{{ header|title|escape }}</th>
+			{% else %}
+				{% if forloop.last %}
+					<th class="last">{{ header|title|escape }}</th>
+				{% else %}
+					<th>{{ header|title|escape }}</th>
+				{% endif %}
+			{% endif %}
 		{% endfor %}
 		</tr>
 	</thead>
 	<tbody>
 	{% for row in explain %}
-		<tr class="{% cycle 'even' 'odd' %}">
-		{% for value in row %}
-			<td>{{ value|escape }}</td>
-		{% endfor %}
-		</tr>
+		{% if forloop.last %}
+			<tr class="last {% cycle 'even' 'odd' %}">
+			{% for value in row %}
+				<td{% if forloop.first %} class="first"{% endif %}{% if forloop.last %} class="last"{% endif %}>{{ value|escape }}</td>
+			{% endfor %}
+			</tr>
+		{% else %}
+			<tr class="{% cycle 'even' 'odd' %}">
+			{% for value in row %}
+				<td>{{ value|escape }}</td>
+			{% endfor %}
+			</tr>
+		{% endif %}
 	{% endfor %}
 	</tbody>
 </table>
@@ -35,11 +51,11 @@
 <table class="data" border="0" cellspacing="0" cellpadding="0"> 
 	<thead>
 		<tr>
-			<th>Table</th>
+			<th class="first">Table</th>
 			<th>Name</th>
 			<th>Columns</th>
 			<th>Type</th>
-			<th>Cardinality</th>
+			<th class="last">Cardinality</th>
 		</tr>
 	</thead>
 	<tbody>

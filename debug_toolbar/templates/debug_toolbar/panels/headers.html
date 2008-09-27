@@ -6,15 +6,15 @@
 <table class="data" border="0" cellspacing="0" cellpadding="0"> 
     <thead>
         <tr>
-            <th>Key</th>
-            <th>Value</th>
+            <th class="first">Key</th>
+            <th class="last">Value</th>
         </tr>
     </thead>
     <tbody>
         {% for key, value in headers.iteritems %}
             <tr class="{% cycle 'even' 'odd' %}">
-                <td>{{ key|escape }}</td>
-                <td>{{ value|escape }}</td>
+                <td{% if forloop.last %} class="first"{% endif%}>{{ key|escape }}</td>
+                <td{% if forloop.last %} class="last"{% endif%}>{{ value|escape }}</td>
             </tr>
         {% endfor %}
     </tbody>
