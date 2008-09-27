@@ -11,6 +11,7 @@ google.setOnLoadCallback(function()
 	var $djDebugButtons = jQuery('#djDebug .djDebugButton');
 	var $djDebugDecorations = jQuery('#decoration');
 	var $document = jQuery(document);
+	var $djDebugDebugBarHeight = 29;
 
 	// Checks if cookies is set to hide. If not, act.
 	{% ifnotequal debug_show_cookie "false" %}
@@ -102,13 +103,13 @@ google.setOnLoadCallback(function()
 
 		if (action == 'open')
 		{
-			marginTop = marginTop+29;
+			marginTop = marginTop+$djDebugDebugBarHeight;
 			$djDebug.removeClass('hide');
 			djDebugCreateCookie('djDebugShow','true');
 		}
 		else
 		{
-			marginTop = marginTop-29;
+			marginTop = marginTop-$djDebugDebugBarHeight;
 			$djDebug.addClass('hide');
 			djDebugCreateCookie('djDebugShow','false');
 		}
