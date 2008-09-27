@@ -1,7 +1,7 @@
 <h1>SQL Usage</h1>
 <ul class="tabSet">
 	<li class="close">Close Panel</li>
-
+	{% if queries %}<li class="filterContainer"><input class="filter" type="text" value="Filter results"></li>{% endif %}
 </ul>
 <ul class="tabSet">
 	<li rel="tab_all" class="current">All Queries</li>
