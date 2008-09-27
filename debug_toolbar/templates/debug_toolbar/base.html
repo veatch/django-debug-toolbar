@@ -276,6 +276,8 @@
 #djDebug table.data tr:hover td
 {
 	background-color: #dfdfdf;
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(226, 226, 226)), to(rgb(201, 201, 201)));
+
 }
 #djDebug table.data .sql-query
 {
@@ -547,22 +549,52 @@ google.setOnLoadCallback(function()
 
 	jQuery(window).bind('keydown',function(e)
 	{
-		if (e.keyCode == 83 & e.metaKey == true)
+		switch(e.keyCode)
 		{
-			if (jQuery('#djDebug').hasClass('hide'))
-			{
-				jQuery('#djDebugToggleToolbar').click();	
-			}
-			else
-			{
-				jQuery('#djDebug #djDebugCloseToolbar').click();
-			}
+			//E sc
+			case 27:
+				if (!jQuery('#djDebug').hasClass('hide'))
+				{
+					jQuery('#djDebug #djDebugCloseToolbar').click();
+				}
+				break;
+			default:
 		}
-		if (e.keyCode == 27)
+		if (e.metaKey == true)
 		{
-			if (!jQuery('#djDebug').hasClass('hide'))
+			switch(e.keyCode)
 			{
-				jQuery('#djDebug #djDebugCloseToolbar').click();
+				// Left
+				case 37:
+					jQuery('.current').prev().click();
+					break;
+				// Right
+				case 39:
+					jQuery('.current').next().click();
+					break;
+				// Up
+				case 38:
+					djDebugHidePanel();
+					break;
+				// Down
+				case 40:
+					if (jQuery('li.current').length != 2)
+					{
+						jQuery('#djDebug .djDebugButton:first').click();
+					}
+					break;
+				// "S"
+				case 83:
+					if (jQuery('#djDebug').hasClass('hide'))
+					{
+						jQuery('#djDebugToggleToolbar').click();	
+					}
+					else
+					{
+						jQuery('#djDebug #djDebugCloseToolbar').click();
+					}
+					break;
+				default:
 			}
 		}
 	});
