@@ -1,9 +1,9 @@
 <style type="text/css">
-{% include "debug_toolbar/base.css" %}
+	{% include "debug_toolbar/djDebugToolbar.yui-compressor.css" %}
 </style>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript">
-{% include "debug_toolbar/base.js" %}
+	{% include "debug_toolbar/djDebugToolbar.jsmin.js" %}
 </script>
 {% ifnotequal debug_show_cookie "false" %}
 	<div class="hide" id="djDebugToggleToolbar">+</div>

@@ -45,7 +45,7 @@
 {
 	color: #9dcc49;
 	font-size: 17px;
-	margin: -5px 10px 5px 10px;
+	margin: -5px 10px 5px;
 	padding: 0;
 }
 #djDebug ul
@@ -99,7 +99,7 @@
 	/*IE...*/*background: #07452f;*height: 20px;
 	border-left: 0;
 	border-right: 0;
-	padding: 6px 0 0 0;
+	padding: 6px 0 0;
 	margin: 0;
 	font-family: arial;
 	color: #fff;
@@ -116,7 +116,7 @@
 #djDebug #djDebugPanelList li.name
 {
 	font-size: 12px;
-	padding: 0 10px 0 10px;
+	padding: 0 10px;
 	font-weight: bold;
 	position: relative;
 	top: -4px;
@@ -163,7 +163,11 @@
 	{
 		color: #76a244;
 	}
-	#djDebug #djDebugPanelList li.djDebugButton:hover a, #djDebug #djDebugPanelList li.current a
+	#djDebug #djDebugPanelList li.djDebugButton:hover a
+	{
+		color: #acacac;
+	}
+	 #djDebug #djDebugPanelList li.current a
 	{
 		color: #fff;
 	}
@@ -183,14 +187,14 @@
 }
 #djDebug table.data
 {
-	margin: 0 0 15px 0;
+	margin: 0 0 15px;
 }
 #djDebug table.data th
 {
 	background: #9dcc49 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAAYCAYAAADQ+yzZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAF1JREFUeNpkj80OgDAIg+l0MV59/6fcD8m4ILJk6sbpS1tCgaoeZIPW2vXAbkAAOrjCzC+4VWudoJTSMwNyzhOklHp4wM9at6zcR1lObCGEU0QIMUYvD1P8nVuAAQCEBELv6i0vCwAAAABJRU5ErkJggg==);
 	color: #000;
 	font-size: 11px;
-	padding: 3px 7px 3px 7px;
+	padding: 3px 7px 3px;
 	text-align: left;
 	cursor: pointer;
 	border-right: 1px solid #b9d977;
@@ -201,7 +205,7 @@
 		-khtml-border-top-left-radius: 5px;
 		-o-border-top-left-radius: 5px;
 		-webkit-border-top-left-radius: 5px;
-		-moz-border-radius: 5px 0 0 0;
+		-moz-border-radius: 5px 0 0;
 		border-radius: 5px 0 0 0;
 	}
 	#djDebug table.data th:last-child
@@ -295,7 +299,7 @@
 	-moz-border-radius: 5px;
 	border-radius: 5px;
 	padding: 5px;
-	margin: 0 0 10px 0;
+	margin: 0 0 10px;
 	clear: both;
 	background: #fff;
 	color: #000;
@@ -349,7 +353,7 @@
 	font-weight: bold;
 	vertical-align: top;
 	text-align: right;
-	padding: 5px 10px 0 10px;
+	padding: 5px 10px 0;
 	white-space:pre;
 }
 #djDebug .tabSet li
@@ -405,7 +409,7 @@
 	font-size: 9px;
 	background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAIAAAD9iXMrAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAXhJREFUeNpMUbuKwkAU3cnDV0AQBEEsNCJ2isQYhKRIG0HEPxEkH5BfEKz9AcHGws5aLGIVxMY0FkEQFNFIYvassxv2FDP3zj1z7osEQUAI2W63u93ucDhEUVSv1xuNhizLeP/6A3m/38vlcj6fwwjDEDye5xmGGQ6HvV4vprKGYcxmM0EQNE0bDAbdbjeTyXieZ9t2sVgslUr4CTbbarVc19V1vd/vFwqFfD5fq9Uej8d+v4ewJEnQhh7jOA6uTqcDyVQqlU6nYSiKAg0aouBQFq5EIsGyLK2G/wDpEMJJeUy1WoWDZqkffUBdGvrVazabGMp6veY4rt1u42mz2cCFgQHF/ZLr9bpYLFarFXjkA6R7vV4wKpWKaZrZbBaqrGVZ5XI5l8vh0+12Q5WQUVX1crmcTid0jZaTySQBF+O93+/QwG7onMEGbzKZnM9nURTH4/FPFporLplmfz6f0JtOp6CORiNCG/y/Suri9H0f1OPxiCV9CzAAsgTPr1J+Z1UAAAAASUVORK5CYII=) no-repeat 3px center;
 	border: 0px;
- 	padding: 3px 20px 3px 20px;
+ 	padding: 3px 20px 3px;
 	color: #333
 	-icab-border-radius: 5px;
 	-khtml-border-radius: 5px;	
