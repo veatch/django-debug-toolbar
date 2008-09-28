@@ -2,7 +2,7 @@
 google.load("jquery", "1.2.6");
 google.setOnLoadCallback(function()
 {
-	//Makre sure jQuery doesn't conflict with other JavaScript code.
+	// Make sure jQuery doesn't conflict with other JavaScript code.
 	jQuery.noConflict();
 
 	// Caching for static objects.
@@ -58,7 +58,7 @@ google.setOnLoadCallback(function()
 	{
 		switch(e.keyCode)
 		{
-			//Esc - Hides entire djDebugToolbar.
+			// Esc - Hides entire djDebugToolbar.
 			case 27:
 				if (!$djDebug.hasClass('hide'))
 				{
@@ -67,7 +67,7 @@ google.setOnLoadCallback(function()
 				return false;
 			default:
 		}
-		// Checks if the user is accompanying the button with a metakey. Ie Ctrl most likely.
+		// Checks if the user is accompanying the button with a meta key. Ie Ctrl most likely.
 		if (e.metaKey == true)
 		{
 			switch(e.keyCode)
@@ -128,7 +128,7 @@ google.setOnLoadCallback(function()
 		}
 		$body.css('margin-top',marginTop)
 	}
-	// Hides the panel decorations, all panels as well as removing the hilight of current panel in panelList.
+	// Hides the panel decorations, all panels as well as removing the highlight of current panel in panelList.
 	function djDebugHidePanel()
 	{
 		$djDebugDecorations.hide();
@@ -234,7 +234,7 @@ google.setOnLoadCallback(function()
 					{
 						jQuery(this).val('');
 					})
-					// Bind keypress event to element.
+					// Bind key press event to element.
 					.keyup(function()
 					{
 						var filterParent = jQuery(this).parents('.panelContent');
@@ -291,7 +291,7 @@ google.setOnLoadCallback(function()
 							rows.removeClass('even odd').show().filter(':odd').addClass('odd');
 						}
 					})
-					// Adds an icon used for reseting user input and bind event.
+					// Adds an icon used for resetting user input and bind event.
 					.after('<div class="djDebugFilterReset"></div>')
 					.next()
 					.click(function(event)
