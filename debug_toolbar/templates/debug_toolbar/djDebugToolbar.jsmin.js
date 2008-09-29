@@ -1,8 +1,6 @@
 google.load("jquery","1.2.6");google.setOnLoadCallback(function()
-{jQuery.noConflict();var $body=jQuery('body');var $djDebug=jQuery('#djDebug');var $djDebugOpenToolbarButton=jQuery('#djDebugToggleToolbar');var $djDebugCloseToolbarButton=jQuery('#djDebug #djDebugCloseToolbar');var $djDebugButtons=jQuery('#djDebug .djDebugButton');var $djDebugDecorations=jQuery('#decoration');var $document=jQuery(document);var $djDebugDebugBarHeight=29;
-{% ifnotequal debug_show_cookie "false" %}
-	djDebugHandleToolbar('open');
-{% endifnotequal %}
+{jQuery.noConflict();var $body=jQuery('body');var $djDebug=jQuery('#djDebug');var $djDebugOpenToolbarButton=jQuery('#djDebugToggleToolbar');var $djDebugCloseToolbarButton=jQuery('#djDebug #djDebugCloseToolbar');var $djDebugButtons=jQuery('#djDebug .djDebugButton');var $djDebugDecorations=jQuery('#decoration');var $document=jQuery(document);var $djDebugDebugBarHeight=29;if(djDebugReadCookie('djDebugShow')!='false')
+{djDebugHandleToolbar('open');}
 $djDebugCloseToolbarButton.click(function(event)
 {djDebugHandleToolbar('close');});$djDebugOpenToolbarButton.click(function(event)
 {djDebugHandleToolbar('open');});$djDebugButtons.each(function()
@@ -66,4 +64,6 @@ else
 {rows.removeClass('even odd').show().filter(':odd').addClass('odd');}}).after('<div class="djDebugFilterReset"></div>').next().click(function(event)
 {jQuery(this).prev().val('').keyup();});});});};jQuery('#djDebug input.filter').djDebugFilter();}
 function djDebugCreateCookie(name,value)
-{document.cookie=name+"="+value+"; path=/";}});
+{document.cookie=name+"="+value+"; path=/";}
+function djDebugReadCookie(name){var nameEQ=name+"=";var ca=document.cookie.split(';');for(var i=0;i<ca.length;i++){var c=ca[i];while(c.charAt(0)==' ')c=c.substring(1,c.length);if(c.indexOf(nameEQ)==0)return c.substring(nameEQ.length,c.length);}
+return null;}});

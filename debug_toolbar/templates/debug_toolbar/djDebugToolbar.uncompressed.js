@@ -16,9 +16,10 @@ google.setOnLoadCallback(function()
 	var $djDebugDebugBarHeight = 29;
 
 	// Checks if cookies is set to hide. If not, act.
-	{% ifnotequal debug_show_cookie "false" %}
+	if (djDebugReadCookie('djDebugShow') != 'false')
+	{
 		djDebugHandleToolbar('open');
-	{% endifnotequal %}
+	}
 
 	// Add event to "close debug toolbar" button that hides entire debug toolbar.
 	$djDebugCloseToolbarButton.click(function(event)
@@ -309,4 +310,16 @@ google.setOnLoadCallback(function()
 	{
 		document.cookie = name+"="+value+"; path=/";
 	}
+	// Returns a value from a cookie.
+	function djDebugReadCookie(name) {
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0;i < ca.length;i++) {
+			var c = ca[i];
+			while (c.charAt(0)==' ') c = c.substring(1,c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+		}
+		return null;
+	}
+	
 });
