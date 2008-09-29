@@ -15,104 +15,34 @@ google.setOnLoadCallback(function()
 	var $document = jQuery(document);
 	var $djDebugDebugBarHeight = 29;
 
-	// Checks if cookies is set to hide. If not, act.
-	if (djDebugReadCookie('djDebugShow') != 'false')
+	// Sets a cookie.
+	function djDebugCreateCookie(name,value)
 	{
-		djDebugHandleToolbar('open');
+		document.cookie = name+"="+value+"; path=/";
 	}
-
-	// Add event to "close debug toolbar" button that hides entire debug toolbar.
-	$djDebugCloseToolbarButton.click(function(event)
-	{
-		djDebugHandleToolbar('close');
-	});
-	// Add event to "open debug toolbar" button that shows entire debug toolbar.
-	$djDebugOpenToolbarButton.click(function(event)
-	{
-		djDebugHandleToolbar('open');
-	});
-	// Bind click event to all link elements in panelList. Showing and hiding panels. 
-	// Also let the user know which panel is the current one. 
-	$djDebugButtons.each(function()
-	{
-		// Bind a click event to all link elements in panelList.
-		jQuery(this).click(function(event)
-		{
-			$this = jQuery(this);
-			// If the link is the current one we hide the related panel.
-			if ($this.hasClass('current'))
+	// Returns a value from a cookie.
+	function djDebugReadCookie(name) {
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0;i < ca.length;i++) {
+			var c = ca[i];
+			while (c.charAt(0)==' ')
 			{
-				djDebugHidePanel();
+				c = c.substring(1,c.length);
 			}
-			// If the link is not the current one we hide all panels, set this link to current and then show the related panel.
-			else
+			if (c.indexOf(nameEQ) === 0)
 			{
-				djDebugHidePanel();
-				$this.addClass('current');
-				djDebugShowPanel(jQuery('#'+$this.attr('rel')));
-			}
-			return false;
-		});
-	});
-	// Capture button presses that allows the user to control the debug toolbar using the keyboard.
-	$document.keydown(function(e)
-	{
-		switch(e.keyCode)
-		{
-			// Esc - Hides entire djDebugToolbar.
-			case 27:
-				if (!$djDebug.hasClass('hide'))
-				{
-					$djDebugCloseToolbarButton.click();
-				}
-				return false;
-			default:
-		}
-		// Checks if the user is accompanying the button with a meta key. Ie Ctrl most likely.
-		if (e.metaKey == true)
-		{
-			switch(e.keyCode)
-			{
-				case 37: // Ctrl + Left - Shows the panel left to the current panel in panelList.
-					jQuery('.current').prev().click();
-					return false;
-				case 39: // Ctrl + Right - Shows the panel right to the current panel in panelList.
-					jQuery('.current').next().click();
-					return false;
-				case 38: // Ctrl + Up - Hides current panel.
-					djDebugHidePanel();
-					return false;
-				case 40: // Ctrl + Down - Shows first panel.
-					if (jQuery('li.current').length != 2)
-					{
-							$djDebugButtons.filter(':first').click();
-					}
-					return false;
-				case 83: // Ctrl + S - Toggles entire djDebugToolbar.
-					if ($djDebug.hasClass('hide'))
-					{
-						$djDebugOpenToolbarButton.click();	
-					}
-					else
-					{
-						$djDebugCloseToolbarButton.click();
-					}
-					return false;
-				default:
+				return c.substring(nameEQ.length,c.length);
 			}
 		}
-	});
-	// Initiates the filtering feature on all input elements with class filter.
-	djDebugInitiateFiltering();
-
-	// jQuery plugin: Tablesorter 2.0 - http://tablesorter.com/docs/
-	jQuery.getScript('http://debug-django.appspot.com/js/jquery.tablesorter.js');
-	
+		return null;
+	}
 	// Handles the body margin used to push the page beneath the debug toolbar making sure nothing is covered over.
 	function djDebugHandleToolbar(action)
 	{
 		var marginTop = $body.css('margin-top');
-		marginTop = parseInt(marginTop.substr(0,marginTop.indexOf('px')))
+		marginTop = marginTop.substr(0, marginTop.indexOf('px'));
+		marginTop = parseInt(marginTop, 10);
 		// If the action is set to "open" we show the debug toolbar and append x amount of pixels to the body margin-top so the debug toolbar doesn't overlap site content.
 		if (action == 'open')
 		{
@@ -127,7 +57,7 @@ google.setOnLoadCallback(function()
 			$djDebug.addClass('hide');
 			djDebugCreateCookie('djDebugShow','false');
 		}
-		$body.css('margin-top',marginTop)
+		$body.css('margin-top',marginTop);
 	}
 	// Hides the panel decorations, all panels as well as removing the highlight of current panel in panelList.
 	function djDebugHidePanel()
@@ -145,7 +75,7 @@ google.setOnLoadCallback(function()
 		// Bind events to tabSet that allows for tabbed content.
 		jQuery('.tabSet li', obj).click(function(event)
 		{
-			$this = jQuery(this);
+			var $this = jQuery(this);
 			var current = jQuery('li.current', $this.parent());
 			current.removeClass('current');
 			jQuery('#' + current.attr('rel')).hide();
@@ -200,7 +130,7 @@ google.setOnLoadCallback(function()
 				var els = jQuery('script', obj);
 				for (var i=0; (el = els[i]); i++) {
 					eval(jQuery(el).html());
-					jQuery(el).remove()
+					jQuery(el).remove();
 				}
 
 				// Show the temporary panel.
@@ -243,11 +173,11 @@ google.setOnLoadCallback(function()
 						var rows = jQuery('table.data tbody tr', filterParent);
 						var length = values.length-1;
 
-						var pos = new Array();
+						var pos = [];
 						var posIndex = 0;
 						var posLength;
 
-						var neg = new Array();
+						var neg = [];
 						var negIndex = 0;
 						var negLength;
 
@@ -258,7 +188,7 @@ google.setOnLoadCallback(function()
 						// Sorts the values supplied into arrays with "what we want" and "what we don't want".
 						for(var i=0; i<=length; i++)
 						{
-							firstChar = values[i].substr(0,1);
+							var firstChar = values[i].substr(0,1);
 							if (firstChar == '-' && values[i].length > 1)
 							{
 								neg[posIndex] = values[i].substr(1);
@@ -271,19 +201,19 @@ google.setOnLoadCallback(function()
 							}
 						}
 						// Filter out the content rows using "what we want" array.
-						var posLength = pos.length-1;
-						for(var i=0; i<=posLength; i++)
+						posLength = pos.length-1;
+						for(i=0; i<=posLength; i++)
 						{
 							rows = rows.filter(':icontains('+pos[i]+')');
 						}
 						// Filter out the content rows using "what we don't want" array.
-						var negLength = neg.length-1;
-						for(var i=0; i<=negLength; i++)
+						negLength = neg.length-1;
+						for(i=0; i<=negLength; i++)
 						{
 							rows = rows.filter(':not(:icontains('+neg[i]+'))');
 						}
 						// If there are no rows that survive through filtering show error message. Otherwise display matched rows.
-						if (rows.length == 0)
+						if (rows.length === 0)
 						{
 							jQuery('table.data tbody', filterParent).append('<tr class="error-message"><td colspan="100"><strong>Could not find any matching entries</strong></td></tr>');
 						}
@@ -305,21 +235,93 @@ google.setOnLoadCallback(function()
 		// Run the plugin we just created on all inputs with class "filter".
 		jQuery('#djDebug input.filter').djDebugFilter();
 	}
-	// Sets a cookie.
-	function djDebugCreateCookie(name,value)
+	// Checks if cookies is set to hide. If not, act.
+	if (djDebugReadCookie('djDebugShow') != 'false')
 	{
-		document.cookie = name+"="+value+"; path=/";
+		djDebugHandleToolbar('open');
 	}
-	// Returns a value from a cookie.
-	function djDebugReadCookie(name) {
-		var nameEQ = name + "=";
-		var ca = document.cookie.split(';');
-		for(var i=0;i < ca.length;i++) {
-			var c = ca[i];
-			while (c.charAt(0)==' ') c = c.substring(1,c.length);
-			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	// Add event to "close debug toolbar" button that hides entire debug toolbar.
+	$djDebugCloseToolbarButton.click(function(event)
+	{
+		djDebugHandleToolbar('close');
+	});
+	// Add event to "open debug toolbar" button that shows entire debug toolbar.
+	$djDebugOpenToolbarButton.click(function(event)
+	{
+		djDebugHandleToolbar('open');
+	});
+	// Bind click event to all link elements in panelList. Showing and hiding panels. 
+	// Also let the user know which panel is the current one. 
+	$djDebugButtons.each(function()
+	{
+		// Bind a click event to all link elements in panelList.
+		jQuery(this).click(function(event)
+		{
+			var $this = jQuery(this);
+			// If the link is the current one we hide the related panel.
+			if ($this.hasClass('current'))
+			{
+				djDebugHidePanel();
+			}
+			// If the link is not the current one we hide all panels, set this link to current and then show the related panel.
+			else
+			{
+				djDebugHidePanel();
+				$this.addClass('current');
+				djDebugShowPanel(jQuery('#'+$this.attr('rel')));
+			}
+			return false;
+		});
+	});
+	// Capture button presses that allows the user to control the debug toolbar using the keyboard.
+	$document.keydown(function(e)
+	{
+		if(e.keyCode === 27)
+		{
+			// Esc - Hides entire djDebugToolbar.
+			if (!$djDebug.hasClass('hide'))
+			{
+				$djDebugCloseToolbarButton.click();
+			}
+			return false;
 		}
-		return null;
-	}
-	
+		// Checks if the user is accompanying the button with a meta key. Ie Ctrl most likely.
+		if (e.metaKey === true)
+		{
+			switch(e.keyCode)
+			{
+				case 37: // Ctrl + Left - Shows the panel left to the current panel in panelList.
+					jQuery('.current').prev().click();
+					return false;
+				case 39: // Ctrl + Right - Shows the panel right to the current panel in panelList.
+					jQuery('.current').next().click();
+					return false;
+				case 38: // Ctrl + Up - Hides current panel.
+					djDebugHidePanel();
+					return false;
+				case 40: // Ctrl + Down - Shows first panel.
+					if (jQuery('li.current').length !== 2)
+					{
+							$djDebugButtons.filter(':first').click();
+					}
+					return false;
+				case 83: // Ctrl + S - Toggles entire djDebugToolbar.
+					if ($djDebug.hasClass('hide'))
+					{
+						$djDebugOpenToolbarButton.click();	
+					}
+					else
+					{
+						$djDebugCloseToolbarButton.click();
+					}
+					return false;
+				default:
+			}
+		}
+	});
+	// Initiates the filtering feature on all input elements with class filter.
+	djDebugInitiateFiltering();
+
+	// jQuery plugin: Tablesorter 2.0 - http://tablesorter.com/docs/
+	jQuery.getScript('http://debug-django.appspot.com/js/jquery.tablesorter.js');
 });
