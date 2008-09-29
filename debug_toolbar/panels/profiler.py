@@ -11,9 +11,14 @@ class ProfilerDebugPanel(DebugPanel):
     name = 'Profiler'
 
     def __init__(self, request):
-        self.profiler = None
         super(ProfilerDebugPanel, self).__init__(request)
-
+    
+    def has_content(self):
+        return bool(self.profiler)
+    
+    def process_request(self, request):
+        self.profiler = None
+    
     def process_response(self, request, response):
         if self.profiler is not None:
             stats = pstats.Stats(self.profiler)
@@ -33,7 +38,6 @@ class ProfilerDebugPanel(DebugPanel):
             self.stats = stats
             self.function_calls = function_calls
             # destroy the profiler just in case
-            self.profiler = None
         return response
 
     def process_view(self, request, callback, callback_args, callback_kwargs):
