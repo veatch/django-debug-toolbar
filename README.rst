@@ -2,7 +2,7 @@
 Django Debug Toolbar
 ====================
 
-(This branch is very unstable)
+This is a fork of Rob Hudson's Debug Toolbar. It includes an alternative style, and some panels which may not be available in the main repository.
 
 The Django Debug Toolbar is a configurable set of panels that display various
 debug information about the current request/response.  It is a small toolbar
