@@ -11,25 +11,29 @@ class ProfilerDebugPanel(DebugPanel):
     name = 'Profiler'
 
     def __init__(self, request):
+        self.profiler = None
         super(ProfilerDebugPanel, self).__init__(request)
 
     def process_response(self, request, response):
-        stats = pstats.Stats(self.profiler)
-        function_calls = []
-        for func in stats.strip_dirs().sort_stats(1).fcn_list:
-            current = []
-            if stats.stats[func][0] != stats.stats[func][1]:
-                current.append('%d/%d' % (stats.stats[func][1], stats.stats[func][0]))
-            else:
-                current.append(stats.stats[func][1])
-            current.append(stats.stats[func][2]*1000)
-            current.append(stats.stats[func][2]*1000/stats.stats[func][1])
-            current.append(stats.stats[func][3]*1000)
-            current.append(stats.stats[func][3]*1000/stats.stats[func][0])
-            current.append(pstats.func_std_string(func))
-            function_calls.append(current)
-        self.stats = stats
-        self.function_calls = function_calls
+        if self.profiler is not None:
+            stats = pstats.Stats(self.profiler)
+            function_calls = []
+            for func in stats.strip_dirs().sort_stats(1).fcn_list:
+                current = []
+                if stats.stats[func][0] != stats.stats[func][1]:
+                    current.append('%d/%d' % (stats.stats[func][1], stats.stats[func][0]))
+                else:
+                    current.append(stats.stats[func][1])
+                current.append(stats.stats[func][2]*1000)
+                current.append(stats.stats[func][2]*1000/stats.stats[func][1])
+                current.append(stats.stats[func][3]*1000)
+                current.append(stats.stats[func][3]*1000/stats.stats[func][0])
+                current.append(pstats.func_std_string(func))
+                function_calls.append(current)
+            self.stats = stats
+            self.function_calls = function_calls
+            # destroy the profiler just in case
+            self.profiler = None
         return response
 
     def process_view(self, request, callback, callback_args, callback_kwargs):
