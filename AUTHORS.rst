@@ -1,3 +1,3 @@
-Rob Hudson
-David Cramer <dcramer@gmail.com)
-mape
+- Rob Hudson
+- David Cramer <dcramer@gmail.com>
+- mape
