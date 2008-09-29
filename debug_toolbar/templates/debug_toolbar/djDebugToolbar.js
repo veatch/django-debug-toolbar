@@ -1,5 +1,5 @@
 // Load jQuery using Google's AJAX Libraries API - http://code.google.com/apis/ajaxlibs/
-google.load("jquery", "1.2.6");
+google.load('jquery', '1.2.6');
 google.setOnLoadCallback(function()
 {
 	// Make sure jQuery doesn't conflict with other JavaScript code.
@@ -18,15 +18,15 @@ google.setOnLoadCallback(function()
 	// Sets a cookie.
 	function djDebugCreateCookie(name,value)
 	{
-		document.cookie = name+"="+value+"; path=/";
+		document.cookie = name+'='+value+'; path=/';
 	}
 	// Returns a value from a cookie.
 	function djDebugReadCookie(name) {
-		var nameEQ = name + "=";
+		var nameEQ = name+'=';
 		var ca = document.cookie.split(';');
 		for(var i=0;i < ca.length;i++) {
 			var c = ca[i];
-			while (c.charAt(0)==' ')
+			while (c.charAt(0) === ' ')
 			{
 				c = c.substring(1,c.length);
 			}
@@ -44,7 +44,7 @@ google.setOnLoadCallback(function()
 		marginTop = marginTop.substr(0, marginTop.indexOf('px'));
 		marginTop = parseInt(marginTop, 10);
 		// If the action is set to "open" we show the debug toolbar and append x amount of pixels to the body margin-top so the debug toolbar doesn't overlap site content.
-		if (action == 'open')
+		if (action === 'open')
 		{
 			marginTop = marginTop+$djDebugDebugBarHeight;
 			$djDebug.removeClass('hide');
@@ -77,9 +77,9 @@ google.setOnLoadCallback(function()
 			var $this = jQuery(this);
 			var current = jQuery('li.current', $this.parent());
 			current.removeClass('current');
-			jQuery('#' + current.attr('rel')).hide();
+			jQuery('#'+current.attr('rel')).hide();
 			$this.addClass('current');
-			jQuery('#' + $this.attr('rel')).show();
+			jQuery('#'+$this.attr('rel')).show();
 		}).append('<div class="decoration" id="leftDecoration" /><div class="decoration" id="rightDecoration" />');
 		// Binds an event to close button that close current panel.
 		jQuery('.tabSet li.close', obj).click(function(event)
@@ -89,7 +89,7 @@ google.setOnLoadCallback(function()
 		// Bind an event that initiates sorting on table that has class "sortable" and "data" when clicking on the header.
 		jQuery('#djDebug table.data.sortable thead tr').one('click',function()
 		{
-			jQuery("table.data.sortable:not(.sorted)", obj).addClass('sorted').tablesorter({widgets:['zebra']});
+			jQuery('table.data.sortable:not(.sorted)', obj).addClass('sorted').tablesorter({widgets:['zebra']});
 			jQuery('th', this).addClass('headerSort').one('mousedown', function()
 			{
 				jQuery(this).parent().find('th').removeClass('headerSort');
@@ -112,9 +112,8 @@ google.setOnLoadCallback(function()
 		jQuery('html, body').animate({scrollTop:0});
 		jQuery.ajax(
 		{
-			type: "GET",
+			type: 'GET',
 			data: url,
-			url: window.location.href.split('#')[0],
 			success: function(html)
 			{
 				// Hide all panels.
@@ -141,7 +140,7 @@ google.setOnLoadCallback(function()
 					// Hide the temporary panel.
 					jQuery('#djDebugTempPanel').hide();
 					// Show the previous panel.
-					jQuery('#' + jQuery('#djDebug .djDebugButton.current').attr('rel')).show();
+					jQuery('#'+jQuery('#djDebug .djDebugButton.current').attr('rel')).show();
 				});
 			}
 		});
@@ -188,12 +187,12 @@ google.setOnLoadCallback(function()
 						for(var i=0; i<=length; i++)
 						{
 							var firstChar = values[i].substr(0,1);
-							if (firstChar == '-' && values[i].length > 1)
+							if (firstChar === '-' && values[i].length > 1)
 							{
 								neg[posIndex] = values[i].substr(1);
 								negIndex++;
 							}
-							else if(firstChar != '-')
+							else if(firstChar !== '-')
 							{
 								pos[posIndex] = values[i];
 								posIndex++;
@@ -235,7 +234,7 @@ google.setOnLoadCallback(function()
 		jQuery('#djDebug input.filter').djDebugFilter();
 	}
 	// Checks if cookies is set to hide. If not, act.
-	if (djDebugReadCookie('djDebugShow') != 'false')
+	if (djDebugReadCookie('djDebugShow') !== 'false')
 	{
 		djDebugHandleToolbar('open');
 	}
