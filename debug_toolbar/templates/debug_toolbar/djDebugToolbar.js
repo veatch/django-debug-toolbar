@@ -10,7 +10,7 @@ google.setOnLoadCallback(function()
 	var $djDebug = jQuery('#djDebug');
 	var $djDebugOpenToolbarButton = jQuery('#djDebugToggleToolbar');
 	var $djDebugCloseToolbarButton = jQuery('#djDebug #djDebugCloseToolbar');
-	var $djDebugButtons = jQuery('#djDebug .djDebugButton');
+	var $djDebugButtons = jQuery('#djDebug .djDebugButton:not(.disabled)');
 	var $djDebugDecorations = jQuery('#decoration');
 	var $document = jQuery(document);
 	var $djDebugDebugBarHeight = 29;

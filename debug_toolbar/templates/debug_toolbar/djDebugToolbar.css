@@ -172,6 +172,16 @@
 	{
 		color: #fff;
 	}
+	#djDebug #djDebugPanelList li.djDebugButton.disabled,
+	#djDebug #djDebugPanelList li.djDebugButton.disabled:hover,
+	#djDebug #djDebugPanelList li.djDebugButton.disabled a, 
+	#djDebug #djDebugPanelList li.djDebugButton.disabled a:hover
+	{
+		color: #366133;
+		background: #143e2b;
+		opacity: 1;
+		cursor: default;
+	}
 #djDebug #djDebugPanelList li#djDebugCloseToolbar
 {
 	font-family: verdana;
