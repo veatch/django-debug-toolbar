@@ -71,9 +71,8 @@ google.setOnLoadCallback(function()
 	{
 		// Show panel decorations.
 		$djDebugDecorations.show();
-
 		// Bind events to tabSet that allows for tabbed content.
-		jQuery('.tabSet li', obj).click(function(event)
+		jQuery('.tabSet li:not(.filterContainer,.close)', obj).click(function(event)
 		{
 			var $this = jQuery(this);
 			var current = jQuery('li.current', $this.parent());
@@ -81,7 +80,7 @@ google.setOnLoadCallback(function()
 			jQuery('#' + current.attr('rel')).hide();
 			$this.addClass('current');
 			jQuery('#' + $this.attr('rel')).show();
-		});
+		}).append('<div class="decoration" id="leftDecoration" /><div class="decoration" id="rightDecoration" />');
 		// Binds an event to close button that close current panel.
 		jQuery('.tabSet li.close', obj).click(function(event)
 		{

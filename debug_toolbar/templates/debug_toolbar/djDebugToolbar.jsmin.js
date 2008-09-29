@@ -15,8 +15,8 @@ $body.css('margin-top',marginTop);}
 function djDebugHidePanel()
 {$djDebugDecorations.hide();jQuery('#djDebug .panelContent').hide();jQuery('#djDebug .djDebugButton.current').removeClass('current');}
 function djDebugShowPanel(obj)
-{$djDebugDecorations.show();jQuery('.tabSet li',obj).click(function(event)
-{var $this=jQuery(this);var current=jQuery('li.current',$this.parent());current.removeClass('current');jQuery('#'+current.attr('rel')).hide();$this.addClass('current');jQuery('#'+$this.attr('rel')).show();});jQuery('.tabSet li.close',obj).click(function(event)
+{$djDebugDecorations.show();jQuery('.tabSet li:not(.filterContainer,.close)',obj).click(function(event)
+{var $this=jQuery(this);var current=jQuery('li.current',$this.parent());current.removeClass('current');jQuery('#'+current.attr('rel')).hide();$this.addClass('current');jQuery('#'+$this.attr('rel')).show();}).append('<div class="decoration" id="leftDecoration" /><div class="decoration" id="rightDecoration" />');jQuery('.tabSet li.close',obj).click(function(event)
 {djDebugHidePanel();});jQuery('#djDebug table.data.sortable thead tr').one('click',function()
 {jQuery("table.data.sortable:not(.sorted)",obj).addClass('sorted').tablesorter({widgets:['zebra']});jQuery('th',this).addClass('headerSort').one('mousedown',function()
 {jQuery(this).parent().find('th').removeClass('headerSort');});});jQuery('a.infoIcon',obj).each(function(index)
