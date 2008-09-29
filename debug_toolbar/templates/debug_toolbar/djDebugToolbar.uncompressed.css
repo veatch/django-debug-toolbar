@@ -21,6 +21,7 @@
 	border: 1px solid #173a28;
 	color: #fff;
 	cursor: pointer;
+	z-index: 1001;
 }
 #djDebug *
 {
