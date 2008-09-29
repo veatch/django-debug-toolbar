@@ -328,6 +328,7 @@
 {
 	white-space:pre-wrap;
 	color: #333;
+	font-family: arial;
 }
 #djDebug .container .sql-query td
 {
