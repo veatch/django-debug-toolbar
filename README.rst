@@ -12,12 +12,13 @@ content are displayed.
 
 Currently, the following panels have been written and are working:
 
-- SQL queries including time to execute
+- Detailed SQL queries
 - Request timer
 - Common HTTP headers
 - Cache statistics
 - HTTP variables
 - Profile module
+- Logging message output
 
 If you have ideas for other panels please let us know.
 
