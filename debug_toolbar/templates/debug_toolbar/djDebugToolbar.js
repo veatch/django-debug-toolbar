@@ -24,7 +24,7 @@ google.setOnLoadCallback(function()
 	function djDebugReadCookie(name) {
 		var nameEQ = name+'=';
 		var ca = document.cookie.split(';');
-		for(var i=0;i < ca.length;i++) {
+		for(var i=0, l = ca.length; i < l; i++) {
 			var c = ca[i];
 			while (c.charAt(0) === ' ')
 			{
@@ -123,7 +123,7 @@ google.setOnLoadCallback(function()
 				});
 			}
 			// Resets the array.
-			widthArray.slice();
+			widthArray = [];
 		});
 		obj.show();
 	}
@@ -190,23 +190,20 @@ google.setOnLoadCallback(function()
 						var filterParent = jQuery(this).parents('.panelContent');
 						var values = jQuery(this).val().split(' ');
 						var rows = jQuery('table.data tbody tr', filterParent);
-						var length = values.length-1;
 
 						var pos = [];
 						var posIndex = 0;
-						var posLength;
 
 						var neg = [];
 						var negIndex = 0;
-						var negLength;
 
 						// Hide all rows and error messages so we start working with a clean slate.
 						rows.hide();
 						jQuery('.error-message', filterParent).remove();
 
 						// Sorts the values supplied into arrays with "what we want" and "what we don't want".
-						for(var i=0; i<=length; i++)
-						{
+						for(var i=0, l=values.length; i < l; i++)
+						{ 
 							var firstChar = values[i].substr(0,1);
 							if (firstChar === '-' && values[i].length > 1)
 							{
@@ -220,14 +217,12 @@ google.setOnLoadCallback(function()
 							}
 						}
 						// Filter out the content rows using "what we want" array.
-						posLength = pos.length-1;
-						for(i=0; i<=posLength; i++)
+						for(i=0, l=pos.length; i < l; i++)
 						{
 							rows = rows.filter(':icontains('+pos[i]+')');
 						}
 						// Filter out the content rows using "what we don't want" array.
-						negLength = neg.length-1;
-						for(i=0; i<=negLength; i++)
+						for(i=0, l=neg.length; i < l; i++)
 						{
 							rows = rows.filter(':not(:icontains('+neg[i]+'))');
 						}
