@@ -22,7 +22,12 @@ function djDebugShowPanel(obj)
 {jQuery('table.data.sortable:not(.sorted)',obj).addClass('sorted').tablesorter({widgets:['zebra']});jQuery('th',this).addClass('headerSort').one('mousedown',function()
 {jQuery(this).parent().find('th').removeClass('headerSort');});});jQuery('a.infoIcon',obj).each(function(index)
 {jQuery(this).click(function(event)
-{eval(jQuery(this).attr('href'));return false;});});obj.show();}
+{eval(jQuery(this).attr('href'));return false;});});var widthArray=[];jQuery('table',obj).each(function(index)
+{jQuery('colgroup col',this).each(function(index)
+{widthArray[widthArray.length]=jQuery(this).css('width');});if(widthArray.length!==0)
+{jQuery('thead th',this).each(function(index)
+{jQuery(this).css('width',widthArray[index]);});}
+widthArray.slice();});obj.show();}
 function djDebugWindow(url,locals)
 {jQuery('html, body').animate({scrollTop:0});jQuery.ajax({type:'GET',data:url,success:function(html)
 {jQuery('#djDebug .panelContent').hide();var obj=jQuery('#djDebugTempPanelContent');document.getElementById('djDebugTempPanelContent').innerHTML=html;var el;var els=jQuery('script',obj);for(var i=0;(el=els[i]);i++){eval(jQuery(el).html());jQuery(el).remove();}

@@ -104,6 +104,27 @@ google.setOnLoadCallback(function()
 				return false;
 			});
 		});
+		// Makes colgroup work on most browsers.
+		var widthArray = [];
+		jQuery('table', obj).each(function(index)
+		{
+			// Collect the width data.
+			jQuery('colgroup col', this).each(function(index)
+			{
+				widthArray[widthArray.length] = jQuery(this).css('width');
+			});
+			// Makes sure we have something to apply before finding elements.
+			if (widthArray.length !== 0)
+			{
+				// Apply the width data on table th to structure the tables cell width. 
+				jQuery('thead th', this).each(function(index)
+				{
+					jQuery(this).css('width',widthArray[index]);
+				});
+			}
+			// Resets the array.
+			widthArray.slice();
+		});
 		obj.show();
 	}
 	// Sends an ajax request, executes the scripts in the fetched source, binds events and then inserts it to the temporary content panel.
