@@ -30,9 +30,15 @@ class ProfilerDebugPanel(DebugPanel):
                 else:
                     current.append(stats.stats[func][1])
                 current.append(stats.stats[func][2]*1000)
-                current.append(stats.stats[func][2]*1000/stats.stats[func][1])
+                if stats.stats[func][1]:
+                    current.append(stats.stats[func][2]*1000/stats.stats[func][1])
+                else:
+                    current.append(0)
                 current.append(stats.stats[func][3]*1000)
-                current.append(stats.stats[func][3]*1000/stats.stats[func][0])
+                if stats.stats[func][0]:
+                    current.append(stats.stats[func][3]*1000/stats.stats[func][0])
+                else:
+                    current.append(0)
                 current.append(pstats.func_std_string(func))
                 function_calls.append(current)
             self.stats = stats
