@@ -4,18 +4,18 @@
 </ul>
 <h1>Request Headers</h1>
 <table class="data sortable" border="0" cellspacing="0" cellpadding="0"> 
-    <thead>
-        <tr>
-            <th>Key</th>
-            <th>Value</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for key, value in headers.iteritems %}
-            <tr class="{% cycle 'even' 'odd' %}">
-                <td>{{ key|escape }}</td>
-                <td>{{ value|escape }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
+	<thead>
+		<tr>
+			<th>Key</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for key, value in headers.iteritems %}
+			<tr class="{% cycle 'even' 'odd' %}">
+				<td>{{ key|escape }}</td>
+				<td>{{ value|escape }}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
 </table>
