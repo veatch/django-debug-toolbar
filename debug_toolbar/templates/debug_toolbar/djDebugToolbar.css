@@ -1,3 +1,7 @@
+#djDebug, #djDebug *
+{
+	position: static;
+}
 #djDebug.hide, #djDebug .hide
 {
 	display: none !important;
