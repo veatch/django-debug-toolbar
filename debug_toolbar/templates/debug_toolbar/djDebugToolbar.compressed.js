@@ -75,4 +75,4 @@ return false;case 83:if($djDebug.hasClass('hide'))
 {$djDebugOpenToolbarButton.click();}
 else
 {$djDebugCloseToolbarButton.click();}
-return false;default:}}});djDebugInitiateFiltering();jQuery.getScript('http://debug-django.appspot.com/js/jquery.tablesorter.js');});
+return false;default:}}});djDebugInitiateFiltering();});

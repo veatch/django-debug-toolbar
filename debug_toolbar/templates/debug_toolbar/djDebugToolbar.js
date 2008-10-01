@@ -334,7 +334,4 @@ jQuery(function()
 	});
 	// Initiates the filtering feature on all input elements with class filter.
 	djDebugInitiateFiltering();
-
-	// jQuery plugin: Tablesorter 2.0 - http://tablesorter.com/docs/
-	jQuery.getScript('http://debug-django.appspot.com/js/jquery.tablesorter.js');
 });
