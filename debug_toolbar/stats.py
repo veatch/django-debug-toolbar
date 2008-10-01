@@ -81,15 +81,13 @@ class StatCollection(object):
         return self.calls.get(key, [])
 
 _stats = local()
-_stats.collection = StatCollection()
-_stats.track = False
-STATS = _stats.collection
+STATS = lambda: getattr(_stats, 'collection')
 
 def enable_tracking(true_or_false):
     _stats.track = true_or_false
 
 def reset_tracking():
-    _stats.collection.reset()
+    _stats.collection = StatCollection()
     _stats.track = False
 
 def freeze_tracking():
