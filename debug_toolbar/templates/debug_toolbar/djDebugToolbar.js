@@ -1,6 +1,5 @@
 // Load jQuery using Google's AJAX Libraries API - http://code.google.com/apis/ajaxlibs/
-google.load('jquery', '1.2.6');
-google.setOnLoadCallback(function()
+jQuery(function()
 {
 	// Make sure jQuery doesn't conflict with other JavaScript code.
 	jQuery.noConflict();

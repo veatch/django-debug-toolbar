@@ -1,5 +1,5 @@
 
-google.load('jquery','1.2.6');google.setOnLoadCallback(function()
+jQuery(function()
 {jQuery.noConflict();var $body=jQuery('body');var $djDebug=jQuery('#djDebug');var $djDebugOpenToolbarButton=jQuery('#djDebugToggleToolbar');var $djDebugCloseToolbarButton=jQuery('#djDebug #djDebugCloseToolbar');var $djDebugButtons=jQuery('#djDebug .djDebugButton:not(.disabled)');var $djDebugDecorations=jQuery('#decoration');var $document=jQuery(document);var $djDebugDebugBarHeight=29;function djDebugCreateCookie(name,value)
 {document.cookie=name+'='+value+'; path=/';}
 function djDebugReadCookie(name){var nameEQ=name+'=';var ca=document.cookie.split(';');for(var i=0,l=ca.length;i<l;i++){var c=ca[i];while(c.charAt(0)===' ')
