@@ -54,7 +54,7 @@ else
 {jQuery(this).prev().val('').keyup();});});});};jQuery('#djDebug input.filter').djDebugFilter();}
 if(djDebugReadCookie('djDebugShow')!=='false')
 {djDebugHandleToolbar('open');}
-$djDebugCloseToolbarButton.click(function(event)
+jQuery('li.name').append('<div class="overlay"/>');$djDebugCloseToolbarButton.click(function(event)
 {djDebugHandleToolbar('close');});$djDebugOpenToolbarButton.click(function(event)
 {djDebugHandleToolbar('open');});$djDebugButtons.each(function()
 {jQuery(this).click(function(event)

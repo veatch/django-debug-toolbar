@@ -253,6 +253,8 @@ jQuery(function()
 	{
 		djDebugHandleToolbar('open');
 	}
+	// Adds div to li.name for css usage.
+	jQuery('li.name').append('<div class="overlay"/>');
 	// Add event to "close debug toolbar" button that hides entire debug toolbar.
 	$djDebugCloseToolbarButton.click(function(event)
 	{
