@@ -1,6 +1,5 @@
 // Load jQuery using Google's AJAX Libraries API - http://code.google.com/apis/ajaxlibs/
-google.load('jquery', '1.2.6');
-google.setOnLoadCallback(function()
+jQuery(function()
 {
 	// Make sure jQuery doesn't conflict with other JavaScript code.
 	jQuery.noConflict();
@@ -24,7 +23,7 @@ google.setOnLoadCallback(function()
 	function djDebugReadCookie(name) {
 		var nameEQ = name+'=';
 		var ca = document.cookie.split(';');
-		for(var i=0;i < ca.length;i++) {
+		for(var i=0, l = ca.length; i < l; i++) {
 			var c = ca[i];
 			while (c.charAt(0) === ' ')
 			{
@@ -104,6 +103,27 @@ google.setOnLoadCallback(function()
 				return false;
 			});
 		});
+		// Makes colgroup work on most browsers.
+		var widthArray = [];
+		jQuery('table', obj).each(function(index)
+		{
+			// Collect the width data.
+			jQuery('colgroup col', this).each(function(index)
+			{
+				widthArray[widthArray.length] = jQuery(this).css('width');
+			});
+			// Makes sure we have something to apply before finding elements.
+			if (widthArray.length !== 0)
+			{
+				// Apply the width data on table th to structure the tables cell width. 
+				jQuery('thead th', this).each(function(index)
+				{
+					jQuery(this).css('width',widthArray[index]);
+				});
+			}
+			// Resets the array.
+			widthArray = [];
+		});
 		obj.show();
 	}
 	// Sends an ajax request, executes the scripts in the fetched source, binds events and then inserts it to the temporary content panel.
@@ -169,23 +189,20 @@ google.setOnLoadCallback(function()
 						var filterParent = jQuery(this).parents('.panelContent');
 						var values = jQuery(this).val().split(' ');
 						var rows = jQuery('table.data tbody tr', filterParent);
-						var length = values.length-1;
 
 						var pos = [];
 						var posIndex = 0;
-						var posLength;
 
 						var neg = [];
 						var negIndex = 0;
-						var negLength;
 
 						// Hide all rows and error messages so we start working with a clean slate.
 						rows.hide();
 						jQuery('.error-message', filterParent).remove();
 
 						// Sorts the values supplied into arrays with "what we want" and "what we don't want".
-						for(var i=0; i<=length; i++)
-						{
+						for(var i=0, l=values.length; i < l; i++)
+						{ 
 							var firstChar = values[i].substr(0,1);
 							if (firstChar === '-' && values[i].length > 1)
 							{
@@ -199,14 +216,12 @@ google.setOnLoadCallback(function()
 							}
 						}
 						// Filter out the content rows using "what we want" array.
-						posLength = pos.length-1;
-						for(i=0; i<=posLength; i++)
+						for(i=0, l=pos.length; i < l; i++)
 						{
 							rows = rows.filter(':icontains('+pos[i]+')');
 						}
 						// Filter out the content rows using "what we don't want" array.
-						negLength = neg.length-1;
-						for(i=0; i<=negLength; i++)
+						for(i=0, l=neg.length; i < l; i++)
 						{
 							rows = rows.filter(':not(:icontains('+neg[i]+'))');
 						}
@@ -238,6 +253,8 @@ google.setOnLoadCallback(function()
 	{
 		djDebugHandleToolbar('open');
 	}
+	// Adds div to li.name for css usage.
+	jQuery('li.name').append('<div class="overlay"/>');
 	// Add event to "close debug toolbar" button that hides entire debug toolbar.
 	$djDebugCloseToolbarButton.click(function(event)
 	{
@@ -319,7 +336,4 @@ google.setOnLoadCallback(function()
 	});
 	// Initiates the filtering feature on all input elements with class filter.
 	djDebugInitiateFiltering();
-
-	// jQuery plugin: Tablesorter 2.0 - http://tablesorter.com/docs/
-	jQuery.getScript('http://debug-django.appspot.com/js/jquery.tablesorter.js');
 });
