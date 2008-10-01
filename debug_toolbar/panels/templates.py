@@ -7,7 +7,7 @@ from django.template.loader import render_to_string
 from django.utils import simplejson
 from django import template
 
-from debug_toolbar.stats import track, STATS
+from debug_toolbar.stats import track, get_stats
 
 template.Template.render = track(template.Template.render, 'templates:django')
 
@@ -37,23 +37,23 @@ class TemplatesDebugPanel(DebugPanel):
             return render_to_response('debug_toolbar/panels/templates_explain.html')
 
     def title(self):
-        return 'Templates: %d' % (STATS.get_total_calls('templates:django') + \
-                STATS.get_total_calls('templates:jinja') + \
-                STATS.get_total_calls('templates:jinja2'),)
+        return 'Templates: %d' % (get_stats().get_total_calls('templates:django') + \
+                get_stats().get_total_calls('templates:jinja') + \
+                get_stats().get_total_calls('templates:jinja2'),)
 
     def url(self):
         return ''
 
     def content(self):
         context = dict(
-            template_calls = STATS.get_total_calls('templates:django') + \
-                    STATS.get_total_calls('templates:jinja') + \
-                    STATS.get_total_calls('templates:jinja2'),
-            template_time = STATS.get_total_time('templates:django') + \
-                    STATS.get_total_time('templates:jinja') + \
-                    STATS.get_total_time('templates:jinja2'),
-            template_calls_list = [(c['time'], c['args'][0].name, 'django', simplejson.dumps(c['stack'])) for c in STATS.get_calls('templates:django')] + \
-                    [(c['time'], c['args'][1], 'jinja', simplejson.dumps(c['stack'])) for c in STATS.get_calls('templates:jinja')] + \
-                    [(c['time'], c['args'][1], 'jinja2', simplejson.dumps(c['stack'])) for c in STATS.get_calls('templates:jinja2')],
+            template_calls = get_stats().get_total_calls('templates:django') + \
+                    get_stats().get_total_calls('templates:jinja') + \
+                    get_stats().get_total_calls('templates:jinja2'),
+            template_time = get_stats().get_total_time('templates:django') + \
+                    get_stats().get_total_time('templates:jinja') + \
+                    get_stats().get_total_time('templates:jinja2'),
+            template_calls_list = [(c['time'], c['args'][0].name, 'django', simplejson.dumps(c['stack'])) for c in get_stats().get_calls('templates:django')] + \
+                    [(c['time'], c['args'][1], 'jinja', simplejson.dumps(c['stack'])) for c in get_stats().get_calls('templates:jinja')] + \
+                    [(c['time'], c['args'][1], 'jinja2', simplejson.dumps(c['stack'])) for c in get_stats().get_calls('templates:jinja2')],
         )
         return render_to_string('debug_toolbar/panels/templates.html', context)

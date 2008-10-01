@@ -6,7 +6,7 @@ except ImportError:
 import inspect
 import time
 
-__all__ = ('track', 'STATS', 'enable_tracking', 'reset_tracking', 'freeze_tracking')
+__all__ = ('track', 'get_stats', 'enable_tracking', 'reset_tracking', 'freeze_tracking')
 
 class StatCollection(object):
     def __init__(self):
@@ -81,7 +81,8 @@ class StatCollection(object):
         return self.calls.get(key, [])
 
 _stats = local()
-STATS = lambda: getattr(_stats, 'collection')
+def get_stats():
+    return _stats.collection
 
 def enable_tracking(true_or_false):
     _stats.track = true_or_false
