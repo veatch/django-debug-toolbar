@@ -3,10 +3,13 @@ Debug Toolbar middleware
 """
 from django.conf import settings
 from django.utils.encoding import smart_unicode
+from django.views.static import serve
+from django.http import Http404
 from debug_toolbar.toolbar.loader import DebugToolbar
 from debug_toolbar.stats import enable_tracking, reset_tracking, freeze_tracking
 try: import cStringIO as StringIO
 except ImportError: import StringIO
+import os.path
 
 _HTML_TYPES = ('text/html', 'application/xhtml+xml')
 
@@ -38,10 +41,15 @@ class DebugToolbarMiddleware(object):
                 return False
         return True
 
+    def static_serve(self, request, fname):
+        return serve(request, fname, os.path.join(os.path.dirname(__file__), 'media'))
+        
     def process_request(self, request):
         reset_tracking()
         if self.show_toolbar(request):
             # Enable statistics tracking
+            if request.GET.get('djDebugStatic'):
+                return self.static_serve(request, request.GET['djDebugStatic'])
             if not request.is_ajax():
                 enable_tracking(True)
             self.debug_toolbar = DebugToolbar(request)

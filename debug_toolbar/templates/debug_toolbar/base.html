@@ -1,15 +1,8 @@
-<style type="text/css">
-	{% include "debug_toolbar/djDebugToolbar.compressed.css" %}
-</style>
-<script type="text/javascript">
-	{% include "debug_toolbar/jquery.js" %}
-</script>
-<script type="text/javascript">
-	{% include "debug_toolbar/jquery.tablesorter.js" %}
-</script>
-<script type="text/javascript">
-	{% include "debug_toolbar/djDebugToolbar.compressed.js" %}
-</script>
+<style type="text/css">@import url('{{ base_url }}?djDebugStatic=djDebugToolbar.compressed.css');</style>
+<script type="text/javascript" src="{{ base_url }}?djDebugStatic=jquery.js"></script>
+<script type="text/javascript" src="{{ base_url }}?djDebugStatic=jquery.tablesorter.js"></script>
+<script type="text/javascript" src="{{ base_url }}?djDebugStatic=djDebugToolbar.compressed.js"></script>
+
 {% ifnotequal debug_show_cookie "false" %}
 	<div class="hide" id="djDebugToggleToolbar">+</div>
 	<div id="djDebug">
