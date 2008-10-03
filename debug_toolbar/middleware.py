@@ -12,8 +12,8 @@ _HTML_TYPES = ('text/html', 'application/xhtml+xml')
 
 def replace_insensitive(string, target, replacement):
     no_case = string.lower()
-    index = no_case.find(target.lower())
-    if index >= 0:
+    index = no_case.rfind(target.lower())
+    if index != -1:
         result = string[:index] + replacement + string[index + len(target):]
         return result
     # no results so return the original string

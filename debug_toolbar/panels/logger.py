@@ -44,7 +44,6 @@ logging.root.addHandler(handler)
 
 class LoggingPanel(DebugPanel):
     name = 'Logging'
-    has_content = True
     
     def process_request(self, request):
         handler.clear_records()
@@ -56,6 +55,9 @@ class LoggingPanel(DebugPanel):
     
     def title(self):
         return "Logging (%s message%s)" % (len(handler.get_records()), (len(handler.get_records()) == 1) and '' or 's')
+    
+    def has_content(self):
+        return bool(handler.get_records())
     
     def url(self):
         return ''

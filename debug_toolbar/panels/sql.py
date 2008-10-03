@@ -93,6 +93,9 @@ class SQLDebugPanel(DebugPanel):
         self.total_time = sum(map(lambda q: q['time'], self.queries))
         return response
 
+    def has_content(self):
+        return bool(self.queries)
+
     def title(self):
         return 'SQL: %.2fms (%d queries)' % (self.total_time, len(self.queries))
 

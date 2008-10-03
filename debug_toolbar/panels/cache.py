@@ -30,6 +30,9 @@ class CacheDebugPanel(DebugPanel):
     def url(self):
         return ''
 
+    def has_content(self):
+        return bool(get_stats().get_total_calls('cache'))
+
     def content(self):
         context = dict(
             cache_calls = get_stats().get_total_calls('cache'),
