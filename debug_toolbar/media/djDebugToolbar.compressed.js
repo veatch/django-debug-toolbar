@@ -69,7 +69,7 @@ return false;});});$document.keydown(function(e)
 return false;}
 if(e.metaKey===true)
 {switch(e.keyCode)
-{case 37:jQuery('.current').prev().click();return false;case 39:jQuery('.current').next().click();return false;case 38:djDebugHidePanel();return false;case 40:if(jQuery('li.current').length!==2)
+{case 37:jQuery('.current').prevAll('.djDebugButton:not(.disabled):first').click();return false;case 39:jQuery('.current').nextAll('.djDebugButton:not(.disabled):first').click();return false;case 38:djDebugHidePanel();return false;case 40:if(jQuery('li.current').length!==2)
 {$djDebugButtons.filter(':first').click();}
 return false;case 83:if($djDebug.hasClass('hide'))
 {$djDebugOpenToolbarButton.click();}
