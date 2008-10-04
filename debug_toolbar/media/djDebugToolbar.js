@@ -306,10 +306,10 @@ jQuery(function()
 			switch(e.keyCode)
 			{
 				case 37: // Ctrl + Left - Shows the panel left to the current panel in panelList.
-					jQuery('.current').prev().click();
+					jQuery('.current').prevAll('.djDebugButton:not(.disabled):first').click();
 					return false;
 				case 39: // Ctrl + Right - Shows the panel right to the current panel in panelList.
-					jQuery('.current').next().click();
+					jQuery('.current').nextAll('.djDebugButton:not(.disabled):first').click();
 					return false;
 				case 38: // Ctrl + Up - Hides current panel.
 					djDebugHidePanel();
