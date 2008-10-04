@@ -62,7 +62,9 @@ jQuery('li.name').append('<div class="overlay"/>');$djDebugCloseToolbarButton.cl
 {djDebugHidePanel();}
 else
 {djDebugHidePanel();$this.addClass('current');djDebugShowPanel(jQuery('#'+$this.attr('rel')));}
-return false;});});$document.keydown(function(e)
+return false;});});jQuery('#djDebugFireBug').click(function(event)
+{jQuery.getScript('http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js',function()
+{firebug.init();});});$document.keydown(function(e)
 {if(e.keyCode===27)
 {if(!$djDebug.hasClass('hide'))
 {$djDebugCloseToolbarButton.click();}
