@@ -18,6 +18,7 @@ Currently, the following panels have been written and are working:
 - Cache statistics
 - HTTP variables
 - Profile module
+- Templates rendered
 - Logging message output
 
 If you have ideas for other panels please let us know.
