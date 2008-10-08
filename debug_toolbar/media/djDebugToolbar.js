@@ -127,13 +127,15 @@ jQuery(function()
 		obj.show();
 	}
 	// Sends an ajax request, executes the scripts in the fetched source, binds events and then inserts it to the temporary content panel.
-	function djDebugWindow(url, locals)
+	function djDebugWindow(panel, params, locals)
 	{
+		params.djDebug = panel;
 		jQuery('html, body').animate({scrollTop:0});
 		jQuery.ajax(
 		{
+			url: djDebugBaseUrl,
 			type: 'GET',
-			data: url,
+			data: params,
 			success: function(html)
 			{
 				// Hide all panels.

@@ -28,8 +28,8 @@ function djDebugShowPanel(obj)
 {jQuery('thead th',this).each(function(index)
 {jQuery(this).css('width',widthArray[index]);});}
 widthArray=[];});obj.show();}
-function djDebugWindow(url,locals)
-{jQuery('html, body').animate({scrollTop:0});jQuery.ajax({type:'GET',data:url,success:function(html)
+function djDebugWindow(panel,params,locals)	
+{params.djDebug=panel;jQuery('html, body').animate({scrollTop:0});jQuery.ajax({type:'GET',url:djDebugBaseUrl,data:params,success:function(html)
 {jQuery('#djDebug .panelContent').hide();var obj=jQuery('#djDebugTempPanelContent');document.getElementById('djDebugTempPanelContent').innerHTML=html;var el;var els=jQuery('script',obj);for(var i=0;(el=els[i]);i++){eval(jQuery(el).html());jQuery(el).remove();}
 djDebugShowPanel(jQuery('#djDebugTempPanel'));jQuery('.back',obj).click(function(event)
 {jQuery('#djDebugTempPanel').hide();jQuery('#'+jQuery('#djDebug .djDebugButton.current').attr('rel')).show();});}});}

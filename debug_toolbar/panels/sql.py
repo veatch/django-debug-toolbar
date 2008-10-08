@@ -103,7 +103,7 @@ class SQLDebugPanel(DebugPanel):
         return ''
 
     def content(self):
-        queries = [(q['time'], q['sql'], q['raw_sql'], simplejson.dumps(q['params']), simplejson.dumps(q['stack'])) for q in sorted(self.queries, key=lambda x: x['time'])[::-1]]
+        queries = [(q['time'], q['sql'], q['raw_sql'], q['params'], q['stack']) for q in sorted(self.queries, key=lambda x: x['time'])[::-1]]
 
         query_groups = {}
         for item in queries:
