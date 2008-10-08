@@ -54,7 +54,7 @@
 				<td>{{ func|escape }}</td>
 				<td>{% if args %}{{ args|escape }}{% endif %}</td>
 				<td>{% if kwargs %}{{ kwargs|escape }}{% endif %}</td>
-				<td><a href="javascript:djDebugWindow('djDebug=Cache&amp;op=explain', {stack: {{ stack }}});" class="infoIcon">Details</a></td>
+				<td><a href="javascript:djDebugWindow('Cache', {op: 'explain'}, {stack: {{ stack }}});" class="infoIcon">Details</a></td>
 			</tr>
 			{% endfor %}
 		</tbody>
