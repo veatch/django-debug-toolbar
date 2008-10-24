@@ -33,11 +33,15 @@ class DebugToolbarMiddleware(object):
     def show_toolbar(self, request, response=None):
         if not settings.DEBUG:
             return False
+        if not getattr(settings, 'DEBUG_TOOLBAR', True):
+            return False
         if (not request.META.get('REMOTE_ADDR') in settings.INTERNAL_IPS) and \
                 (request.user.is_authenticated() and not request.user.is_superuser):
             return False
         if response:
             if getattr(response, 'skip_debug_response', False):
+                return False
+            if response.status_code >= 300 and response.status_code < 400:
                 return False
         return True
 
