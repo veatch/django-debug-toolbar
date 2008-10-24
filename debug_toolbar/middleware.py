@@ -41,6 +41,8 @@ class DebugToolbarMiddleware(object):
         if response:
             if getattr(response, 'skip_debug_response', False):
                 return False
+            if response.status_code >= 300 and response.status_code < 400:
+                return False
         return True
 
     def static_serve(self, request, fname):
