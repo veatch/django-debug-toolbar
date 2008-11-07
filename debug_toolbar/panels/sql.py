@@ -69,8 +69,12 @@ class SQLDebugPanel(DebugPanel):
                             cursor.execute("SHOW INDEX FROM `%s`" % (row[2],))
                             indexes[table_name] = {}
                             for index in cursor.fetchall():
-                                name, column, non_unique, cardinality, itype = index[2], index[4], index[1], index[6], index[10]
-                                if non_unique:
+                                name, column, unique_flag, cardinality, itype = index[2], index[4], index[1], index[6], index[10]
+                                # Being that only my local copy of MySQL 5.1.x (Beta)
+                                # shows this as false on uniques, and the release copy of
+                                # 5.x shows it as true, we're going to assume true
+                                # is correct
+                                if unique_flag:
                                     typename = 'UNIQUE %s' % (itype,)
                                 else:
                                     typename = itype
