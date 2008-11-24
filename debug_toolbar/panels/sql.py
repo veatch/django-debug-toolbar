@@ -19,13 +19,16 @@ class DatabaseStatTracker(util.CursorDebugWrapper):
             return self.cursor.execute(sql, params)
         finally:
             stop = time.time()
+            stack = inspect.stack()
+            if len(stack) > 1:
+                stack = [s[1:] for s in stack]
             # We keep `sql` to maintain backwards compatibility
             self.db.queries.append({
                 'sql': self.db.ops.last_executed_query(self.cursor, sql, params),
                 'time': (stop - start)*1000,
                 'raw_sql': sql,
                 'params': params,
-                'stack': [s[1:] for s in inspect.stack()[1:]],
+                'stack': stack,
             })
 
 util.CursorDebugWrapper = DatabaseStatTracker
