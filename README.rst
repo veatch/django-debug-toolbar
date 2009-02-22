@@ -17,6 +17,7 @@ Currently, the following panels have been written and are working:
 - Common HTTP headers
 - Cache statistics
 - HTTP variables
+- Settings variables
 - Profile module
 - Templates rendered
 - Logging message output
@@ -52,6 +53,7 @@ Installation
 	    'debug_toolbar.panels.cache.CacheDebugPanel',
 	    'debug_toolbar.panels.profiler.ProfilerDebugPanel',
 	    'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
+		'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
 	    'debug_toolbar.panels.templates.TemplatesDebugPanel',
 	    # If you are using the profiler panel you don't need the timer
 	    # 'debug_toolbar.panels.timer.TimerDebugPanel',
