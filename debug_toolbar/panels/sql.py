@@ -126,3 +126,37 @@ class SQLDebugPanel(DebugPanel):
             'query_groups': query_groups,
         }
         return render_to_string('debug_toolbar/panels/sql.html', context)
+
+
+from django.utils.html import conditional_escape
+from django.utils.safestring import mark_safe
+from django import template
+
+register = template.Library()
+
+@register.filter
+def formatsql(sql, br='break'):
+    sql = sql.replace(',', ', ')
+    if br == 'break':
+        sql = sql.replace('SELECT ', '\t\tSELECT\n\t')
+        sql = sql.replace(' FROM ', '\n\t\tFROM\n\t')
+        sql = sql.replace(' WHERE ', '\n\t\tWHERE\n\t')
+        sql = sql.replace(' INNER JOIN ', '\n\t\tINNER JOIN\n\t')
+        sql = sql.replace(' LEFT OUTER JOIN ', '\n\t\tLEFT OUTER JOIN\n\t')
+        sql = sql.replace(' ORDER BY ', '\n\t\tORDER BY\n\t')
+    # Use Pygments to highlight SQL if it's available
+    try:
+        from pygments import highlight
+        from pygments.lexers import SqlLexer
+        from pygments.formatters import HtmlFormatter
+        sql = highlight(sql, SqlLexer(), HtmlFormatter())
+        sql = sql.replace('<pre>', '<pre class="sql-query">')
+    except ImportError:
+        import re
+        sql = '<pre class="sql-query">' + re.sub(r'(UNION|ANALYZE|MATCH|AGAINST|ALL|ASC|AS|ALTER|AND|ADD|AUTO_INCREMENT|BETWEEN|BINARY|BOTH|BY|BOOLEAN|CHANGE|CHECK|COLUMNS|COLUMN|CROSS|CREATE|DATABASES|DATABASE|DATA|DELAYED|DESCRIBE|DESC|DISTINCT|DELETE|DROP|DEFAULT|ENCLOSED|ESCAPED|EXISTS|EXPLAIN|FIELDS|FIELD|FLUSH|FOR|FOREIGN|FUNCTION|FROM|GROUP|GRANT|HAVING|IGNORE|INDEX|INFILE|INSERT|INNER JOIN|INTO|IDENTIFIED|IN|IS|IF|JOIN|KEYS|KILL|KEY|LEADING|LIKE|LIMIT|LINES|LOAD|LOCAL|LOCK|LOW_PRIORITY|LEFT|LANGUAGE|MODIFY|NATURAL|NOT|NULL|NEXTVAL|OPTIMIZE|OPTION|OPTIONALLY|ORDER BY|OUTFILE|OR|OUTER|ON|PROCEEDURE|PROCEDURAL|PRIMARY|READ|REFERENCES|REGEXP|RENAME|REPLACE|RETURN|REVOKE|RLIKE|RIGHT|SHOW|SONAME|STATUS|STRAIGHT_JOIN|SELECT|SETVAL|SET|TABLES|TEMINATED|TO|TRAILING|TRUNCATE|TABLE|TEMPORARY|TRIGGER|TRUSTED|UNIQUE|UNLOCK|USE|USING|UPDATE|VALUES|VARIABLES|VIEW|WITH|WRITE|WHERE|ZEROFILL|TYPE|XOR)', r'<span class="hilight">\1</span>', sql) + '</pre>'
+        pass
+    sql = sql.replace('\t\t', '<span class="indent">')
+    sql = sql.replace('\n\t', '</span>\n')
+    return mark_safe(sql)
+
+template.add_to_builtins('debug_toolbar.panels.sql')
