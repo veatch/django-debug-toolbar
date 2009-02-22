@@ -30,19 +30,21 @@ class DebugToolbarMiddleware(object):
     def __init__(self):
         self.debug_toolbar = None
 
-    def show_toolbar(self, request, response=None):
-        if not settings.DEBUG:
+    def _show_toolbar(self, request, response=None):
+        if not settings.DEBUG or not getattr(settings, 'DEBUG_TOOLBAR', True):
             return False
-        if not getattr(settings, 'DEBUG_TOOLBAR', True):
-            return False
-        if (not request.META.get('REMOTE_ADDR') in settings.INTERNAL_IPS) and \
-                (request.user.is_authenticated() and not request.user.is_superuser):
-            return False
+
         if response:
             if getattr(response, 'skip_debug_response', False):
                 return False
             if response.status_code >= 300 and response.status_code < 400:
                 return False
+        
+        # Allow access if remote ip is in INTERNAL_IPS or
+        # the user doing the request is logged in as super user.
+        if (not request.META.get('REMOTE_ADDR') in settings.INTERNAL_IPS and 
+           (not request.user.is_authenticated() or not request.user.is_superuser)):
+            return False
         return True
 
     def static_serve(self, request, fname):
@@ -50,15 +52,18 @@ class DebugToolbarMiddleware(object):
         
     def process_request(self, request):
         reset_tracking()
-        if self.show_toolbar(request):
-            # Enable statistics tracking
+        if self._show_toolbar(request):
             if request.GET.get('djDebugStatic'):
                 return self.static_serve(request, request.GET['djDebugStatic'])
+            
+            # Enable statistics tracking
             if not request.is_ajax():
                 enable_tracking(True)
+            
             self.debug_toolbar = DebugToolbar(request)
             self.debug_toolbar.load_panels()
             debug = request.GET.get('djDebug')
+            
             # kinda ugly, needs changes to the loader to optimize
             response = None
             for panel in self.debug_toolbar.panels:
@@ -72,7 +77,7 @@ class DebugToolbarMiddleware(object):
 
     def process_view(self, request, callback, callback_args, callback_kwargs):
         # TODO: this doesn't handle multiples yet
-        if self.show_toolbar(request) and not request.is_ajax():
+        if not request.is_ajax() and self._show_toolbar(request):
             new_callback = None
             for panel in self.debug_toolbar.panels:
                 response = panel.process_view(request, callback, callback_args, callback_kwargs)
@@ -80,7 +85,7 @@ class DebugToolbarMiddleware(object):
                     return response
 
     def process_response(self, request, response):
-        if self.show_toolbar(request, response) and not request.is_ajax():
+        if not request.is_ajax() and self._show_toolbar(request, response):
             freeze_tracking()
             if response['Content-Type'].split(';')[0] in _HTML_TYPES:
                 # Saving this here in case we ever need to inject into <head>
