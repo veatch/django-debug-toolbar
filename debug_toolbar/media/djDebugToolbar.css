@@ -255,6 +255,11 @@
 	border-radius: 0 5px 0 0;
 	border-right: 0;
 }
+#djDebug table.data th:last-child:first-child
+{
+	border-radius: 5px 5px 0 0;
+	border-right: 0;
+}
 #djDebug table.data tr:last-child td:first-child
 {
 	-icab-border-bottom-left-radius: 5px;
