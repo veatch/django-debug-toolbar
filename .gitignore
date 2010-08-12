@@ -1,5 +1,5 @@
 build/
 dist/
 *.pyc
-debug_toolbar.egg-info/
-Django-*.egg/
+/*.egg/
+/*.egg-info/

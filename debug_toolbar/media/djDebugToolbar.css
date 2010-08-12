@@ -29,6 +29,7 @@
 }
 #djDebug *
 {
+    width: auto;
 	z-index: 1000;
 	outline:0;
 	line-height: 16px;

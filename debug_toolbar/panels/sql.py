@@ -1,10 +1,13 @@
 from debug_toolbar.panels import DebugPanel
+
+from django.conf import settings
 from django.db import connection
 from django.db.backends import util
 from django.template.loader import render_to_string
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.utils import simplejson
+
 import time
 import os.path
 import inspect
@@ -64,7 +67,7 @@ class SQLDebugPanel(DebugPanel):
                 cursor.close()
                 # Do an explain on indexes
                 # TODO: mySQL only at the moment
-                if headers[2] == 'table':
+                if settings.DATABASE_ENGINE == 'mysql' and headers[2] == 'table':
                     cursor = connection.cursor()
                     indexes = {}
                     for row in response:
