@@ -1,0 +1,24 @@
+{% load i18n %}
+<ul class="tabSet">
+	<li class="close">Close Panel</li>
+</ul>
+<table class="data sortable" border="0" cellspacing="0" cellpadding="0"> 
+	<colgroup>
+		<col style="width:140px;"/>
+		<col/>
+	</colgroup>
+	<thead>
+		<tr>
+			<th>{% trans "Package" %}</th>
+			<th>{% trans "Version" %}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for package, version in versions.iteritems %}
+			<tr class="{% cycle 'even' 'odd' %}">
+				<td>{{ package }}</td>
+				<td>{{ version }}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
