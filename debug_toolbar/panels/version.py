@@ -44,7 +44,7 @@ class VersionDebugPanel(DebugPanel):
             versions[name] = version
 
         context = {
-            'versions': versions,
+            'versions': sorted(versions.items(), key=lambda x: x[0]),
             'paths': sys.path,
         }
         return render_to_string('debug_toolbar/panels/versions.html', context)

@@ -14,7 +14,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		{% for package, version in versions.iteritems %}
+		{% for package, version in versions %}
 			<tr class="{% cycle 'even' 'odd' %}">
 				<td>{{ package }}</td>
 				<td>{{ version }}</td>
