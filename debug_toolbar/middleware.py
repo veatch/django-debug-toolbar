@@ -1,12 +1,14 @@
 """
 Debug Toolbar middleware
 """
+from debug_toolbar.toolbar.loader import DebugToolbar
+from debug_toolbar.stats import enable_tracking, reset_tracking, freeze_tracking
+
 from django.conf import settings
 from django.utils.encoding import smart_unicode
 from django.views.static import serve
 from django.http import Http404
-from debug_toolbar.toolbar.loader import DebugToolbar
-from debug_toolbar.stats import enable_tracking, reset_tracking, freeze_tracking
+
 try: import cStringIO as StringIO
 except ImportError: import StringIO
 import os.path
@@ -32,6 +34,9 @@ class DebugToolbarMiddleware(object):
 
     def _show_toolbar(self, request, response=None):
         if not settings.DEBUG or not getattr(settings, 'DEBUG_TOOLBAR', True):
+            return False
+
+        if request.path.startswith(settings.MEDIA_URL):
             return False
 
         if response:
