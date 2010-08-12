@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-debug-toolbar',
-    version='0.1',
+    version='.'.join(map(str, __import__('debug_toolbar').__version__)),
     url='http://github.com/dcramer/django-debug-toolbar/',
     description = 'A debug toolbar overlay for Django.',
     author='David Cramer',
