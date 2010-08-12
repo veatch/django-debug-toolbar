@@ -1,4 +1,5 @@
 from debug_toolbar.panels import DebugPanel
+from debug_toolbar.utils.stack import tidy_stacktrace, get_template_info
 
 from django.conf import settings
 from django.db import connection
@@ -8,9 +9,10 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.utils import simplejson
 
+import traceback
 import time
 import os.path
-import inspect
+import sys
 
 class DatabaseStatTracker(util.CursorDebugWrapper):
     """Replacement for CursorDebugWrapper which stores additional information
@@ -21,19 +23,31 @@ class DatabaseStatTracker(util.CursorDebugWrapper):
         try:
             return self.cursor.execute(sql, params)
         finally:
-            try:
-                stack = [s[1:] for s in inspect.stack()[1:]]
-            except:
-                # Strange issue cropped up sometimes
-                stack = []
             stop = time.time()
+
+            stacktrace = tidy_stacktrace(traceback.extract_stack())
+            template_info = None
+            # TODO: can probably move this into utils
+            cur_frame = sys._getframe().f_back
+            try:
+                while cur_frame is not None:
+                    if cur_frame.f_code.co_name == 'render':
+                        node = cur_frame.f_locals['self']
+                        if isinstance(node, Node):
+                            template_info = get_template_info(node.source)
+                            break
+                    cur_frame = cur_frame.f_back
+            except:
+                pass
+            del cur_frame
+
             # We keep `sql` to maintain backwards compatibility
             self.db.queries.append({
                 'sql': self.db.ops.last_executed_query(self.cursor, sql, params),
                 'time': (stop - start)*1000,
                 'raw_sql': sql,
                 'params': params,
-                'stack': stack,
+                'stack': stacktrace,
             })
 
 util.CursorDebugWrapper = DatabaseStatTracker
@@ -101,9 +115,10 @@ class SQLDebugPanel(DebugPanel):
         self.queries_offset = len(connection.queries)
     
     def process_response(self, request, response):
-        self.queries = connection.queries[self.queries_offset:]
-        self.total_time = sum(map(lambda q: q['time'], self.queries))
-        return response
+        if hasattr(self, 'queries_offset'):
+            self.queries = connection.queries[self.queries_offset:]
+            self.total_time = sum(map(lambda q: q['time'], self.queries))
+            return response
 
     def has_content(self):
         return bool(self.queries)

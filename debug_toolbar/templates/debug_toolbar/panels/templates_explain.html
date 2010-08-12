@@ -2,18 +2,40 @@
 	<li class="close">Close Panel</li>
 	<li class="back">&laquo; Back</li>
 </ul>
+<h1>Templates</h1>
+<table class="data sortable" border="0" cellspacing="0" cellpadding="0"> 
+	<colgroup>
+		<col width="40px"/>
+		<col/>
+		<col width="70px"/>
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Time&nbsp;(ms)</th>
+			<th>Path</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="{% cycle 'even' 'odd' %}">
+			<td id="djdt_template_time"></td>
+			<td id="djdt_template_template"></td>
+		</tr>
+	</tbody>
+</table>
 
 <h1>Traceback</h1>
 <div class="container">
-	<ul class="traceback" id="template_explain_traceback">
+	<ul class="traceback" id="djdt_template_explain_traceback">
 	</ul>
 </div>
 <script type="text/javascript">
-var traceback = jQuery('#template_explain_traceback');
+var traceback = jQuery('#djdt_template_explain_traceback');
 jQuery(locals.stack).each(function(index)
 {
 	traceback.append('<li>'+this[0]+':'+this[1]+' <span class="hilight">('+this[2]+')</span></li>');
 });
 
 traceback.find('li:odd').addClass('odd');
+jQuery('#djdt_template_time').text(locals.time);
+jQuery('#djdt_template_template').text(locals.template);
 </script>

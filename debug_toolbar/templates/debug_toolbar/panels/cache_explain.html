@@ -2,18 +2,40 @@
 	<li class="close">Close Panel</li>
 	<li class="back">&laquo; Back</li>
 </ul>
+<h1>Cache Usage</h1>
+<table class="data sortable" border="0" cellspacing="0" cellpadding="0"> 
+	<thead>
+		<tr>
+			<th>Time&nbsp;(ms)</th>
+			<th>Function</th>
+			<th colspan="2">Parameters</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="{% cycle 'even' 'odd' %}">
+			<td id="djdt_cache_time"></td>
+			<td id="djdt_cache_func"></td>
+			<td id="djdt_cache_args"></td>
+			<td id="djdt_cache_kwargs"></td>
+		</tr>
+	</tbody>
+</table>
 
 <h1>Traceback</h1>
 <div class="container">
-	<ul class="traceback" id="cache_explain_traceback">
+	<ul class="traceback" id="djdt_cache_explain_traceback">
 	</ul>
 </div>
 <script type="text/javascript">
-var traceback = jQuery('#cache_explain_traceback');
+var traceback = jQuery('#djdt_cache_explain_traceback');
 jQuery(locals.stack).each(function(index)
 {
 	traceback.append('<li>'+this[0]+':'+this[1]+' <span class="hilight">('+this[2]+')</span></li>');
 });
 
 traceback.find('li:odd').addClass('odd');
+jQuery('#djdt_cache_time').text(locals.time);
+jQuery('#djdt_cache_func').text(locals.func);
+jQuery('#djdt_cache_args').text(locals.args);
+jQuery('#djdt_cache_kwargs').text(locals.kwargs);
 </script>

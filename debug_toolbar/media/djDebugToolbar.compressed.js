@@ -1,4 +1,3 @@
-
 jQuery(function()
 {jQuery.noConflict();var $body=jQuery('body');var $djDebug=jQuery('#djDebug');var $djDebugOpenToolbarButton=jQuery('#djDebugToggleToolbar');var $djDebugCloseToolbarButton=jQuery('#djDebug #djDebugCloseToolbar');var $djDebugButtons=jQuery('#djDebug .djDebugButton:not(.disabled)');var $djDebugDecorations=jQuery('#decoration');var $document=jQuery(document);var $djDebugDebugBarHeight=29;function djDebugCreateCookie(name,value)
 {document.cookie=name+'='+value+'; path=/';}
@@ -62,7 +61,8 @@ jQuery('li.name').append('<div class="overlay"/>');$djDebugCloseToolbarButton.cl
 {djDebugHidePanel();}
 else
 {djDebugHidePanel();$this.addClass('current');djDebugShowPanel(jQuery('#'+$this.attr('rel')));}
-return false;});});jQuery('#djDebugFireBug').click(function(event)
+//return false;
+});});jQuery('#djDebugFireBug').click(function(event)
 {jQuery.getScript('http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js',function()
 {firebug.init();});});$document.keydown(function(e)
 {if(e.keyCode===27)

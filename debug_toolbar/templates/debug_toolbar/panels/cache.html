@@ -1,3 +1,4 @@
+{% load debug_toolbar %}
 <ul class="tabSet">
 	<li class="close">Close Panel</li>
 </ul>
@@ -54,7 +55,7 @@
 				<td>{{ func|escape }}</td>
 				<td>{% if args %}{{ args|escape }}{% endif %}</td>
 				<td>{% if kwargs %}{{ kwargs|escape }}{% endif %}</td>
-				<td><a href="javascript:djDebugWindow('Cache', {op: 'explain'}, {stack: {{ stack }}});" class="infoIcon">Details</a></td>
+				<td><a href="javascript:djDebugWindow('Cache', {op: 'explain'}, {stack: {{ stack|jsonencode }}, time: {{ time|floatformat:"4"|jsonencode }}, 'func': {{ func|jsonencode }}, 'args': {{ args|str|jsonencode }}, 'kwargs': {{ kwargs|str|jsonencode }}});" class="infoIcon">Details</a></td>
 			</tr>
 			{% endfor %}
 		</tbody>

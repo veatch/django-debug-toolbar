@@ -1,9 +1,11 @@
+from debug_toolbar.utils.stack import tidy_stacktrace
+
 try:
     from threading import local
 except ImportError:
     from django.utils._threading_local import local
 
-import inspect
+import traceback
 import time
 
 __all__ = ('track', 'get_stats', 'enable_tracking', 'reset_tracking', 'freeze_tracking')
@@ -31,13 +33,15 @@ class StatCollection(object):
         if value is not None:
             row['hits'] += 1
         
+        stacktrace = tidy_stacktrace(traceback.extract_stack())
+        
         self.calls.setdefault(key, []).append({
             'func': func,
             'args': args,
             'kwargs': kwargs,
             'time': this_time,
             'hit': value is not None,
-            'stack': [s[1:] for s in inspect.stack()[2:]],
+            'stack': stacktrace,
         })
         row = self.summary.setdefault(key, {'count': 0, 'time': 0.0, 'hits': 0})
         row['count'] += 1

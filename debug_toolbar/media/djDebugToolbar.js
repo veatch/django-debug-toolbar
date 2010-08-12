@@ -287,7 +287,7 @@ jQuery(function()
 				$this.addClass('current');
 				djDebugShowPanel(jQuery('#'+$this.attr('rel')));
 			}
-			return false;
+			//return false;
 		});
 	});
 	jQuery('#djDebugFireBug').click(function(event)
