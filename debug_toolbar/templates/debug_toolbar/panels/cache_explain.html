@@ -3,11 +3,18 @@
 	<li class="back">&laquo; Back</li>
 </ul>
 <h1>Cache Usage</h1>
-<table class="data sortable" border="0" cellspacing="0" cellpadding="0"> 
+<table class="data sortable" border="0" cellspacing="0" cellpadding="0">
+	<colgroup>
+		<col style="width:40px;"/>
+		<col style="width:60px;"/>
+		<col style="width:120px;"/>
+		<col/>
+	</colgroup>
 	<thead>
 		<tr>
 			<th>Time&nbsp;(ms)</th>
 			<th>Function</th>
+			<th>Key</th>
 			<th colspan="2">Parameters</th>
 		</tr>
 	</thead>
@@ -15,6 +22,7 @@
 		<tr class="{% cycle 'even' 'odd' %}">
 			<td id="djdt_cache_time"></td>
 			<td id="djdt_cache_func"></td>
+			<td id="djdt_cache_key"></td>
 			<td id="djdt_cache_args"></td>
 			<td id="djdt_cache_kwargs"></td>
 		</tr>
@@ -36,6 +44,7 @@ jQuery(locals.stack).each(function(index)
 traceback.find('li:odd').addClass('odd');
 jQuery('#djdt_cache_time').text(locals.time);
 jQuery('#djdt_cache_func').text(locals.func);
+jQuery('#djdt_cache_key').text(locals.key);
 jQuery('#djdt_cache_args').text(locals.args);
 jQuery('#djdt_cache_kwargs').text(locals.kwargs);
 </script>

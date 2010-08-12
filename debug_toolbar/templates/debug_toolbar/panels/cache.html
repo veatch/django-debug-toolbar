@@ -6,14 +6,14 @@
 <div class="container">
 	<table border="0" cellspacing="0" cellpadding="0"> 
 		<colgroup>
-			<col width="12%"/>
-			<col width="12%"/>
-			<col width="12%"/>
-			<col width="12%"/>
-			<col width="12%"/>
-			<col width="12%"/>
-			<col width="12%"/>
-			<col width="12%"/>
+			<col style="width:12%;"/>
+			<col style="width:12%;"/>
+			<col style="width:12%;"/>
+			<col style="width:12%;"/>
+			<col style="width:12%;"/>
+			<col style="width:12%;"/>
+			<col style="width:12%;"/>
+			<col style="width:12%;"/>
 		</colgroup>
 		<tr>
 			<th class="description">Total Calls</th>
@@ -40,22 +40,31 @@
 {% if cache_calls_list %}
 	<h1>Breakdown</h1>
 	<table class="data sortable" border="0" cellspacing="0" cellpadding="0"> 
+		<colgroup>
+			<col style="width:40px;"/>
+			<col style="width:60px;"/>
+			<col style="width:120px;"/>
+			<col/>
+			<col style="width:70px;"/>
+		</colgroup>
 		<thead>
 			<tr>
 				<th>Time&nbsp;(ms)</th>
 				<th>Function</th>
+				<th>Key</th>
 				<th colspan="2">Parameters</th>
 				<th>&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>
-			{% for time, func, args, kwargs, stack in cache_calls_list %}
+			{% for time, func, key, args, kwargs, stack in cache_calls_list %}
 			<tr class="{% cycle 'even' 'odd' %}">
 				<td>{{ time|floatformat:"4" }}</td>
 				<td>{{ func|escape }}</td>
+				<td>{{ key }}</td>
 				<td>{% if args %}{{ args|escape }}{% endif %}</td>
 				<td>{% if kwargs %}{{ kwargs|escape }}{% endif %}</td>
-				<td><a href="javascript:djDebugWindow('Cache', {op: 'explain'}, {stack: {{ stack|jsonencode }}, time: {{ time|floatformat:"4"|jsonencode }}, 'func': {{ func|jsonencode }}, 'args': {{ args|str|jsonencode }}, 'kwargs': {{ kwargs|str|jsonencode }}});" class="infoIcon">Details</a></td>
+				<td><a href="javascript:djDebugWindow('Cache', {op: 'explain'}, {stack: {{ stack|jsonencode }}, time: {{ time|floatformat:"4"|jsonencode }}, 'func': {{ func|jsonencode }}, 'key': {{ key|jsonencode }}, 'args': {{ args|str|jsonencode }}, 'kwargs': {{ kwargs|str|jsonencode }}});" class="infoIcon">Details</a></td>
 			</tr>
 			{% endfor %}
 		</tbody>
