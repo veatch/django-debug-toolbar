@@ -33,7 +33,7 @@ class DebugToolbarMiddleware(object):
         self.debug_toolbar = None
 
     def _show_toolbar(self, request, response=None):
-        if not settings.DEBUG or not getattr(settings, 'DEBUG_TOOLBAR', True):
+        if not settings.DEBUG or not getattr(settings, 'DEBUG_TOOLBAR', True) or getattr(settings, 'TEST', False):
             return False
 
         if request.path.startswith(settings.MEDIA_URL):
