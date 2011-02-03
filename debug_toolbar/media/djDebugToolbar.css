@@ -37,6 +37,7 @@
 	background-image: none;
 	margin: 0;
 	padding: 0;
+	text-shadow: none;
 }
 #djDebug a
 {
@@ -175,15 +176,18 @@
 	border: 1px solid #173a28;
 	color: #fff;
 }
-#djDebug #djDebugPanelList li.djDebugButton a, #djDebug #djDebugPanelList li.current a
-{
-	color: #76a244;
-}
 #djDebug #djDebugPanelList li.djDebugButton:hover a
 {
 	color: #acacac;
 }
- #djDebug #djDebugPanelList li.current a
+#djDebug #djDebugPanelList li.djDebugButton a,
+#djDebug #djDebugPanelList li.current a
+{
+	color: #76a244;
+}
+
+#djDebug #djDebugPanelList li.current:hover a,
+#djDebug #djDebugPanelList li.current a
 {
 	color: #fff;
 }
