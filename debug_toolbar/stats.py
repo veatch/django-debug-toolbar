@@ -101,7 +101,7 @@ def freeze_tracking():
 def track(func, key):
     """A decorator which handles tracking calls on a function."""
     def wrapped(*args, **kwargs):
-        if _stats.track:
+        if getattr(_stats, 'track', False):
             return _stats.collection.run(func, key, *args, **kwargs)
         return func(*args, **kwargs)
     wrapped.__doc__ = func.__doc__
