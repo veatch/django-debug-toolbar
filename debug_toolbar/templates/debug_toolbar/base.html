@@ -1,7 +1,7 @@
 {% if DEBUG %}
-    <link href="{{ base_url }}?djDebugStatic=djDebugToolbar.compressed.css" rel="stylesheet" type="text/css">
-{% else %}
     <link href="{{ base_url }}?djDebugStatic=djDebugToolbar.css" rel="stylesheet" type="text/css">
+{% else %}
+    <link href="{{ base_url }}?djDebugStatic=djDebugToolbar.compressed.css" rel="stylesheet" type="text/css">
 {% endif %}
 <script type="text/javascript" async="true">
 djDebugBaseUrl = '{{ base_url }}';
