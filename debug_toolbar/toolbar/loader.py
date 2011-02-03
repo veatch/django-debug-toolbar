@@ -1,8 +1,10 @@
 """
 The main DebugToolbar class that loads and renders the Toolbar.
 """
-from django.template.loader import render_to_string
 from debug_toolbar.settings import DEBUG_TOOLBAR_PANELS
+
+from django.conf import settings
+from django.template.loader import render_to_string
 import django
 
 class DebugToolbar(object):
@@ -47,6 +49,7 @@ class DebugToolbar(object):
             'django_version': django.get_version(),
             'panels': self.panels,
             'base_url': '/' + self.request.META['SCRIPT_NAME'],
+            'DEBUG': settings.DEBUG,
         }
         
         return render_to_string('debug_toolbar/base.html', context)

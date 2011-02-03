@@ -1,9 +1,6 @@
 // Load jQuery using Google's AJAX Libraries API - http://code.google.com/apis/ajaxlibs/
 jQuery(function()
 {
-	// Make sure jQuery doesn't conflict with other JavaScript code.
-	jQuery.noConflict();
-
 	// Caching for static objects.
 	var $body = jQuery('body');
 	var $djDebug = jQuery('#djDebug');
