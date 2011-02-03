@@ -287,13 +287,6 @@ jQuery(function()
 			//return false;
 		});
 	});
-	jQuery('#djDebugFireBug').click(function(event)
-	{
-		jQuery.getScript('http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js', function()
-		{
-			firebug.init();
-		});
-	});
 	// Capture button presses that allows the user to control the debug toolbar using the keyboard.
 	$document.keydown(function(e)
 	{

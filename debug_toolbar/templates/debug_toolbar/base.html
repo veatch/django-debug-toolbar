@@ -41,7 +41,6 @@ if (typeof jQuery == "undefined") {
 {% endifnotequal %}
 	<ul id="djDebugPanelList">
 		<li id="djDebugCloseToolbar">X</li>
-		<li id="djDebugFireBug"></li>
 		<li class="name">django debug toolbar<span class="version">django: {{ django_version }}</span></li>
 		{% for panel in panels %}
 			<li class="djDebugButton{% if not panel.has_content %} disabled{% endif %}" rel="{{ panel.dom_id }}">
