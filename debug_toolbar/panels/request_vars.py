@@ -28,14 +28,21 @@ class RequestVarsDebugPanel(DebugPanel):
 
     def content(self):
         context = self.context.copy()
-        context.update({
-            'get': [(k, self.request.GET.getlist(k)) for k in self.request.GET],
-            'post': [(k, self.request.POST.getlist(k)) for k in self.request.POST],
-            'cookies': [(k, self.request.COOKIES.get(k)) for k in self.request.COOKIES],
-            'view_func': '%s.%s' % (self.view_func.__module__, self.view_func.__name__),
-            'view_args': self.view_args,
-            'view_kwargs': self.view_kwargs
-        })
+
+        if self.request:
+             context.update({
+                'get': [(k, self.request.GET.getlist(k)) for k in self.request.GET],
+                'post': [(k, self.request.POST.getlist(k)) for k in self.request.POST],
+                'cookies': [(k, self.request.COOKIES.get(k)) for k in self.request.COOKIES],
+                })
+        if hasattr(self, 'view_args'):
+            context.update({ 'view_args': self.view_args })
+        if hasattr(self, 'view_kwargs'):
+            context.update({ 'view_kwargs': self.view_kwargs })
+        if hasattr(self, 'view_func'):
+            context.update({
+                'view_func': '%s.%s' % (self.view_func.__module__, self.view_func.__name__)})
+
         if hasattr(self.request, 'session'):
             context.update({
                 'session': [(k, self.request.session.get(k)) for k in self.request.session.iterkeys()]
