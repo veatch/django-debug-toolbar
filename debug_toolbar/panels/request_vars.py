@@ -40,9 +40,8 @@ class RequestVarsDebugPanel(DebugPanel):
         if hasattr(self, 'view_kwargs'):
             context.update({ 'view_kwargs': self.view_kwargs })
         if hasattr(self, 'view_func'):
-            context.update({
-                'view_func': '%s.%s' % (self.view_func.__module__, self.view_func.__name__)})
-
+            if hasattr(self.view_func,'__module__') and hasattr(self.view_func,'__name__'):
+                context.update({'view_func': '%s.%s' % (self.view_func.__module__, self.view_func.__name__)})
         if hasattr(self.request, 'session'):
             context.update({
                 'session': [(k, self.request.session.get(k)) for k in self.request.session.iterkeys()]
