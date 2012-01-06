@@ -200,9 +200,11 @@ class SQLDebugPanel(DebugPanel):
                 self._queries[i-1][1]['ends_trans'] = True
         
         context = self.context.copy()
+        queries_list = [q for a, q in self._queries]
         context.update({
             'databases': sorted(self._databases.items(), key=lambda x: -x[1]['time_spent']),
-            'queries': [q for a, q in self._queries],
+            'queries': queries_list,
+            'queries_sorted': sorted(queries_list, key=lambda x: x['duration'], reverse=True),
             'sql_time': self._sql_time,
         })
 
